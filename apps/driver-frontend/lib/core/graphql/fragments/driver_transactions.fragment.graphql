@@ -1,0 +1,11 @@
+fragment DriverTransacion on DriverTransacion {
+  id
+  createdAt
+  action
+  deductType
+  rechargeType
+  amount
+  currency
+  refrenceNumber
+  driverId
+}

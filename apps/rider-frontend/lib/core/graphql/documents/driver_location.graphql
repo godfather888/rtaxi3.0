@@ -1,0 +1,7 @@
+query DriverLocation($point: PointInput!) {
+  getDriversLocation(center: $point) {
+    ...Point
+    lat
+    lng
+  }
+}

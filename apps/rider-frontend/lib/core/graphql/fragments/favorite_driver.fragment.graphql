@@ -1,0 +1,23 @@
+fragment FavoriteDriver on Driver {
+  id
+  firstName
+  lastName
+  mobileNumber
+  car {
+    name
+  }
+  carColor {
+    name
+  }
+  carPlate
+  rating
+  reviewCount
+  media {
+    address
+  }
+  enabledServices {
+    service {
+      name
+    }
+  }
+}

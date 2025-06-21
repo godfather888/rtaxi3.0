@@ -1,0 +1,89 @@
+subscription OrderCreated {
+  orderCreated {
+    ...OrderRequest
+  }
+}
+
+subscription OrderRemoved {
+  orderRemoved {
+    ...OrderRequest
+    id
+  }
+}
+
+subscription OrderUpdated {
+  orderUpdated {
+    ...CurrentOrder
+  }
+}
+
+mutation UpdateDriverLocation($point: PointInput!) {
+  updateDriversLocationNew(point: $point) {
+    ...OrderRequest
+  }
+}
+
+mutation UpdateOrderStatus(
+  $orderId: ID!
+  $status: OrderStatus
+  $cashPayment: Float
+  $destinationArrivedTo: Int
+) {
+  updateOneOrder(
+    input: {
+      id: $orderId
+      update: {
+        status: $status
+        paidAmount: $cashPayment
+        destinationArrivedTo: $destinationArrivedTo
+      }
+    }
+  ) {
+    ...CurrentOrder
+    
+  }
+}
+
+mutation UpdateDriverStatus($status: DriverStatus!, $fcmId: String) {
+  updateOneDriver(
+    input: {
+      id: "1"
+      update: { status: $status, notificationPlayerId: $fcmId }
+    }
+  ) {
+    ...ProfileFull
+  }
+}
+
+mutation UpdateDriverFCMId($fcmId: String) {
+  updateOneDriver(
+    input: { id: "1", update: { notificationPlayerId: $fcmId } }
+  ) {
+    id
+  }
+}
+
+mutation UpdateDriverSearchDistance($distance: Int) {
+  updateOneDriver(input: { id: "1", update: { searchDistance: $distance } }) {
+    ...ProfileFull
+  }
+}
+
+query CancelReasons {
+  orderCancelReasons {
+    id
+    title
+  }
+}
+
+mutation SubmitReview($input: RiderReviewInput!) {
+  submitReview(input: $input) {
+    ...CurrentOrder
+  }
+}
+
+mutation SendSOS($id: ID!) {
+  sosSignal(orderId: $id) {
+    id
+  }
+}

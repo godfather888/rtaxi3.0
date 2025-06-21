@@ -1,0 +1,35 @@
+fragment PastOrder on Order {
+  id
+  createdOn
+  expectedTimestamp
+  startTimestamp
+  finishTimestamp
+  costAfterCoupon
+  currency
+  waitMinutes
+  durationBest
+  distanceBest
+  paymentMode
+  addresses
+  points {
+    ...Point
+  }
+  savedPaymentMethod {
+    ...SavedPaymentMethod
+  }
+  paymentGateway {
+    ...PaymentGateway
+  }
+  service {
+    name
+    media {
+      ...Media
+    }
+  }
+  options {
+    ...RideOption
+  }
+  driver {
+    ...FavoriteDriver
+  }
+}

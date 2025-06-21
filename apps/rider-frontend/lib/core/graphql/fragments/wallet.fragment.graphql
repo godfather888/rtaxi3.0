@@ -1,0 +1,4 @@
+fragment Wallet on RiderWallet {
+  currency
+  balance
+}

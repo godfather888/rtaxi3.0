@@ -1,0 +1,18 @@
+fragment Driver on Driver {
+  id
+  firstName
+  lastName
+  media {
+    ...Media
+  }
+  mobileNumber
+  carPlate
+  car {
+    name
+  }
+  carColor {
+    name
+  }
+  rating
+  reviewCount
+}

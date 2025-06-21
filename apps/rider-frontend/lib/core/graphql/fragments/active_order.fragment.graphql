@@ -1,0 +1,86 @@
+fragment ActiveOrder on CurrentOrder {
+  order {
+    ...CurrentOrder
+  }
+  driverLocation {
+    ...Point
+  }
+}
+
+fragment CurrentOrder on Order {
+  id
+  createdOn
+  type
+  expectedTimestamp
+  startTimestamp
+  finishTimestamp
+  riderLastSeenMessagesAt
+  distanceBest
+  durationBest
+  status
+  destinationArrivedTo
+  etaPickup
+  paidAmount
+  costAfterCoupon
+  costBest
+  currency
+  addresses
+  waitMinutes
+  paymentMode
+  durationBest
+  riderLastSeenMessagesAt
+  paymentGateway {
+    ...PaymentGateway
+  }
+  shopCarts {
+    pickedAt
+    shopOrderCart {
+      status
+      shop {
+        name
+        image {
+          ...Media
+        }
+      }
+    }
+  }
+  savedPaymentMethod {
+    ...SavedPaymentMethod
+  }
+  points {
+    ...Point
+  }
+  directions {
+    ...Point
+  }
+  driverDirections {
+    ...Point
+  }
+  driver {
+    ...FavoriteDriver
+  }
+  service {
+    media {
+      ...Media
+    }
+    name
+    paymentMethod
+    description
+    prepayPercent
+    cancellationTotalFee
+  }
+  options {
+    ...RideOption
+  }
+  directions {
+    ...Point
+  }
+  rider {
+    wallets {
+      ...Wallet
+    }
+  }
+  conversation {
+    ...ChatMessage
+  }
+}

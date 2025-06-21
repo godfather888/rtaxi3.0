@@ -1,0 +1,12 @@
+query ComplaintsList($paging: OffsetPaging) {
+  taxiSupportRequests(paging: $paging) {
+    nodes {
+      id
+      inscriptionTimestamp
+      subject
+      status
+      content
+    }
+    totalCount
+  }
+}

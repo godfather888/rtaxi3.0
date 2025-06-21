@@ -1,0 +1,12 @@
+fragment Service on Service {
+ id
+ name
+ paymentMethod
+ cancellationTotalFee
+ media{
+    ...Media
+ }
+ options{
+    ...RideOption
+ }
+}

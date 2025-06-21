@@ -1,0 +1,56 @@
+query ViewComplaint($id: ID!) {
+  complaint: taxiSupportRequest(id: $id) {
+    id
+    inscriptionTimestamp
+    status
+    subject
+    content
+    requestedByDriver
+    activities {
+      type
+      comment
+      actor {
+        firstName
+        lastName
+      }
+      assignedToStaffs {
+        firstName
+        lastName
+      }
+    }
+    order {
+      id
+      status
+      createdOn
+      startTimestamp
+      finishTimestamp
+      expectedTimestamp
+      costBest
+      costAfterCoupon
+      addresses
+      currency
+      rider {
+        id
+        mobileNumber
+        status
+        firstName
+        lastName
+        registrationTimestamp
+      }
+      driver {
+        id
+        mobileNumber
+        status
+        firstName
+        lastName
+        registrationTimestamp
+      }
+    }
+  }
+}
+
+mutation UpdateComplaintStatus($id: ID!, $status: ComplaintStatus!) {
+  updateOneTaxiSupportRequest(input: { id: $id, update: { status: $status } }) {
+    id
+  }
+}

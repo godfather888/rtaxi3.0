@@ -1,0 +1,34 @@
+query CalculateFare($input: CalculateFareInput!) {
+  getFares(input: $input) {
+    services {
+      ...ServiceCategory
+    }
+    directions {
+      ...Point
+      lat
+      lng
+      heading
+    }
+    currency
+    distance
+    duration
+  }
+  savedPaymentMethods {
+    ...SavedPaymentMethod
+  }
+  paymentGateways {
+    ...PaymentGateway
+  }
+  riderWallets {
+    ...Wallet
+  }
+}
+
+query GetCouponInfo($couponCode: String!) {
+  couponInfo(code: $couponCode) {
+    id
+    code
+    description
+    expireAt
+  }
+}

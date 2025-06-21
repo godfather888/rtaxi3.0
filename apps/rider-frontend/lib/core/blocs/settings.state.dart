@@ -1,0 +1,18 @@
+part of 'settings.bloc.dart';
+
+@freezed
+sealed class SettingsState with _$SettingsState {
+  const factory SettingsState({
+    required String locale,
+    required MapProviderEnum mapProvider,
+  }) = _SettingsState;
+
+  factory SettingsState.initial() => const SettingsState(
+        locale: 'en',
+        mapProvider: Constants.defaultMapProvider,
+      );
+
+  factory SettingsState.fromJson(Map<String, dynamic> json) => _$SettingsStateFromJson(json);
+
+  const SettingsState._();
+}

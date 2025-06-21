@@ -1,0 +1,53 @@
+query ProfileAggregations {
+  driver(id: "0") {
+    historyOrdersAggregate {
+      count {
+        id
+      }
+      sum {
+        distanceBest
+      }
+    }
+    rating
+  }
+}
+
+mutation UpdateProfileImage($mediaId: ID!) {
+  updateOneDriver(input: { id: "1", update: { mediaId: $mediaId } }) {
+    ...ProfileFull
+  }
+}
+
+query Profile {
+  driver(id: "1") {
+    ...ProfileFull
+  }
+}
+
+query FeedbacksSummary {
+  feedbacksSummary {
+    averageRating
+    goodPoints
+    badPoints
+    goodReviews {
+      serviceName
+      rating
+      review
+      goodPoints
+    }
+  }
+}
+
+mutation UpdateFcmToken($token: String!) {
+  updateOneDriver(
+    input: { id: "1", update: { notificationPlayerId: $token } }
+  ) {
+    ...ProfileFull
+  }
+}
+
+mutation DeleteAccount {
+  deleteUser {
+    id
+  }
+}

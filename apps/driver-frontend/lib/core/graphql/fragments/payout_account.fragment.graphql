@@ -1,0 +1,16 @@
+fragment PayoutAccount on PayoutAccount {
+  id
+  name
+  accountHolderName
+  accountNumber
+  routingNumber
+  bankName
+  accountHolderCountry
+  accountHolderCity
+  accountHolderState
+  accountHolderAddress
+  accountHolderDateOfBirth
+  accountHolderPhone
+  accountHolderZip
+  isDefault
+}

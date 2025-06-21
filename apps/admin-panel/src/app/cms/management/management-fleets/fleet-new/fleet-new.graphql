@@ -1,0 +1,5 @@
+mutation CreateFleet($input: CreateFleetInput!) {
+  createOneFleet(input: { fleet: $input }) {
+    id
+  }
+}

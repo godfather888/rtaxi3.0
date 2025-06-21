@@ -1,0 +1,9 @@
+
+fragment RiderTransaction on RiderTransacion {
+    id
+    deductType
+    rechargeType
+    amount
+    currency
+    createdAt
+}

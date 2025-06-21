@@ -1,0 +1,13 @@
+fragment Rider on Rider {
+  id
+  presetAvatarNumber
+  firstName
+  lastName
+  mobileNumber
+  media{
+      ...Media
+  }
+  wallets{
+      id
+  }
+}

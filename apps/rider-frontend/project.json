@@ -1,0 +1,6 @@
+{
+  "name": "rider-frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/rider-frontend",
+  "tags": []
+}

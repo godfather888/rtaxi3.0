@@ -1,0 +1,10 @@
+fragment SavedPaymentMethod on SavedPaymentMethod {
+  id
+  providerBrand
+  lastFour
+  isEnabled
+  isDefault
+  title
+  expiryDate
+  holderName
+}

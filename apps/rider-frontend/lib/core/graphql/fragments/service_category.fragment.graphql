@@ -1,0 +1,7 @@
+fragment ServiceCategory on ServiceCategory {
+ id
+ name,
+ services{
+    ...Service
+ }
+}

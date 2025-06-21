@@ -1,0 +1,75 @@
+
+query Wallet {
+  driver(id: "1") {
+    ...Profile
+  }
+  savedPaymentMethods {
+    ...SavedPaymentMethod  
+  }
+  paymentGateways {
+    ...PaymentGateway
+  }
+  driverTransacions{
+    edges{
+      node{
+        id
+        createdAt
+        action
+        deductType
+        rechargeType
+        amount
+        currency
+        refrenceNumber
+        driverId
+      }
+    }
+  }
+  
+}
+
+query SavedPaymentMethods {
+  savedPaymentMethods {
+    ...SavedPaymentMethod
+   
+  }
+  paymentGateways {
+    ...PaymentGateway
+  }
+}
+
+# query SavableGateways {
+#   savableGateways {
+#     id
+#     title
+#     type
+#     media {
+#       ...MediaFragment
+#     }
+#   }
+# }
+
+mutation SetupPaymentMethodLink($gatewayId: ID!) {
+  setupPaymentMethod(gatewayId: $gatewayId) {
+    url
+  }
+}
+
+mutation RedeemGiftCard($code: String!) {
+  redeemGiftCard(code: $code) {
+    id
+    amount
+    currency
+  }
+}
+
+mutation MarkAsDefault($id: ID!, $isDefault: Boolean!) {
+  updatePaymentMethodDefault(id: $id, isDefault: $isDefault) {
+    ...SavedPaymentMethod
+  }
+}
+
+mutation TopUpWallet($input: TopUpWalletInput!) {
+  topUpWallet(input: $input) {
+    ...IntentResult
+  }
+}

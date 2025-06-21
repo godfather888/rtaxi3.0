@@ -1,0 +1,15 @@
+query RideHistory {
+  orders(sorting: [{ field: id, direction: DESC }], paging: { first: 20 }) {
+    edges {
+      node {
+        ...CurrentOrder
+      }
+    }
+  }
+}
+
+mutation SubmitIssue($input: CreateOneComplaintInput!) {
+  createOneComplaint(input: $input) {
+    id
+  }
+}

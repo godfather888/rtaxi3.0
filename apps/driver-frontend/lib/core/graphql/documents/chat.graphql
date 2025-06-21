@@ -1,0 +1,13 @@
+mutation SendMessage($orderId: ID!, $message: String!) {
+  createOneOrderMessage(
+    input: { orderMessage: { content: $message, requestId: $orderId } }
+  ) {
+    ...ChatMessage
+  }
+}
+
+subscription ChatMessage {
+  newMessageReceived {
+    ...ChatMessage
+  }
+}

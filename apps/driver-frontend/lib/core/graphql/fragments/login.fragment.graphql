@@ -1,0 +1,13 @@
+fragment VerifyNumber on VerifyNumberDto {
+  hash
+  isExistingUser
+}
+
+fragment VerifyOtpOrPassword on VerifcationResult {
+  hasPassword
+  user {
+    ...ProfileFull
+  }
+  hasName
+  jwtToken
+}

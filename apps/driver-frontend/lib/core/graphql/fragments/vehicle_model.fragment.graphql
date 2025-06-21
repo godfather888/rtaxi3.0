@@ -1,0 +1,4 @@
+fragment VehicleModel on CarModel {
+  id
+  name
+}

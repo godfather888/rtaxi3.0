@@ -1,0 +1,23 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_common/core/presentation/empty_list_state.dart';
+import 'package:rider_flutter/config/router/app_router.dart';
+import 'package:rider_flutter/core/extensions/extensions.dart';
+import 'package:flutter_common/gen/assets.gen.dart';
+
+class RideHistoryEmptyState extends StatelessWidget {
+  const RideHistoryEmptyState({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return EmptyListState(
+      imagePath: Assets.images.rideHistoryEmptyState.path,
+      imagePackage: Assets.package,
+      title: context.translate.noRidesYet,
+      buttonText: context.translate.orderARide,
+      onPressed: () {
+        context.router.navigate(const HomeRoute());
+      },
+    );
+  }
+}

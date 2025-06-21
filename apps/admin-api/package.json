@@ -1,0 +1,66 @@
+{
+  "name": "admin-api",
+  "version": "4.0.3",
+  "private": true,
+  "type": "commonjs",
+  "devDependencies": {
+    "@ridy/database": "*"
+  },
+  "nx": {
+    "targets": {
+      "compile-migrations": {
+        "executor": "nx:run-commands",
+        "options": {
+          "parallel": false,
+          "commands": [
+            "mkdir -p apps/admin-api/dist/migrations",
+            "npx swc libs/database/src/lib/migration/*.ts -d apps/admin-api/dist/migrations --config-file apps/admin-api/.swcrc",
+            "mv -f apps/admin-api/dist/migrations/libs/database/src/lib/migration/*.js apps/admin-api/dist/migrations"
+          ]
+        }
+      },
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "webpack-cli build",
+          "args": [
+            "node-env=production"
+          ]
+        },
+        "configurations": {
+          "development": {
+            "args": [
+              "node-env=development"
+            ]
+          }
+        }
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "admin-api:build",
+          "inspect": "inspect",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "admin-api:build:development"
+          },
+          "production": {
+            "buildTarget": "build:production"
+          }
+        }
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+query Earnings(
+  $timeFrame: TimeQuery!
+  $startDate: DateTime!
+  $endDate: DateTime!
+) {
+  getStatsNew(timeframe: $timeFrame, startDate: $startDate, endDate: $endDate) {
+    currency
+    dataset {
+      earning
+      count
+      time
+      distance
+      name
+    }
+  }
+}

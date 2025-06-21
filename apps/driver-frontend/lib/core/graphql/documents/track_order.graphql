@@ -1,0 +1,15 @@
+mutation CancelOrder($orderId: ID!) {
+  updateOneOrder(input: { id: $orderId, update: { status: DriverCanceled } }) {
+    ...CurrentOrder
+  }
+}
+
+mutation UpdateLastSeenMessagesAt($orderId: ID!) {
+  updateLastSeenMessagesAt(orderId: $orderId)
+}
+
+subscription OrderUpdateSubsctipion {
+  orderUpdated {
+    ...CurrentOrder
+  }
+}

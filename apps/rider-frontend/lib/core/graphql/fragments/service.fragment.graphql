@@ -1,0 +1,18 @@
+fragment Service on Service {
+  id
+  name,
+  media{
+    ...Media
+  }
+  options{
+    ...RideOption
+  }
+  description
+  personCapacity
+  prepayPercent
+  paymentMethod
+  cost
+  costAfterCoupon
+  cancellationTotalFee
+  twoWayAvailable
+}

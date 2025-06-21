@@ -1,0 +1,9 @@
+fragment Announcement on Announcement {
+  id
+  userType
+  title
+  description
+  startAt
+  expireAt
+  url
+}

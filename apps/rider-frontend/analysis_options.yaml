@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    #‌ avoid_print: false  # Uncomment to disable the `avoid_print` rule
+    # prefer_single_quotes: true
+
+analyzer:
+  errors:
+    use_build_context_synchronously: ignore
+    depend_on_referenced_packages: ignore
+  exclude:
+    - "**.gql.dart"
+    - "**.graphql.dart"
+    - "**.g.dart"
+    - "lib/l10n/**"

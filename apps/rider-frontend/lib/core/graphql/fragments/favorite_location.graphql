@@ -1,0 +1,13 @@
+fragment FavoriteLocation on RiderAddress {
+  id
+  title
+  type
+  details
+  phoneNumber {
+    countryCode
+    number
+  }
+  location {
+    ...Point
+  }
+}

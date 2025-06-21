@@ -1,0 +1,10 @@
+fragment PayoutMethod on PayoutMethod{
+    id
+    linkMethod
+    enabled
+    name
+    type
+    media{
+        ...Media
+    }
+}

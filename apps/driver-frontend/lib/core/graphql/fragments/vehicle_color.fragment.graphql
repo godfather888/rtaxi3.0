@@ -1,0 +1,4 @@
+fragment VehicleColor on CarColor {
+  id
+  name
+}
