@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nx build driver-api --skip-nx-cache",
+    "startTime": "2025-07-31T05:28:19.693Z",
+    "endTime": "2025-07-31T05:28:27.953Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "driver-api:build",
+      "target": "build",
+      "projectName": "driver-api",
+      "hash": "11034853451135544698",
+      "startTime": "2025-07-31T05:28:19.715Z",
+      "endTime": "2025-07-31T05:28:27.947Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
+}

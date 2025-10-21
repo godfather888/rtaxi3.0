@@ -37,6 +37,7 @@ export class DriverQueryService extends TypeOrmQueryService<DriverEntity> {
     const allowedStatuses = [
       DriverStatus.Offline,
       DriverStatus.Online,
+      DriverStatus.Parked,
       DriverStatus.WaitingDocuments,
       DriverStatus.SoftReject,
       DriverStatus.HardReject,

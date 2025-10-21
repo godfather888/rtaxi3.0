@@ -7,28 +7,10 @@
       "path": "./apps/admin-api"
     },
     {
-      "path": "./apps/parking-customer-api"
-    },
-    {
-      "path": "./apps/parking-provider-api"
-    },
-    {
-      "path": "./apps/shop-customer-api"
-    },
-    {
-      "path": "./apps/payment-gateways"
-    },
-    {
-      "path": "./apps/shop-vendor-api"
-    },
-    {
       "path": "./apps/admin-panel"
     },
     {
       "path": "./apps/driver-api"
-    },
-    {
-      "path": "./apps/fleet-api"
     },
     {
       "path": "./apps/rider-api"

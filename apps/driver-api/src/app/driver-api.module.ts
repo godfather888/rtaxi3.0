@@ -34,6 +34,7 @@ import {
   LicenseVerifyService,
 } from 'license-verify';
 import { Context } from 'graphql-ws';
+import { DriverResolver } from './driver/driver.resolver';
 
 @Module({})
 export class DriverAPIModule implements OnModuleInit {
@@ -101,7 +102,7 @@ export class DriverAPIModule implements OnModuleInit {
             },
             autoSchemaFile: join(
               process.cwd(),
-              'apps/driver-frontend/lib/core/graphql/schema.gql',
+              'apps/driver-frontend/lib/core/graphql/schema.gql'
             ),
           }),
           TypeOrmModule.forFeature(entities),
@@ -125,6 +126,7 @@ export class DriverAPIModule implements OnModuleInit {
         providers: [
           CryptoService,
           SharedDriverService,
+          DriverResolver,
           {
             provide: APP_FILTER,
             useClass: SentryGlobalFilter,

@@ -185,6 +185,33 @@ export class ManagementServicesViewComponent implements OnInit {
   async onSubmit() {
     const { id, regions, options, ...input } = this.form.value;
     console.log(input);
+    console.log("v7");
+
+    // --- НАЧАЛО ИСПРАВЛЕНИЯ: Явное преобразование строковых значений в числа ---
+    // Это необходимо, так как nz-input-number с кастомными парсерами возвращает строковое значение, 
+    // а GraphQL ожидает Int или Float.
+    
+    // Float (Цены, тарифы, prepayPercent):
+    input.baseFare = parseFloat(input.baseFare);
+    input.perHundredMeters = parseFloat(input.perHundredMeters);
+    input.perMinuteDrive = parseFloat(input.perMinuteDrive);
+    input.perMinuteWait = parseFloat(input.perMinuteWait);
+    input.minimumFee = parseFloat(input.minimumFee);
+    input.cancellationTotalFee = parseFloat(input.cancellationTotalFee);
+    input.cancellationDriverShare = parseFloat(input.cancellationDriverShare);
+    input.providerShareFlat = parseFloat(input.providerShareFlat);
+    input.prepayPercent = parseFloat(input.prepayPercent);
+    
+    // Int (Радиус, максимальная дистанция, personCapacity, providerSharePercent):
+    if (input.personCapacity) {
+      input.personCapacity = parseInt(input.personCapacity);
+    }
+    input.providerSharePercent = parseInt(input.providerSharePercent);
+    input.searchRadius = parseInt(input.searchRadius);
+    input.maximumDestinationDistance = parseInt(input.maximumDestinationDistance);
+    
+    // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
+
     if (regions.length < 1) {
       this.msg.error(
         'Select at least one region which this service can be ordered from.',

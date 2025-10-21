@@ -1,0 +1,1594 @@
+{
+  "apps/admin-api": {
+    "root": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "projectType": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets": [
+      "apps/admin-api/tsconfig.app.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.dependsOn": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.cache": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.inputs": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.outputs": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.syncGenerators": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.executor": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.cwd": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.command": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies.0": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.description": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.command": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.example": [
+      "apps/admin-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.build": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.cache": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.dependsOn": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.inputs": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.outputs": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.syncGenerators": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.executor": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options.cwd": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.options.args": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options.command": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.metadata.technologies": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.technologies.0": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.description": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help.command": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help.example": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.continuous": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.syncGenerators": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.executor": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.cwd": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.args": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.command": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.technologies": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.technologies.0": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.description": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help.command": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help.example": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build-deps": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build-deps.dependsOn": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.continuous": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.dependsOn": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.executor": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.options": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.options.command": [
+      "apps/admin-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "name": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "tags": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:private": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.compile-migrations": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.compile-migrations.executor": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.compile-migrations.options": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.compile-migrations.options.parallel": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.compile-migrations.options.commands": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations.development": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations.development.args": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.continuous": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.executor": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.defaultConfiguration": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.dependsOn": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.buildTarget": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.inspect": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.runBuildTargetDependencies": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.development": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.development.buildTarget": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.production": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.production.buildTarget": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.options": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "apps/admin-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
+  "apps/admin-panel": {
+    "root": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets": [
+      "apps/admin-panel/tsconfig.app.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.dependsOn": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.cache": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.inputs": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.outputs": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.syncGenerators": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.executor": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.cwd": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.command": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies.0": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.description": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.command": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.example": [
+      "apps/admin-panel/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "name": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "$schema": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.outputPath": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.baseHref": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.index": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.main": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.polyfills": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.tsConfig": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.aot": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.assets": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.styles": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.scripts": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.fileReplacements": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.optimization": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.outputHashing": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.sourceMap": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.namedChunks": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.aot": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.extractLicenses": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.vendorChunk": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.buildOptimizer": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.executor": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.dependsOnnnn": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.continuous": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options.buildTarget": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.production": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.configurations.production.buildTarget": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.extract-i18n": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.extract-i18n.executor": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.extract-i18n.options": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.extract-i18n.options.command": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.extract-i18n.options.cwd": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.graphql-codegen": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.graphql-codegen.executor": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.graphql-codegen.options": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.graphql-codegen.options.command": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.graphql-codegen.options.cwd": [
+      "apps/admin-panel/project.json",
+      "nx/core/project-json"
+    ]
+  },
+  "apps/driver-api": {
+    "root": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "projectType": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets": [
+      "apps/driver-api/tsconfig.app.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.dependsOn": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.cache": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.inputs": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.outputs": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.syncGenerators": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.executor": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.cwd": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.command": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies.0": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.description": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.command": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.example": [
+      "apps/driver-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.build": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.cache": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.dependsOn": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.inputs": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.outputs": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.syncGenerators": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.executor": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options.cwd": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.options.args": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options.command": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.metadata.technologies": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.technologies.0": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.description": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help.command": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help.example": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.continuous": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.syncGenerators": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.executor": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.cwd": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.args": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.command": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.technologies": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.technologies.0": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.description": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help.command": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help.example": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build-deps": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build-deps.dependsOn": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.continuous": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.dependsOn": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.executor": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.options": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.options.command": [
+      "apps/driver-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "name": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "tags": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:private": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations.development": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations.development.args": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.continuous": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.executor": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.defaultConfiguration": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.dependsOn": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.buildTarget": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.runBuildTargetDependencies": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.watch": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.development": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.development.buildTarget": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.production": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.production.buildTarget": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.options": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "apps/driver-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
+  "apps/rider-api": {
+    "root": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "projectType": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets": [
+      "apps/rider-api/tsconfig.app.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.dependsOn": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.cache": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.inputs": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.outputs": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.syncGenerators": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.executor": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.cwd": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.command": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies.0": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.description": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.command": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.example": [
+      "apps/rider-api/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.build": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.cache": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.dependsOn": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.inputs": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.outputs": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.syncGenerators": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.executor": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options.cwd": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.options.args": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.options.command": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.metadata.technologies": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.technologies.0": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.description": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help.command": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build.metadata.help.example": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.continuous": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.syncGenerators": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.executor": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.cwd": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.args": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.options.command": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.technologies": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.technologies.0": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.description": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help.command": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.preview.metadata.help.example": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build-deps": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.build-deps.dependsOn": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.continuous": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.dependsOn": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.executor": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.options": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "targets.watch-deps.options.command": [
+      "apps/rider-api/webpack.config.js",
+      "@nx/webpack/plugin"
+    ],
+    "name": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "tags": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:private": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations.development": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build.configurations.development.args": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.continuous": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.executor": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.defaultConfiguration": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.dependsOn": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.buildTarget": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.runBuildTargetDependencies": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.options.watch": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.development": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.development.buildTarget": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.production": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.serve.configurations.production.buildTarget": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.options": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "apps/rider-api/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.test.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
+  "libs/database": {
+    "root": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "projectType": [
+      "libs/database/tsconfig.spec.json",
+      "@nx/js/typescript"
+    ],
+    "targets": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.dependsOn": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.cache": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.inputs": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.outputs": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.syncGenerators": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.executor": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.cwd": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.options.command": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.technologies.0": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.description": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.command": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "targets.typecheck.metadata.help.example": [
+      "libs/database/tsconfig.json",
+      "@nx/js/typescript"
+    ],
+    "name": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "tags": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:private": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageExports": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageMain": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "libs/database/package.json",
+      "nx/core/package-json"
+    ]
+  },
+  "apps/driver-frontend": {
+    "root": [
+      "apps/driver-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "apps/driver-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "$schema": [
+      "apps/driver-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "apps/driver-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "apps/driver-frontend/project.json",
+      "nx/core/project-json"
+    ]
+  },
+  "apps/rider-frontend": {
+    "root": [
+      "apps/rider-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "apps/rider-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "$schema": [
+      "apps/rider-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "apps/rider-frontend/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "apps/rider-frontend/project.json",
+      "nx/core/project-json"
+    ]
+  },
+  "libs/flutter_localizations": {
+    "root": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "$schema": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "targets": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.cwd": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.commands": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.parallel": [
+      "libs/flutter_localizations/project.json",
+      "nx/core/project-json"
+    ]
+  }
+}

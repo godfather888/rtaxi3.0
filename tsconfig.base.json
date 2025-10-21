@@ -21,5 +21,8 @@
     "resolveJsonModule": true,
     "strict": false,
     "target": "es2022",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false
   }
 }

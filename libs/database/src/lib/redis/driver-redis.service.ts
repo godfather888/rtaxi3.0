@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { Point } from '../interfaces/point';
-import { RedisService } from '@liaoliaots/nestjs-redis';
+import { Injectable } from "@nestjs/common";
+import { Point } from "../interfaces/point";
+import { RedisService } from "@liaoliaots/nestjs-redis";
 
 @Injectable()
 export class DriverRedisService {
@@ -41,18 +41,18 @@ export class DriverRedisService {
 
   async getClose(
     point: Point,
-    distance: number,
+    distance: number
   ): Promise<DriverLocationWithId[]> {
     const bare = (await this.redisService
       .getOrThrow()
       .call(
-        'GEORADIUS',
+        "GEORADIUS",
         RedisKeys.Driver,
         point.lng,
         point.lat,
         distance,
-        'm',
-        'WITHCOORD',
+        "m",
+        "WITHCOORD"
       )) as string[][];
 
     const result = bare.map(async (item: string[]) => {
@@ -75,16 +75,16 @@ export class DriverRedisService {
     const bare = (await this.redisService
       .getOrThrow()
       .call(
-        'GEORADIUS',
+        "GEORADIUS",
         RedisKeys.Driver,
         center.lng.toString(),
         center.lat.toString(),
-        '22000',
-        'km',
-        'WITHCOORD',
+        "22000",
+        "km",
+        "WITHCOORD",
         `COUNT`,
         count.toString(),
-        'ASC',
+        "ASC"
       )) as string[][];
     const times: string[] = await this.redisService
       .getOrThrow()
@@ -92,7 +92,7 @@ export class DriverRedisService {
         RedisKeys.DriverLocationTime,
         0,
         new Date().getTime(),
-        'WITHSCORES',
+        "WITHSCORES"
       );
     const result = bare.map(async (x: string[]) => {
       const heading = await this.redisService
@@ -106,7 +106,7 @@ export class DriverRedisService {
           heading: heading ? parseInt(heading) : undefined,
         },
         lastUpdatedAt: new Date(
-          parseInt(times[times.indexOf(x[0] as string) + 1]),
+          parseInt(times[times.indexOf(x[0] as string) + 1])
         ),
       };
     });
@@ -119,12 +119,31 @@ export class DriverRedisService {
       .getOrThrow()
       .zrem(RedisKeys.DriverLocationTime, userId);
   }
+
+  async setQrCodeToken(
+    driverId: number,
+    token: string,
+    ttlSeconds: number
+  ): Promise<void> {
+    const key = `qr:token:${token}`;
+    console.log("key :", key);
+    await this.redisService
+      .getOrThrow()
+      .set(key, driverId.toString(), "EX", ttlSeconds);
+  }
+
+  async getDriverIdByToken(token: string): Promise<number | null> {
+    const key = `qr:token:${token}`;
+    const value = await this.redisService.getOrThrow().get(key);
+    console.log("key :", key, "value :", value);
+    return value ? parseInt(value, 10) : null;
+  }
 }
 
 enum RedisKeys {
-  Driver = 'driver',
-  DriverHeading = 'driver-heading',
-  DriverLocationTime = 'driver-location-time',
+  Driver = "driver",
+  DriverHeading = "driver-heading",
+  DriverLocationTime = "driver-location-time",
 }
 
 export type DriverLocation = {

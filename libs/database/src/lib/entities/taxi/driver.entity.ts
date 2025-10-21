@@ -32,17 +32,22 @@ import { DriverToDriverDocumentEntity } from './driver-to-driver-document.entity
 import { DriverNoteEntity } from './driver-note.entity';
 import { DeliveryPackageSize } from '../enums/package-size.enum';
 import { DriverServicesServiceEntity } from './driver-services-service.entity';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity('driver')
 export class DriverEntity {
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Field(() => String, { nullable: true })
   @Column({
     nullable: true,
   })
   firstName?: string;
 
+  @Field(() => String, { nullable: true })
   @Column({
     nullable: true,
   })
@@ -122,6 +127,7 @@ export class DriverEntity {
   @Column('int', { nullable: true })
   searchDistance?: number;
 
+  @Field(() => String)
   @Column('enum', {
     default: DriverStatus.WaitingDocuments,
     enum: DriverStatus,

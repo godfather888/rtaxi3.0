@@ -1,5 +1,5 @@
-<nz-page-header *ngIf="(query | async)?.data as data" [nzGhost]="false" nzBackIcon nzTitle="Service"
-  nzSubtitle="View and edit the service details">
+<nz-page-header *ngIf="(query | async)?.data as data" [nzGhost]="false" nzBackIcon nzTitle="Сервис"
+  nzSubtitle="Просмотр и редактирование деталей сервиса">
   <nz-page-header-content>
     <div>
       <form nz-form [formGroup]="form" (ngSubmit)="onSubmit()" nzLayout="vertical">
@@ -7,19 +7,19 @@
         <input type="hidden" hidden formControlName="regions">
         <div class="lg:grid lg:grid-cols-4 lg:gap-2">
           <nz-form-item>
-            <nz-form-label nzFor="name" nzRequired>Name</nz-form-label>
+            <nz-form-label nzFor="name" nzRequired>Название</nz-form-label>
             <nz-form-control>
               <input nz-input formControlName="name" id="name">
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="description">Description</nz-form-label>
+            <nz-form-label nzFor="description">Описание</nz-form-label>
             <nz-form-control>
               <input nz-input formControlName="description" id="description">
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="categoryId" nzRequired>Category</nz-form-label>
+            <nz-form-label nzFor="categoryId" nzRequired>Категория</nz-form-label>
             <nz-form-control>
               <nz-select formControlName="categoryId" id="categoryId">
                 <nz-option *ngFor="let category of data.serviceCategories" [nzValue]="category.id"
@@ -28,78 +28,78 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="personCapacity">Max Person Capacity</nz-form-label>
+            <nz-form-label nzFor="personCapacity">Максимальная вместимость</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="personCapacity" id="personCapacity" [nzMin]="0" [nzMax]="100">
               </nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="baseFare" nzRequired>Base Fare</nz-form-label>
+            <nz-form-label nzFor="baseFare" nzRequired>Базовый тариф</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="baseFare" id="baseFare" nzRequired [nzFormatter]="formatterPrice">
               </nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="perHundredMeters">Per Hundred Meters</nz-form-label>
+            <nz-form-label nzRequired nzFor="perHundredMeters">За 100 метров</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="perHundredMeters" id="perHundredMeters" nzRequired
                 [nzFormatter]="formatterPrice"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="perMinuteDrive">Per Minute Drive</nz-form-label>
+            <nz-form-label nzRequired nzFor="perMinuteDrive">За минуту поездки</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="perMinuteDrive" id="perMinuteDrive" nzRequired
                 [nzFormatter]="formatterPrice"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="perMinuteWait">Per Minute Wait</nz-form-label>
+            <nz-form-label nzRequired nzFor="perMinuteWait">За минуту ожидания</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="perMinuteWait" id="perMinuteWait" nzRequired
                 [nzFormatter]="formatterPrice"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="prepayPercent">Prepay Percent</nz-form-label>
+            <nz-form-label nzRequired nzFor="prepayPercent">Процент предоплаты</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="prepayPercent" id="prepayPercent" nzRequired
                 [nzFormatter]="formatterPercent" [nzParser]="parserPercent" [nzMax]="200" [nzMin]="0"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="minimumFee">Minimum Fee</nz-form-label>
+            <nz-form-label nzRequired nzFor="minimumFee">Минимальный сбор</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="minimumFee" id="minimumFee" nzRequired [nzFormatter]="formatterPrice">
               </nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="roundingFactor">Rounding Factor</nz-form-label>
-            <nz-form-control nzErrorTip="The value needs to be more than zero and less than 100">
+            <nz-form-label nzFor="roundingFactor">Фактор округления</nz-form-label>
+            <nz-form-control nzErrorTip="Значение должно быть больше нуля и меньше 100">
               <nz-input-number formControlName="roundingFactor" id="roundingFactor" [nzMin]="0.01" [nzMax]="100"
                 [nzFormatter]="formatterPrice">
               </nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="maximumDestinationDistance">Maximum Distance</nz-form-label>
+            <nz-form-label nzRequired nzFor="maximumDestinationDistance">Максимальное расстояние</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="maximumDestinationDistance" id="maximumDestinationDistance" nzRequired
                 [nzFormatter]="formatterMeters" [nzParser]="parserMeters"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="searchRadius">Search Radius</nz-form-label>
+            <nz-form-label nzRequired nzFor="searchRadius">Радиус поиска</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="searchRadius" id="searchRadius" nzRequired
                 [nzFormatter]="formatterMeters" [nzParser]="parserMeters"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired nzFor="paymentMethod">Payment Method</nz-form-label>
+            <nz-form-label nzRequired nzFor="paymentMethod">Способ оплаты</nz-form-label>
             <nz-form-control>
               <nz-select formControlName="paymentMethod" id="paymentMethod">
                 <nz-option *ngFor="let paymentMethod of paymentMethods" [nzValue]="paymentMethod"
@@ -109,21 +109,21 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="providerSharePercent" nzRequired>Provider Share Percent</nz-form-label>
+            <nz-form-label nzFor="providerSharePercent" nzRequired>Процент доли провайдера</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="providerSharePercent" id="providerSharePercent" nzRequired
                 [nzFormatter]="formatterPercent" [nzParser]="parserPercent" [nzMax]="100" [nzMin]="0"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="providerShareFlat" nzRequired>Provider Share Flat</nz-form-label>
+            <nz-form-label nzFor="providerShareFlat" nzRequired>Фиксированная доля провайдера</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="providerShareFlat" id="providerShareFlat" nzRequired
                 [nzFormatter]="formatterPrice"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="cancellationTotalFee" nzRequired>Cancellation Total Fee</nz-form-label>
+            <nz-form-label nzFor="cancellationTotalFee" nzRequired>Общая плата за отмену</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="cancellationTotalFee" id="cancellationTotalFee" nzRequired
                 [nzFormatter]="formatterPrice">
@@ -131,7 +131,7 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="cancellationDriverShare" nzRequired>Cancellation Driver Share</nz-form-label>
+            <nz-form-label nzFor="cancellationDriverShare" nzRequired>Доля водителя при отмене</nz-form-label>
             <nz-form-control>
               <nz-input-number formControlName="cancellationDriverShare" id="cancellationDriverShare" nzRequired
                 [nzFormatter]="formatterPrice">
@@ -139,9 +139,7 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item class="lg:col-span-4">
-            <nz-form-label nzRequired>
-              {{ 'service.Regions' | translate }}
-            </nz-form-label>
+            <nz-form-label nzRequired>Регионы</nz-form-label>
             <nz-form-control>
               <nz-tag *ngFor="let region of data.regions.nodes" nzMode="checkable"
                 [nzChecked]="form.value.regions.indexOf(region.id) > -1" [nzBordered]="false"
@@ -151,14 +149,14 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzRequired>Image</nz-form-label>
+            <nz-form-label nzRequired>Изображение</nz-form-label>
             <nz-form-control>
               <nz-upload [nzAction]="root + 'upload'" [nzHeaders]="{Authorization: 'Bearer ' + jwt}"
                 (nzChange)="handleUploadChange($event)" [nzBeforeUpload]="beforeUpload" nzListType="picture-card"
                 [nzShowUploadList]="false">
                 <ng-container *ngIf="!avatarUrl">
                   <i class="upload-icon" nz-icon [nzType]="loadingUpload ? 'loading' : 'plus'"></i>
-                  <div class="ant-upload-text">{{ 'profile.upload' | translate }}</div>
+                  <div class="ant-upload-text">Загрузить</div>
                 </ng-container>
                 <img *ngIf="avatarUrl" [src]="avatarUrl" style="width: 100%" />
               </nz-upload>
@@ -167,13 +165,13 @@
         </div>
       </form>
 
-      <nz-card class="lg:col-span-4" nzTitle="Time of the day Multiplier">
+      <nz-card class="lg:col-span-4" nzTitle="Множитель времени суток">
         <ul nz-list [nzDataSource]="form.value.timeMultipliers" nzBordered>
           <li nz-list-item *ngFor="let item of form.value.timeMultipliers">
             <nz-tag>{{item.multiply}}x</nz-tag>
             <ul nz-list-item-actions>
               <nz-list-item-action>
-                <a (click)="removeTimeRule(item)">{{ 'profile.delete' | translate }}</a>
+                <a (click)="removeTimeRule(item)">Удалить</a>
               </nz-list-item-action>
             </ul>
             {{ item.startTime }} - {{ item.endTime }}
@@ -181,39 +179,36 @@
         </ul>
         <div class="md:grid md:grid-cols-3 md:gap-2 mt-2">
           <nz-form-item>
-            <nz-form-label>{{ 'service.timeMultiplierTable.startTime' | translate }}</nz-form-label>
+            <nz-form-label>Время начала</nz-form-label>
             <nz-form-control>
-              <nz-time-picker #timeStartPicker nzPlaceHolder="{{ 'service.timeMultiplierTable.startTime' | translate }}"
+              <nz-time-picker #timeStartPicker nzPlaceHolder="Время начала"
                 nzFormat="HH:mm" [(ngModel)]="timeStartValue"></nz-time-picker>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label>{{ 'service.timeMultiplierTable.endTime' | translate }}</nz-form-label>
+            <nz-form-label>Время окончания</nz-form-label>
             <nz-form-control>
-              <nz-time-picker #timeEndPicker nzPlaceHolder="{{ 'service.timeMultiplierTable.endTime' | translate }}"
+              <nz-time-picker #timeEndPicker nzPlaceHolder="Время окончания"
                 nzFormat="HH:mm" [(ngModel)]="timeEndValue"></nz-time-picker>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label>{{ 'service.timeMultiplierTable.multiplyBy' | translate }}</nz-form-label>
+            <nz-form-label>Множитель</nz-form-label>
             <nz-form-control>
               <nz-input-number #timeMultiplyInput
-                nzPlaceHolder="{{ 'service.timeMultiplierTable.multiplyBy' | translate }}"
-                [(ngModel)]="timeMultiplyValue"></nz-input-number>
+                nzPlaceHolder="Множитель" [(ngModel)]="timeMultiplyValue"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
         </div>
-        <button nz-button nzType="primary" (click)="insertTimeRule()" class="float-right">{{
-          'service.insertRule' |
-          translate }}</button>
+        <button nz-button nzType="primary" (click)="insertTimeRule()" class="float-right">Добавить правило</button>
       </nz-card>
-      <nz-card class="lg:col-span-4 mt-2" nzTitle="Distance Multiplier">
+      <nz-card class="lg:col-span-4 mt-2" nzTitle="Множитель расстояния">
         <ul nz-list [nzDataSource]="form.value.distanceMultipliers" nzBordered>
           <li nz-list-item *ngFor="let item of form.value.distanceMultipliers">
             <nz-tag>{{item.multiply}}x</nz-tag>
             <ul nz-list-item-actions>
               <nz-list-item-action>
-                <a (click)="removeDistanceRule(item)">{{ 'profile.delete' | translate }}</a>
+                <a (click)="removeDistanceRule(item)">Удалить</a>
               </nz-list-item-action>
             </ul>
             {{ item.distanceFrom }} - {{ item.distanceTo }}
@@ -221,38 +216,36 @@
         </ul>
         <div class="md:grid md:grid-cols-3 md:gap-2 mt-2">
           <nz-form-item>
-            <nz-form-label>{{ 'service.distanceMultiplierTable.distanceFrom' | translate }}</nz-form-label>
+            <nz-form-label>Расстояние от</nz-form-label>
             <nz-form-control>
               <nz-input-number #distanceFromInput
-                nzPlaceHolder="{{ 'service.distanceMultiplierTable.distanceFrom' | translate }}"></nz-input-number>
+                nzPlaceHolder="Расстояние от"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label>{{ 'service.distanceMultiplierTable.distanceTo' | translate }}</nz-form-label>
+            <nz-form-label>Расстояние до</nz-form-label>
             <nz-form-control>
               <nz-input-number #distanceToInput
-                nzPlaceHolder="{{ 'service.distanceMultiplierTable.distanceTo' | translate }}"></nz-input-number>
+                nzPlaceHolder="Расстояние до"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label>{{ 'service.timeMultiplierTable.multiplyBy' | translate }}</nz-form-label>
+            <nz-form-label>Множитель</nz-form-label>
             <nz-form-control>
               <nz-input-number #distanceMultiplyInput
-                nzPlaceHolder="{{ 'service.timeMultiplierTable.multiplyBy' | translate }}"></nz-input-number>
+                nzPlaceHolder="Множитель"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
         </div>
-        <button nz-button nzType="primary" (click)="insertDistanceRule()" class="float-right">{{
-          'service.insertRule' |
-          translate }}</button>
+        <button nz-button nzType="primary" (click)="insertDistanceRule()" class="float-right">Добавить правило</button>
       </nz-card>
-      <nz-card class="lg:col-span-4 mt-2" nzTitle="Weekday Multipliers">
+      <nz-card class="lg:col-span-4 mt-2" nzTitle="Множители дней недели">
         <ul nz-list [nzDataSource]="form.value.weekdayMultipliers" nzBordered>
           <li nz-list-item *ngFor="let item of form.value.weekdayMultipliers">
             <nz-tag>{{item.multiply}}x</nz-tag>
             <ul nz-list-item-actions>
               <nz-list-item-action>
-                <a (click)="removeWeekdayRule(item)">{{ 'profile.delete' | translate }}</a>
+                <a (click)="removeWeekdayRule(item)">Удалить</a>
               </nz-list-item-action>
             </ul>
             {{ item.weekday }}
@@ -260,33 +253,31 @@
         </ul>
         <div class="md:grid md:grid-cols-3 md:gap-2 mt-2">
           <nz-form-item>
-            <nz-form-label>{{ 'service.weekdayMultiplierTable.weekday' | translate }}</nz-form-label>
+            <nz-form-label>День недели</nz-form-label>
             <nz-form-control>
-              <nz-select #weekdaySelectInput nzPlaceHolder="{{ 'service.weekdayMultiplierTable.weekday' | translate }}">
+              <nz-select #weekdaySelectInput nzPlaceHolder="День недели">
                 <nz-option *ngFor="let weekday of Weekdays" [nzLabel]="weekday.label"
                   [nzValue]="weekday.value"></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label>{{ 'service.timeMultiplierTable.multiplyBy' | translate }}</nz-form-label>
+            <nz-form-label>Множитель</nz-form-label>
             <nz-form-control>
               <nz-input-number #weekdayMultiplyInput
-                nzPlaceHolder="{{ 'service.timeMultiplierTable.multiplyBy' | translate }}"></nz-input-number>
+                nzPlaceHolder="Множитель"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
         </div>
-        <button nz-button nzType="primary" (click)="insertWeekdayRule()" class="float-right">{{
-          'service.insertRule' |
-          translate }}</button>
+        <button nz-button nzType="primary" (click)="insertWeekdayRule()" class="float-right">Добавить правило</button>
       </nz-card>
-      <nz-card class="lg:col-span-4 mt-2" nzTitle="Date range Multiplier">
+      <nz-card class="lg:col-span-4 mt-2" nzTitle="Множитель диапазона дат">
         <ul nz-list [nzDataSource]="form.value.dateRangeMultipliers" nzBordered>
           <li nz-list-item *ngFor="let item of form.value.dateRangeMultipliers">
             <nz-tag>{{item.multiply}}x</nz-tag>
             <ul nz-list-item-actions>
               <nz-list-item-action>
-                <a (click)="removeDateRangeRule(item)">{{ 'profile.delete' | translate }}</a>
+                <a (click)="removeDateRangeRule(item)">Удалить</a>
               </nz-list-item-action>
             </ul>
             {{ item.startDate | date:'yyyy-MM-dd' }} - {{ item.endDate | date:'yyyy-MM-dd' }}
@@ -294,29 +285,27 @@
         </ul>
         <div class="md:grid md:grid-cols-3 md:gap-2 mt-2">
           <nz-form-item>
-            <nz-form-label>{{ 'service.dateRangeMultiplierTable.dateRange' | translate }}</nz-form-label>
+            <nz-form-label>Диапазон дат</nz-form-label>
             <nz-form-control>
               <nz-range-picker #dateRangePicker></nz-range-picker>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label>{{ 'service.timeMultiplierTable.multiplyBy' | translate }}</nz-form-label>
+            <nz-form-label>Множитель</nz-form-label>
             <nz-form-control>
               <nz-input-number #dateRangeMultiplyInput
-                nzPlaceHolder="{{ 'service.timeMultiplierTable.multiplyBy' | translate }}"></nz-input-number>
+                nzPlaceHolder="Множитель"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
         </div>
-        <button nz-button nzType="primary" (click)="insertDateRangeRule()" class="float-right">{{
-          'service.insertRule' |
-          translate }}</button>
+        <button nz-button nzType="primary" (click)="insertDateRangeRule()" class="float-right">Добавить правило</button>
       </nz-card>
-      <nz-card class="lg:col-span-4 mt-2" nzTitle="Ride preferences">
+      <nz-card class="lg:col-span-4 mt-2" nzTitle="Предпочтения поездки">
         <nz-table #preferencesTable nzBordered nzShowPagination="false" [nzData]="data.serviceOptions">
           <thead>
             <tr>
               <th class="w-8"></th>
-              <th>Name</th>
+              <th>Название</th>
             </tr>
           </thead>
           <tbody>
@@ -341,17 +330,15 @@
           </tbody>
         </nz-table>
       </nz-card>
-      <button nz-button nzType="primary" (click)="onSubmit()" [disabled]="form.invalid" class="mt-2 right-0">{{
-        'profile.submit' | translate
-        }}</button>
+      <button nz-button nzType="primary" (click)="onSubmit()" [disabled]="form.invalid" class="mt-2 right-0">Отправить</button>
     </div>
   </nz-page-header-content>
 </nz-page-header>
 
-<nz-card class="mt-2" [nzTitle]="'profile.dangerArea' | translate" *ngIf="this.form.value?.id !== null">
+<nz-card class="mt-2" nzTitle="Зона опасности" *ngIf="this.form.value?.id !== null">
   <div>
-    <p class="text-lg leading-6 font-medium text-gray-900">{{ 'profile.delete' | translate }}</p>
-    <p class="mt-2 max-w-xl text-sm text-gray-500">{{ 'profile.deleteNotice' | translate }}</p>
-    <button nz-button nzDanger class="mt-2" (click)="deleteService()">{{ 'profile.delete' | translate }}</button>
+    <p class="text-lg leading-6 font-medium text-gray-900">Удалить</p>
+    <p class="mt-2 max-w-xl text-sm text-gray-500">Обратите внимание на удаление</p>
+    <button nz-button nzDanger class="mt-2" (click)="deleteService()">Удалить</button>
   </div>
 </nz-card>

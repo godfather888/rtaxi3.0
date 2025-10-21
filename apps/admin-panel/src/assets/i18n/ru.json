@@ -80,16 +80,16 @@
   },
   "branding": {
     "menu": {
-      "header": "аттракционы"
+      "header": "BasTaxi"
     },
     "footer": {
-      "address": "http://ridy.io/",
+      "address": "",
       "prefix": "© 2018-2023",
-      "title": "Ridy.io",
+      "title": "BasTaxi",
       "suffix": "Все права защищены."
     },
     "page": {
-      "title": "Риди Панель администратора"
+      "title": "BasTaxi Панель администратора"
     }
   },
   "menu": {

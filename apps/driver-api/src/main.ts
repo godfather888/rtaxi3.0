@@ -9,7 +9,8 @@ import './instrument';
 import { getConfig } from 'license-verify';
 
 async function bootstrap() {
-  const app = await NestFactory.create(DriverAPIModule.register());
+  const driverModule = await DriverAPIModule.register(); // <--- FIX HERE
+  const app = await NestFactory.create(driverModule);     // <--- FIX HERE
 
   const port = parseInt(process.env.DRIVER_API_PORT || '3000', 10);
   app.enableShutdownHooks();

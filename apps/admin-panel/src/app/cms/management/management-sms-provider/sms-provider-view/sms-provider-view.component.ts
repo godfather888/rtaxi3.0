@@ -1,27 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
-} from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ApolloQueryResult } from '@apollo/client/core';
+} from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { ApolloQueryResult } from "@apollo/client/core";
 import {
   CreateSmsProviderGQL,
   MarkSmsProviderAsDefaultGQL,
   SmsProviderType,
   UpdateSmsProviderGQL,
   ViewSmsProviderQuery,
-} from '../../../../../generated/graphql';
-import { RouterHelperService } from '../../../../@services/router-helper.service';
-import { environment } from '../../../../../environments/environment';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { firstValueFrom, Subscription } from 'rxjs';
+} from "../../../../../generated/graphql";
+import { RouterHelperService } from "../../../../@services/router-helper.service";
+import { environment } from "../../../../../environments/environment";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { firstValueFrom, Subscription } from "rxjs";
 
 @Component({
   standalone: false,
-  selector: 'app-sms-provider-view',
-  templateUrl: './sms-provider-view.component.html',
+  selector: "app-sms-provider-view",
+  templateUrl: "./sms-provider-view.component.html",
 })
 export class SMSProviderViewComponent implements OnInit, OnDestroy {
   constructor(
@@ -31,7 +31,7 @@ export class SMSProviderViewComponent implements OnInit, OnDestroy {
     private createGQL: CreateSmsProviderGQL,
     private markAsDefaultGQL: MarkSmsProviderAsDefaultGQL,
     private routerHelper: RouterHelperService,
-    private modalService: NzModalService,
+    private modalService: NzModalService
   ) {
     this.form = this.fb.group({
       id: [null],
@@ -54,8 +54,9 @@ export class SMSProviderViewComponent implements OnInit, OnDestroy {
     SmsProviderType.Vonage,
     SmsProviderType.Pahappa,
     SmsProviderType.VentisSms,
+    SmsProviderType.SMSC,
   ];
-  jwt = localStorage.getItem('ridy_admin_token');
+  jwt = localStorage.getItem("ridy_admin_token");
 
   ngOnInit(): void {
     this.subscription = this.route.data.subscribe((data) => {
@@ -70,16 +71,16 @@ export class SMSProviderViewComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    console.log('Form submitted', this.form.value);
+    console.log("Form submitted", this.form.value);
     const { id, ...input } = this.form.value;
     if (id == null) {
       this.modalService.create({
-        nzTitle: 'Default SMS Provider',
-        nzContent: 'Do you want to set this as the default SMS provider?',
+        nzTitle: "Default SMS Provider",
+        nzContent: "Do you want to set this as the default SMS provider?",
         nzOnOk: async () => {
-          console.log('create', input);
+          console.log("create", input);
           await firstValueFrom(
-            this.createGQL.mutate({ input: { ...input, isDefault: true } }),
+            this.createGQL.mutate({ input: { ...input, isDefault: true } })
           );
           this.routerHelper.goToParent(this.route);
         },
@@ -95,67 +96,74 @@ export class SMSProviderViewComponent implements OnInit, OnDestroy {
   }
 
   getProviderAPIRequirements(
-    type?: SmsProviderType,
+    type?: SmsProviderType
   ): SMSProviderAPIKeyObj | null {
     if (type == null) return null;
     switch (type) {
       case SmsProviderType.Twilio:
         return {
-          accountId: 'Account SID',
-          authToken: 'Auth Token',
-          fromNumber: 'From Number',
-          verificationTemplate: 'Verification Template',
+          accountId: "Account SID",
+          authToken: "Auth Token",
+          fromNumber: "From Number",
+          verificationTemplate: "Verification Template",
         };
 
       case SmsProviderType.BroadNet:
         return {
-          accountId: 'Username',
-          authToken: 'Password',
-          fromNumber: 'From Number',
-          smsType: 'SMS Type',
-          verificationTemplate: 'Verification Template',
+          accountId: "Username",
+          authToken: "Password",
+          fromNumber: "From Number",
+          smsType: "SMS Type",
+          verificationTemplate: "Verification Template",
         };
 
       case SmsProviderType.Plivo:
         return {
-          accountId: 'Auth ID',
-          authToken: 'Auth Token',
-          fromNumber: 'Sender ID',
-          verificationTemplate: 'Verification Template',
+          accountId: "Auth ID",
+          authToken: "Auth Token",
+          fromNumber: "Sender ID",
+          verificationTemplate: "Verification Template",
         };
 
       case SmsProviderType.Vonage:
         return {
-          accountId: 'API Key',
-          authToken: 'API Secret',
-          fromNumber: 'From Number',
-          verificationTemplate: 'Verification Template',
+          accountId: "API Key",
+          authToken: "API Secret",
+          fromNumber: "From Number",
+          verificationTemplate: "Verification Template",
         };
 
       case SmsProviderType.Pahappa:
         return {
-          accountId: 'Username',
-          authToken: 'Password',
-          fromNumber: 'Sender',
-          verificationTemplate: 'Verification Template',
+          accountId: "Username",
+          authToken: "Password",
+          fromNumber: "Sender",
+          verificationTemplate: "Verification Template",
         };
 
       case SmsProviderType.VentisSms:
         return {
-          accountId: 'Username',
-          smsType: 'Password',
-          authToken: 'Client Secret',
-          fromNumber: 'Sender',
-          verificationTemplate: 'Verification Template',
+          accountId: "Username",
+          smsType: "Password",
+          authToken: "Client Secret",
+          fromNumber: "Sender",
+          verificationTemplate: "Verification Template",
         };
 
+      case SmsProviderType.SMSC:
+        return {
+          accountId: "Login",
+          authToken: "Password",
+          fromNumber: "Sender",
+          verificationTemplate: "Verification Template",
+        };
       default:
         return null;
     }
   }
 
   async markAsDefault() {
-    const id = this.form.get('id')?.value;
+    const id = this.form.get("id")?.value;
     if (id == null) return;
     await firstValueFrom(this.markAsDefaultGQL.mutate({ id }));
     this.routerHelper.goToParent(this.route);

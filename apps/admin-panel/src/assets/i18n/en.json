@@ -79,16 +79,16 @@
 	},
 	"branding": {
 		"menu": {
-			"header": "Ridy"
+			"header": "BasTaxi"
 		},
 		"footer": {
-			"address": "http://ridy.io/",
+			"address": "",
 			"prefix": "© 2018-2023",
-			"title": "Ridy.io",
+			"title": "BasTaxi",
 			"suffix": "All Rights reserved."
 		},
 		"page": {
-			"title": "Ridy Admin Panel"
+			"title": "BasTaxi Admin Panel"
 		}
 	},
 	"menu": {

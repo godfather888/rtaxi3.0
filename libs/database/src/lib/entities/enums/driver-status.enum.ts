@@ -9,6 +9,7 @@ export enum DriverStatus {
     PendingApproval = 'pending approval',
     SoftReject = 'soft reject',
     HardReject = 'hard reject',
+    Parked = 'parked',
 }
 
 registerEnumType(DriverStatus, { name: 'DriverStatus'});

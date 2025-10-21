@@ -11,6 +11,7 @@ export enum SMSProviderType {
   Infobip = 'Infobip',
   MessageBird = 'MessageBird',
   VentisSMS = 'VentisSMS',
+  SMSC = 'SMSC'
 }
 
 registerEnumType(SMSProviderType, {

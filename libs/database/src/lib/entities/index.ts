@@ -53,7 +53,8 @@ export * from './enums/service-distance-fee-mode.enum';
 export * from './enums/service-option-icon.enum';
 export * from './enums/service-option-type.enum';
 export * from './enums/service-payment-method.enum';
-export * from './enums/service-type.enum';
+//export * from './enums/service-type.enum';
+
 export * from './enums/shop-customer-support-request-type.enum';
 export * from './enums/shop-permission.enum';
 export * from './enums/shop-support-request-type.enum';

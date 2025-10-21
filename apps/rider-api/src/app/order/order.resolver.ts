@@ -1,19 +1,20 @@
-import { Inject, Logger, UseGuards } from '@nestjs/common';
-import { Args, CONTEXT, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CommonCouponService } from '@ridy/database';
-import { Point } from '@ridy/database';
-import { TaxiOrderEntity } from '@ridy/database';
-import { SharedOrderService } from '@ridy/database';
-import { DriverRedisService } from '@ridy/database';
-import { UserContextOptional } from '../auth/authenticated-user';
-import { GqlAuthGuard } from '../auth/access-token.guard';
-import { CalculateFareDTO } from './dto/calculate-fare.dto';
-import { CalculateFareInput } from './dto/calculate-fare.input';
-import { CreateOrderInput } from './dto/create-order.input';
-import { OrderDTO } from './dto/order.dto';
-import { SubmitFeedbackInput } from './dto/submit-feedback.input';
-import { RiderOrderService } from './rider-order.service';
-import { CurrentOrder } from './dto/current-order.dto';
+import { Inject, Logger, UseGuards } from "@nestjs/common";
+import { Args, CONTEXT, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { CommonCouponService } from "@ridy/database";
+import { Point } from "@ridy/database";
+import { TaxiOrderEntity } from "@ridy/database";
+import { SharedOrderService } from "@ridy/database";
+import { DriverRedisService } from "@ridy/database";
+import { UserContextOptional } from "../auth/authenticated-user";
+import { GqlAuthGuard } from "../auth/access-token.guard";
+import { CalculateFareDTO } from "./dto/calculate-fare.dto";
+import { CalculateFareInput } from "./dto/calculate-fare.input";
+import { CreateOrderInput } from "./dto/create-order.input";
+import { OrderDTO } from "./dto/order.dto";
+import { SubmitFeedbackInput } from "./dto/submit-feedback.input";
+import { RiderOrderService } from "./rider-order.service";
+import { CurrentOrder } from "./dto/current-order.dto";
+import { StartRideByQrInput } from "./dto/start-ride-by-qr.dto";
 
 @Resolver(() => OrderDTO)
 export class OrderResolver {
@@ -22,7 +23,7 @@ export class OrderResolver {
     private orderService: SharedOrderService,
     private riderOrderService: RiderOrderService,
     private driverRedisService: DriverRedisService,
-    private commonCouponService: CommonCouponService,
+    private commonCouponService: CommonCouponService
   ) {}
 
   @Query(() => [CurrentOrder])
@@ -37,11 +38,38 @@ export class OrderResolver {
   @UseGuards(GqlAuthGuard)
   async currentOrder(): Promise<OrderDTO> {
     return this.riderOrderService.getCurrentOrder(this.context.req.user.id, [
-      'driver',
-      'driver.carColor',
-      'driver.car',
-      'conversation',
+      "driver",
+      "driver.carColor",
+      "driver.car",
+      "conversation",
     ]);
+  }
+
+  @Mutation(() => OrderDTO)
+  @UseGuards(GqlAuthGuard)
+  async startRideByQr(
+    @Args("input", { type: () => StartRideByQrInput }) input: StartRideByQrInput
+  ): Promise<OrderDTO> {
+    const driverId = await this.driverRedisService.getDriverIdByToken(
+      input.token
+    );
+
+    console.log("driverID :", driverId);
+    if (!driverId) {
+      throw new Error("Invalid or expired QR token");
+    }
+
+    return this.orderService.createOrderByQr({
+      riderId: this.context.req.user.id,
+      driverId,
+      serviceId: input.serviceId,
+      intervalMinutes: 0,
+      points: input.points,
+      addresses: input.addresses,
+      waitMinutes: input.waitTime ?? 0,
+      twoWay: input.twoWay,
+      optionIds: input.optionIds,
+    });
   }
 
   // @Mutation(() => CalculateFareDTO)
@@ -73,8 +101,8 @@ export class OrderResolver {
   @Query(() => CalculateFareDTO)
   @UseGuards(GqlAuthGuard)
   async getFares(
-    @Args('input', { type: () => CalculateFareInput })
-    input: CalculateFareInput,
+    @Args("input", { type: () => CalculateFareInput })
+    input: CalculateFareInput
   ): Promise<CalculateFareDTO> {
     let coupon;
     if (
@@ -98,7 +126,7 @@ export class OrderResolver {
   @Mutation(() => OrderDTO)
   @UseGuards(GqlAuthGuard)
   async createOrder(
-    @Args('input', { type: () => CreateOrderInput }) input: CreateOrderInput,
+    @Args("input", { type: () => CreateOrderInput }) input: CreateOrderInput
   ): Promise<OrderDTO> {
     return this.orderService.createOrder({
       ...input,
@@ -112,11 +140,11 @@ export class OrderResolver {
   @Mutation(() => OrderDTO)
   @UseGuards(GqlAuthGuard)
   async cancelOrder(
-    @Args('orderId', { type: () => ID, nullable: true }) orderId?: number,
-    @Args('cancelReasonId', { type: () => ID, nullable: true })
+    @Args("orderId", { type: () => ID, nullable: true }) orderId?: number,
+    @Args("cancelReasonId", { type: () => ID, nullable: true })
     cancelReasonId?: number,
-    @Args('cancelReasonNote', { type: () => String, nullable: true })
-    cancelReasonNote?: string,
+    @Args("cancelReasonNote", { type: () => String, nullable: true })
+    cancelReasonNote?: string
   ): Promise<OrderDTO> {
     if (orderId != null) {
       return this.riderOrderService.cancelOrder({
@@ -136,11 +164,11 @@ export class OrderResolver {
   @Mutation(() => OrderDTO)
   @UseGuards(GqlAuthGuard)
   async cancelBooking(
-    @Args('id', { type: () => ID }) id: number,
-    @Args('cancelReasonId', { type: () => ID!, nullable: true })
+    @Args("id", { type: () => ID }) id: number,
+    @Args("cancelReasonId", { type: () => ID!, nullable: true })
     cancelReasonId?: number,
-    @Args('cancelReasonNote', { type: () => String, nullable: true })
-    cancelReasonNote?: string,
+    @Args("cancelReasonNote", { type: () => String, nullable: true })
+    cancelReasonNote?: string
   ): Promise<OrderDTO> {
     return this.riderOrderService.cancelOrder({
       orderId: id,
@@ -155,12 +183,12 @@ export class OrderResolver {
   @UseGuards(GqlAuthGuard)
   async getCurrentOrderDriverLocation(): Promise<Point> {
     const order = await this.riderOrderService.getCurrentOrder(
-      this.context.req.user.id,
+      this.context.req.user.id
     );
     if (order?.driverId != null) {
       Logger.log(`driver id: ${order.driverId}`);
       const coordinate = await this.driverRedisService.getDriverCoordinate(
-        order.driverId,
+        order.driverId
       );
       Logger.log(JSON.stringify(coordinate));
       return coordinate;
@@ -171,22 +199,36 @@ export class OrderResolver {
 
   @Query(() => [Point], {})
   async getDriversLocation(
-    @Args('center', { type: () => Point, nullable: true }) center?: Point,
+    @Args("center", { type: () => Point, nullable: true }) center?: Point
   ): Promise<Point[]> {
     if (center == null) return [];
     const closeDrivers = await this.driverRedisService.getClose(center, 1000);
     return closeDrivers.map((item) => item.location);
   }
 
+  @Query(() => [Point], { description: 'Get locations of parked drivers near a point' })
+  async parkedDriversLocation(
+    @Args("center", { type: () => Point, nullable: false }) center: Point,
+    @Args({ name: 'radius', type: () => Number, nullable: true }) radius?: number
+  ): Promise<Point[]> {
+    const closeDrivers = await this.driverRedisService.getClose(center, radius ?? 1000);
+    if (closeDrivers.length === 0) return [];
+    // Получаем статусы водителей из БД
+    const driverIds = closeDrivers.map(d => d.driverId);
+    const drivers = await this.orderService["driverRepository"].findByIds(driverIds);
+    const parkedIds = drivers.filter(d => d.status === 'parked').map(d => d.id);
+    return closeDrivers.filter(d => parkedIds.includes(d.driverId)).map(d => d.location);
+  }
+
   @Mutation(() => OrderDTO)
   @UseGuards(GqlAuthGuard)
   async submitReview(
-    @Args('review', { type: () => SubmitFeedbackInput })
-    review: SubmitFeedbackInput,
+    @Args("review", { type: () => SubmitFeedbackInput })
+    review: SubmitFeedbackInput
   ): Promise<TaxiOrderEntity> {
     return this.riderOrderService.submitReview(
       this.context.req.user.id,
-      review,
+      review
     );
   }
 

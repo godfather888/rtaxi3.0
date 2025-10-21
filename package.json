@@ -4,9 +4,13 @@
   "license": "MIT",
   "scripts": {
     "ng": "nx",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "migration:run": "npm run typeorm -- migration:run -d libs/database/typeorm-config/data-source.ts",
+    "migration:generate": "npm run typeorm -- migration:generate -d libs/database/typeorm-config/data-source.ts -n",
+    "migration:revert": "npm run typeorm -- migration:revert -d libs/database/typeorm-config/data-source.ts",
     "postinstall": "node ./decorate-angular-cli.js",
     "nx": "nx",
-    "start": "ts-node src/index.ts",
+    "start": "npm run migration:run && ts-node src/index.ts",
     "build": "ng build",
     "test": "ng test",
     "lint": "nx workspace-lint && ng lint",
@@ -28,7 +32,6 @@
     "help": "nx help",
     "lint:fix": "eslint './**/*.{ts,tsx}' --fix",
     "i18n:extract": "ngx-translate-extract --input ./apps/admin-panel/src --output ./apps/admin-panel/src/assets/i18n/{en,es,bn,de,hi,ko,id,ja,pt,ru,ur,zh,fr,ar,hy}.json --clean --format namespaced-json",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "semantic-release": "semantic-release"
   },
   "private": true,
@@ -115,7 +118,7 @@
     "sberbank-acquiring": "^1.2.2",
     "stripe": "^12.14.0",
     "tslib": "^2.6.1",
-    "twilio": "^5.6.1",
+    "twilio": "^5.7.1",
     "typeorm": "0.3.24",
     "zone.js": "0.15.1"
   },
