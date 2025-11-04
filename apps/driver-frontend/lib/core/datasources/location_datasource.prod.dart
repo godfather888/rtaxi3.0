@@ -26,7 +26,7 @@ class LocationDatasourceImpl implements LocationDatasource {
   @override
   Stream<LocationPermission> get permissionStatus => _permissionStatusStream.stream;
 
-  StreamSubscription<LocationData>? _locationSubscription;
+  StreamSubscription? _locationSubscription;
 
   @override
   void getCurrentLocation() async {
@@ -59,6 +59,36 @@ class LocationDatasourceImpl implements LocationDatasource {
 
   @override
   Future<void> startGettingLocationUpdates() async {
+    // На Web используем простое периодическое получение координат
+    if (kIsWeb) {
+      // Получаем текущую локацию сразу
+      getCurrentLocation();
+      
+      // Периодически обновляем каждые 5 секунд
+      _locationSubscription = Stream.periodic(const Duration(seconds: 5)).asyncMap((_) async {
+        try {
+          final position = await geolocator.Geolocator.getCurrentPosition(
+            locationSettings: geolocator.LocationSettings(accuracy: geolocator.LocationAccuracy.high),
+          );
+          return Fragment$Point(
+            lat: position.latitude,
+            lng: position.longitude,
+            heading: position.heading.toInt(),
+          );
+        } catch (e) {
+          if (kDebugMode) {
+            print('Error getting location on Web: $e');
+          }
+          return null;
+        }
+      }).listen((location) {
+        if (location != null) {
+          _locationStream.add(ApiResponse.loaded(location));
+        }
+      });
+      return;
+    }
+    
     if (Platform.isMacOS) {
       // MacOS does not support background location updates
       return;
@@ -87,7 +117,7 @@ class LocationDatasourceImpl implements LocationDatasource {
 
   @override
   void stopGettingLocationUpdates() {
-    if (!Platform.isMacOS) {
+    if (!kIsWeb && !Platform.isMacOS) {
       Location.instance.enableBackgroundMode(enable: false);
     }
     _locationSubscription?.cancel();
@@ -100,6 +130,12 @@ class LocationDatasourceImpl implements LocationDatasource {
 
   @override
   Future<LocationPermission> getLocationPermissionStatus() async {
+    // На Web всегда разрешаем (браузер сам запросит разрешение)
+    if (kIsWeb) {
+      _permissionStatusStream.add(LocationPermission.always);
+      return LocationPermission.always;
+    }
+    
     // Check foreground first
     var locationAlwaysAndWhenInUse = await Permission.location.status;
     if (!locationAlwaysAndWhenInUse.isGranted || Platform.isIOS) {
@@ -116,6 +152,12 @@ class LocationDatasourceImpl implements LocationDatasource {
 
   @override
   Future<LocationPermission> requestLocationPermission() async {
+    // На Web всегда разрешаем (браузер сам запросит разрешение)
+    if (kIsWeb) {
+      _permissionStatusStream.add(LocationPermission.always);
+      return LocationPermission.always;
+    }
+    
     // Request foreground permission
     var foreground = await Permission.location.request();
     if (!foreground.isGranted || Platform.isIOS) {

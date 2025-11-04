@@ -37,8 +37,8 @@ mutation SetName($firstName: String!, $lastName: String!) {
 }
 
 mutation SetPassword($password: String!) {
-  updateOneDriver(input: { id: "1", update: { password: $password } }) {
-    ...Profile
+  setPassword(password: $password) {
+    ...VerifyOtpOrPassword
   }
 }
 

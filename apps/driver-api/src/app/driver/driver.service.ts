@@ -27,28 +27,47 @@ export class DriverService {
     mobileNumber: string;
     countryIso?: string;
   }): Promise<DriverEntity> {
-    const findResult = await this.findWithDeleted({
-      mobileNumber: input.mobileNumber,
-    });
-    if (findResult?.deletedAt != null) {
-      await this.repo.restore(findResult.id);
-    }
-    if (findResult == null) {
-      const driver = this.repo.create(input);
-      return this.repo.save(driver);
-    }
-    const user = await this.repo.findOne({
+    // Используем транзакцию для предотвращения race condition
+    return await this.repo.manager.transaction(async (manager) => {
+      let user = await manager.findOne(DriverEntity, {
       where: { mobileNumber: input.mobileNumber },
       withDeleted: true,
       relations: {
         documents: true,
         media: true,
       },
+        lock: { mode: 'pessimistic_write' },
     });
+      
     if (!user) {
-      throw new Error(`Driver with mobile number ${input.mobileNumber} not found`);
+        user = manager.create(DriverEntity, input);
+        await manager.save(user);
+        // Перезагружаем с relations после создания
+        user = await manager.findOne(DriverEntity, {
+          where: { id: user.id },
+          relations: {
+            documents: true,
+            media: true,
+          },
+        }) as DriverEntity;
+      }
+      
+      if (user.deletedAt != null) {
+        await manager.restore(DriverEntity, {
+          id: user.id,
+        });
+        // Перезагружаем пользователя после восстановления
+        user = await manager.findOne(DriverEntity, {
+          where: { id: user.id },
+          relations: {
+            documents: true,
+            media: true,
+          },
+        }) as DriverEntity;
     }
+      
     return user;
+    });
   }
 
   async findByIds(ids: number[]): Promise<DriverEntity[]> {

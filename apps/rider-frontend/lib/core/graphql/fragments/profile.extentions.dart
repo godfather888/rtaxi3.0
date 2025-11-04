@@ -1,4 +1,5 @@
 import 'package:better_localization/country_code/country_code.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/profile.fragment.graphql.dart';
 import 'package:flutter_common/gen/assets.gen.dart';
 
@@ -18,7 +19,7 @@ extension PaymentGatewayProdX on Fragment$Profile {
 
   String? get avatar {
     if (media != null) {
-      return media!.address;
+      return media!.fullUrl;
     } else if (presetAvatarNumber != null) {
       return presetProfileImageAsset!.path;
     } else {

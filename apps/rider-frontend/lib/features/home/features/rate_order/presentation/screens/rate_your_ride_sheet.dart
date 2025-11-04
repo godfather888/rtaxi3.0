@@ -12,6 +12,7 @@ import 'package:flutter_common/core/presentation/buttons/app_close_button.dart';
 import 'package:flutter_common/core/presentation/buttons/app_primary_button.dart';
 import 'package:rider_flutter/core/graphql/fragments/active_order.fragment.graphql.dart';
 import 'package:rider_flutter/core/graphql/fragments/favorite_driver.extentions.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/presentation/review_parameter_widget.dart';
 import 'package:flutter_common/gen/assets.gen.dart';
 import 'package:rider_flutter/gen/assets.gen.dart' as rider_assets;
@@ -78,7 +79,7 @@ class _RateYourRideSheetState extends State<RateYourRideSheet> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AppAvatar(
-                  url: widget.order.driver?.media?.address,
+                  url: widget.order.driver?.media?.fullUrl,
                   defaultAvatarPath: Env.defaultAvatar,
                 ),
                 if (rating == null) ...[

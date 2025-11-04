@@ -8,6 +8,7 @@ import 'package:rider_flutter/core/blocs/route.dart';
 import 'package:rider_flutter/core/extensions/extensions.dart';
 import 'package:flutter_common/core/presentation/avatars/app_avatar.dart';
 import 'package:rider_flutter/config/router/nav_item.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/profile.extentions.dart';
 import 'package:flutter_common/gen/assets.gen.dart';
 import 'package:flutter_common/core/presentation/menu/app_drawer_item.dart';
@@ -68,7 +69,7 @@ class AppDrawer extends StatelessWidget {
                             Transform.scale(
                               scale: 1.3,
                               child: AppAvatar(
-                                url: state.profile?.media?.address,
+                                url: state.profile?.media?.fullUrl,
                                 assetPath: state.profile?.presetProfileImageAsset?.path,
                                 defaultAvatarPath: Env.defaultAvatar,
                               ),

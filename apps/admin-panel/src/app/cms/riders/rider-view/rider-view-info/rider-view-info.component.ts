@@ -23,10 +23,8 @@ export class RiderViewInfoComponent implements OnInit, OnDestroy {
     private updateRiderGQL: UpdateRiderGQL,
     private routerHelper: RouterHelperService,
     private msg: NzMessageService,
-  ) {}
-
-  ngOnDestroy(): void {
-    this.valObserver?.unsubscribe();
+  ) {
+    // Инициализируем форму в конструкторе
     this.form = this.fb.group({
       id: [null, Validators.required],
       firstName: [null, Validators.required],
@@ -39,10 +37,16 @@ export class RiderViewInfoComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnDestroy(): void {
+    this.valObserver?.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.valObserver = this.route.parent?.data.subscribe((data) => {
-      this.form.patchValue(data.rider.data.rider);
-      console.log(data.rider.data.rider);
+      if (data?.rider?.data?.rider) {
+        this.form.patchValue(data.rider.data.rider);
+        console.log(data.rider.data.rider);
+      }
     });
   }
 

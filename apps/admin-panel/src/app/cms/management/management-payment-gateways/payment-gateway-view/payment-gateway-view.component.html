@@ -3,6 +3,9 @@
   <nz-page-header [nzGhost]="false" nzBackIcon nzTitle="{{'menu.management.paymentGateways' | translate}}"
     nzSubtitle="API keys and client facing definitions.">
     <nz-page-header-extra>
+      <button *ngIf="form.value.id" nz-button nzType="default" nzDanger (click)="onDelete()" type="button" class="mr-2">
+        <i nz-icon nzType="delete"></i> {{ 'profile.delete' | translate }}
+      </button>
       <button nz-button nzType="primary" [disabled]="form.invalid" type="submit">
         {{ 'profile.saveChanges' | translate }}
       </button>

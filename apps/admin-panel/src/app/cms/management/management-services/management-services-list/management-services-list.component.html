@@ -11,7 +11,11 @@
           <tr *ngFor="let data of ajaxTable.data">
             <td>
               <div class="flex flex-row group cursor-pointer" [routerLink]="'view/' + data.id">
-                <img [src]="data.media.address" width="75" height="75">
+                <img [src]="data.media?.address ? (data.media.address.startsWith('http') ? data.media.address : serverUrl + data.media.address) : '/assets/logo.png'" 
+                     width="75" height="75" 
+                     (error)="$event.target.src='/assets/logo.png'"
+                     loading="lazy"
+                     style="object-fit: cover; border-radius: 4px;">
                 <div class="flex items-center ml-2">
                   <div>
                     <div class="table-first-line">

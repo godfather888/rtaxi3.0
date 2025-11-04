@@ -238,19 +238,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ),
           );
           emit(state.copyWith(createOrderResponse: result.mapData((data) => Fragment$ActiveOrder(order: data))));
-          emit(
-            state.copyWith(
-              createOrderResponse: ApiResponse.initial(),
-              ridePreviewFareResponse: ApiResponse.initial(),
-              selectedDateTime: null,
-              selectedService: null,
-              selectedServiceCategory: null,
-              senderContact: null,
-              receiverContact: null,
-              waypoints: [state.waypoints.firstOrNull, null],
-              orderSubmissionPage: OrderSubmissionPage.welcome,
-            ),
-          );
           break;
 
         case HomeEvent$ChangeTrackOrderPage():

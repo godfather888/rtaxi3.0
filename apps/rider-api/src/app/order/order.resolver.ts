@@ -5,6 +5,7 @@ import { Point } from "@ridy/database";
 import { TaxiOrderEntity } from "@ridy/database";
 import { SharedOrderService } from "@ridy/database";
 import { DriverRedisService } from "@ridy/database";
+import { DriverEntity, DriverStatus } from "@ridy/database";
 import { UserContextOptional } from "../auth/authenticated-user";
 import { GqlAuthGuard } from "../auth/access-token.guard";
 import { CalculateFareDTO } from "./dto/calculate-fare.dto";
@@ -15,6 +16,8 @@ import { SubmitFeedbackInput } from "./dto/submit-feedback.input";
 import { RiderOrderService } from "./rider-order.service";
 import { CurrentOrder } from "./dto/current-order.dto";
 import { StartRideByQrInput } from "./dto/start-ride-by-qr.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository, In } from "typeorm";
 
 @Resolver(() => OrderDTO)
 export class OrderResolver {
@@ -23,7 +26,9 @@ export class OrderResolver {
     private orderService: SharedOrderService,
     private riderOrderService: RiderOrderService,
     private driverRedisService: DriverRedisService,
-    private commonCouponService: CommonCouponService
+    private commonCouponService: CommonCouponService,
+    @InjectRepository(DriverEntity)
+    private driverRepository: Repository<DriverEntity>
   ) {}
 
   @Query(() => [CurrentOrder])
@@ -203,7 +208,23 @@ export class OrderResolver {
   ): Promise<Point[]> {
     if (center == null) return [];
     const closeDrivers = await this.driverRedisService.getClose(center, 1000);
-    return closeDrivers.map((item) => item.location);
+    
+    // Фильтруем только Online водителей
+    if (closeDrivers.length === 0) return [];
+    
+    const driverIds = closeDrivers.map(d => d.driverId);
+    const onlineDrivers = await this.driverRepository.find({
+      where: {
+        id: In(driverIds),
+        status: DriverStatus.Online
+      },
+      select: ['id']
+    });
+    
+    const onlineDriverIds = new Set(onlineDrivers.map(d => d.id));
+    return closeDrivers
+      .filter(item => onlineDriverIds.has(item.driverId))
+      .map(item => item.location);
   }
 
   @Query(() => [Point], { description: 'Get locations of parked drivers near a point' })

@@ -1,4 +1,5 @@
 import 'package:flutter_common/core/enums/gateway_link_method.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/payment_gateway.fragment.graphql.dart';
 import 'package:flutter_common/core/entities/payment_gateway.dart';
 import 'package:rider_flutter/core/graphql/schema.gql.dart';
@@ -7,7 +8,7 @@ extension PaymentGatewayProdX on Fragment$PaymentGateway {
   PaymentGatewayEntity get toEntity => PaymentGatewayEntity(
         id: id,
         name: title,
-        logoUrl: media?.address,
+        logoUrl: media?.fullUrl,
         linkMethod: linkMethod.toEntity,
       );
 }

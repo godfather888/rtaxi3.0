@@ -13,6 +13,7 @@ import 'package:flutter_common/core/presentation/card_handle.dart';
 import 'package:rider_flutter/core/graphql/fragments/active_order.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/active_order.fragment.graphql.dart';
 import 'package:rider_flutter/core/graphql/fragments/favorite_driver.extentions.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/presentation/driver_rating.dart';
 import 'package:rider_flutter/core/presentation/payment_method_select_field.dart';
 import 'package:rider_flutter/core/presentation/vehicle_info/vehicle_info.dart';
@@ -60,7 +61,7 @@ class OrderInProgressSheet extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          DriverAvatar(imageUrl: order.driver?.media?.address),
+                          DriverAvatar(imageUrl: order.driver?.media?.fullUrl),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -100,7 +101,7 @@ class OrderInProgressSheet extends StatelessWidget {
                         height: 16,
                       ),
                       VehicleInfo(
-                        imageUrl: order.service!.media.address,
+                        imageUrl: order.service!.media.fullUrl,
                         vehicleModel: order.driver?.car?.name,
                         vehicleColor: order.driver?.carColor?.name,
                         vehiclePlateNumber: order.driver?.carPlate,

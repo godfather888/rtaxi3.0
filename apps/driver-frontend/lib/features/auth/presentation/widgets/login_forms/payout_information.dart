@@ -26,40 +26,22 @@ class PayoutInformation extends StatelessWidget {
               child: Column(
                 children: [
                   TextFormField(
-                    initialValue: state.profileFullEntity?.bankName,
-                    onSaved: loginBloc.onBankNameChanged,
-                    decoration: InputDecoration(
-                      hintText: context.translate.bankName,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  TextFormField(
-                    initialValue: state.profileFullEntity?.bankRoutingNumber,
-                    onSaved: loginBloc.onBankRoutingNumberChanged,
-                    decoration: InputDecoration(
-                      hintText: context.translate.bankRoutingNumber,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  TextFormField(
                     initialValue: state.profileFullEntity?.accountNumber,
                     onSaved: loginBloc.onBankAccountNumberChanged,
                     decoration: InputDecoration(
-                      hintText: context.translate.bankAccountNumber,
+                      hintText: "Номер карты",
+                      labelText: "Номер карты",
                     ),
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   TextFormField(
-                    initialValue: state.profileFullEntity?.bankSwift,
-                    onSaved: loginBloc.onBankSwiftCodeChanged,
+                    initialValue: state.profileFullEntity?.bankName,
+                    onSaved: loginBloc.onBankNameChanged,
                     decoration: InputDecoration(
-                      hintText: context.translate.bankSwift,
+                      hintText: "Имя и фамилия как на карте",
+                      labelText: "Владелец карты",
                     ),
                   ),
                   const SizedBox(

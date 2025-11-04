@@ -28,7 +28,7 @@ class AuthRepositoryMock implements AuthRepository {
     await Future.delayed(const Duration(seconds: 1));
     return ApiResponse.loaded(
       Mutation$SetPassword(
-        updateOneDriver: mockProfile1,
+        setPassword: mockVerifyOtpOrPasswordSuccess,
       ),
     );
   }

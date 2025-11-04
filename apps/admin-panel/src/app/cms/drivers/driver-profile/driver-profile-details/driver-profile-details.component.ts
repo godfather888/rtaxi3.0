@@ -76,7 +76,7 @@ export class DriverProfileDetailsComponent implements OnInit, OnDestroy {
       bankSwift: [null],
       address: [null],
       mediaId: [null],
-      enabledServices: [null, Validators.required],
+      enabledServices: [[], Validators.required],
     });
   }
 
@@ -88,7 +88,9 @@ export class DriverProfileDetailsComponent implements OnInit, OnDestroy {
           (_service: { id: string }) => _service.id,
         );
       this.form.patchValue(data.driver.data.driver);
-      this.avatarUrl = data.driver.data.driver.media?.address;
+      this.avatarUrl = data.driver.data.driver.media?.address ? 
+        this.root + data.driver.data.driver.media.address.replace(/^\/+/, '') : 
+        undefined;
     });
   }
 
@@ -98,11 +100,15 @@ export class DriverProfileDetailsComponent implements OnInit, OnDestroy {
 
   async onSubmit() {
     const { id, enabledServices, mobileNumber, ...update } = this.form.value;
+    
+    // Filter out null/empty values from enabledServices
+    const validServiceIds = (enabledServices || []).filter((serviceId: any) => serviceId != null && serviceId !== '');
+    
     await firstValueFrom(
       this.updateGQL.mutate({
         id,
         update: { ...update, mobileNumber: mobileNumber.toString() },
-        serviceIds: enabledServices,
+        serviceIds: validServiceIds,
       }),
     );
     this.msg.success('Updated!');
@@ -110,18 +116,21 @@ export class DriverProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   handleServiceCheckChange(checked: boolean, service: { id: string }) {
+    const currentServices = this.form.value.enabledServices || [];
+    
     if (checked) {
-      if (this.form.value.enabledServices.indexOf(service.id) < 0) {
-        this.form.value.enabledServices.push(service.id);
+      if (currentServices.indexOf(service.id) < 0) {
+        const newServices = [...currentServices, service.id];
         this.form.patchValue({
-          enabledServices: this.form.value.enabledServices,
+          enabledServices: newServices,
         });
       }
     } else {
+      const newServices = currentServices.filter(
+        (_service: string) => _service !== service.id,
+      );
       this.form.patchValue({
-        enabledServices: this.form.value.enabledServices.filter(
-          (_service: string) => _service != service.id.toString(),
-        ),
+        enabledServices: newServices,
       });
     }
   }
@@ -134,7 +143,9 @@ export class DriverProfileDetailsComponent implements OnInit, OnDestroy {
       case 'done':
         // Get this url from response in real world.
         this.form.patchValue({ mediaId: event.file.response.id });
-        this.avatarUrl = event.file.response.address;
+        this.avatarUrl = event.file.response.address ? 
+          this.root + event.file.response.address.replace(/^\/+/, '') : 
+          undefined;
         break;
       case 'error':
         this.msg.error('Network error');

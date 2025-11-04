@@ -4,13 +4,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_common/core/color_palette/color_palette.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:cross_file/cross_file.dart';
 
 class UploadImageField<T> extends StatelessWidget {
   final T? initialValue;
   final void Function(T?)? onSaved;
   final void Function(T?)? onChanged;
   final String? Function(T?)? validator;
-  final Future<T> Function(String) fileUploader;
+  final Future<T> Function(XFile) fileUploader;
   final String Function(T) displayValue;
   final BoxShape shape;
   final double? borderRadius;
@@ -74,11 +75,19 @@ class UploadImageField<T> extends StatelessWidget {
             CupertinoButton(
               padding: const EdgeInsets.all(0),
               onPressed: () async {
-                final result = await ImagePicker().pickImage(source: ImageSource.gallery);
-                if (result != null) {
-                  final media = await fileUploader(result.path);
-                  state.didChange(media);
-                  onChanged?.call(media);
+                try {
+                  final result = await ImagePicker().pickImage(source: ImageSource.gallery);
+                  if (result != null) {
+                    // Передаем XFile целиком
+                    final media = await fileUploader(result);
+                    state.didChange(media);
+                    onChanged?.call(media);
+                  }
+                } catch (e) {
+                  print('Upload error: $e');
+                  state.didChange(null);
+                  // Показываем ошибку пользователю
+                  rethrow;
                 }
               },
               child: Container(

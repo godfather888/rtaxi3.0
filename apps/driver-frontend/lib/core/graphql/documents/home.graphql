@@ -47,7 +47,6 @@ mutation UpdateOrderStatus(
 mutation UpdateDriverStatus($status: DriverStatus!, $fcmId: String) {
   updateOneDriver(
     input: {
-      id: "1"
       update: { status: $status, notificationPlayerId: $fcmId }
     }
   ) {

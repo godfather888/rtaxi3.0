@@ -3,19 +3,19 @@
     "request": {
       "Requested": "Запрошено",
       "NotFound": "Не найдено",
-      "NoCloseFound": "Закрыть не найдено",
-      "Found": "Найденный",
-      "DriverAccepted": "Водитель принят",
-      "Arrived": "Приехал",
+      "NoCloseFound": "Рядом не найдено",
+      "Found": "Найдено",
+      "DriverAccepted": "Водитель принял заказ",
+      "Arrived": "Прибыл",
       "WaitingForPrefy": "Ожидание предоплаты",
-      "DriverCanceled": "Водитель отменен",
-      "RiderCanceled": "Гонщик отменен",
-      "Started": "Начал",
-      "WaitingForPostPay": "Ожидание постоплаты",
-      "WaitingForReview": "Ожидание обзора",
-      "Finished": "Законченный",
+      "DriverCanceled": "Отменено водителем",
+      "RiderCanceled": "Отменено пассажиром",
+      "Started": "Поездка началась",
+      "WaitingForPostPay": "Ожидание оплаты",
+      "WaitingForReview": "Ожидание отзыва",
+      "Finished": "Завершено",
       "Booked": "Забронировано",
-      "Expired": "Истекший",
+      "Expired": "Истёк срок",
       "WaitingForPrePay": "Ожидание предоплаты"
     },
     "transactionType": {
@@ -26,39 +26,39 @@
       "Commission": "Комиссия",
       "Correction": "Коррекция",
       "InAppPayment": "Оплата в приложении",
-      "Withdraw": "Отзывать"
+      "Withdraw": "Вывод средств"
     },
     "transactionStatus": {
-      "Processing": "Обработка",
-      "Done": "Сделанный",
+      "Processing": "Обрабатывается",
+      "Done": "Выполнено",
       "Canceled": "Отменено",
-      "Rejected": "Отклоненный"
+      "Rejected": "Отклонено"
     },
     "gender": {
       "male": "Мужской",
       "female": "Женский",
-      "genderless": "бесполый"
+      "genderless": "Не указан"
     },
     "complaintStatus": {
-      "submitted": "Поданный",
-      "underInvestigation": "Под следствием",
+      "submitted": "Подана",
+      "underInvestigation": "На рассмотрении",
       "resolved": "Решено"
     },
     "sosStatus": {
-      "submitted": "Поданный",
+      "submitted": "Подан",
       "underReview": "На рассмотрении",
-      "falseAlarm": "ложное предупреждение",
+      "falseAlarm": "Ложная тревога",
       "resolved": "Решено"
     },
     "driver": {
       "status": {
         "pendingApproval": "В ожидании утверждения",
-        "approved": "Одобренный",
+        "approved": "Одобрен",
         "blocked": "Заблокировано",
         "softReject": "Мягкий отказ",
         "hardReject": "Жесткий отказ",
         "offline": "Не в сети",
-        "waitingDocuments": "Ожидает отправки",
+        "waitingDocuments": "Ожидает документы",
         "inService": "В сервисе",
         "online": "В сети"
       }
@@ -96,29 +96,29 @@
     "home": {
       "overview": "Обзор",
       "dispatcher": "Диспетчер",
-      "header": "Дом"
+      "header": "Главная"
     },
     "driver": {
       "pendingVerification": "Ожидание проверки",
       "all": "Посмотреть все",
-      "header": "Драйверы"
+      "header": "Водители"
     },
     "payouts": "Выплаты",
     "payoutMethods": "Способы выплаты",
     "marketing": {
-      "coupons": "купоны",
+      "coupons": "Купоны",
       "announcements": "Объявления",
       "header": "Маркетинг",
       "rewards": "Награды и рефералы"
     },
     "accounting": {
       "admin": "Администратор",
-      "fleets": "Флоты",
-      "drivers": "Драйверы",
-      "riders": "Райдеры",
+      "fleets": "Автопарки",
+      "drivers": "Водители",
+      "riders": "Пассажиры",
       "header": "Бухгалтерский учет"
     },
-    "riders": "Райдеры",
+    "riders": "Пассажиры",
     "requests": "Запросы",
     "sos": "SOS",
     "complaints": "Жалобы",
@@ -126,7 +126,7 @@
       "regions": "Регионы",
       "services": "Услуги",
       "serviceOptions": "Варианты обслуживания",
-      "fleets": "Флоты",
+      "fleets": "Автопарки",
       "zonePrices": "Цены в зонах",
       "orderCancelReasons": "Причины отмены",
       "reviewParameters": "Просмотр параметров",
@@ -138,7 +138,7 @@
       "header": "Управление"
     },
     "drivers": {
-      "header": "Драйверы",
+      "header": "Водители",
       "subtitle": "Список всех зарегистрированных водителей."
     }
   },
@@ -151,9 +151,9 @@
       "title": "Центр уведомлений"
     },
     "logout": "Выйти",
-    "driversOnline": "Онлайн-драйверы",
+    "driversOnline": "Водители онлайн",
     "autoZoom": "Автозум",
-    "viewDriver": "Посмотреть драйвер",
+    "viewDriver": "Посмотреть водителя",
     "complaints": {
       "title": "Жалобы",
       "suffix": "Не рассмотрено"
@@ -163,7 +163,7 @@
       "suffix": "Заказы"
     },
     "pendingDrivers": {
-      "title": "Ожидающие драйверы",
+      "title": "Ожидающие водители",
       "suffix": "Непроверенный"
     },
     "bookedOrders": {
@@ -174,7 +174,7 @@
       "requestsTitle": "Заказы",
       "revenue": "Доход",
       "newDriverRegisters": "Регистрация новых водителей",
-      "newRiderRegisters": "Регистрация новых райдеров"
+      "newRiderRegisters": "Регистрация новых пассажиров"
     }
   },
   "notification": {
@@ -185,7 +185,7 @@
       "suffix": "Жалобы не рассмотрены"
     },
     "pendingDrivers": {
-      "suffix": "Драйверы непроверенные"
+      "suffix": "Водители непроверены"
     }
   },
   "requests": {
@@ -212,7 +212,7 @@
     "mobileNumber": "Номер мобильного телефона",
     "registeredOn": "Зарегистрирован",
     "driverInfo": "Информация о водителе",
-    "riderInfo": "Информация о гонщике",
+    "riderInfo": "Информация о пассажире",
     "details": "Подробности",
     "title": "Заголовок",
     "content": "Содержание",
@@ -220,7 +220,7 @@
     "lastName": "Фамилия",
     "gender": "Пол",
     "email": "Электронная почта",
-    "fleet": "Флот",
+    "fleet": "Автопарк",
     "carModel": "Модель автомобиля",
     "carColor": "Цвет автомобиля",
     "carProductionYear": "Год выпуска автомобиля",
@@ -228,42 +228,42 @@
     "accountNumber": "Номер счета",
     "bankName": "Название банка",
     "bankRoutingNumber": "Маршрутный номер банка",
-    "bankSwift": "Банк Свифт",
+    "bankSwift": "SWIFT код банка",
     "address": "Адрес",
     "services": "Услуги",
     "avatarImage": "Изображение аватара",
     "upload": "Загрузить",
-    "save": "Сохранять",
+    "save": "Сохранить",
     "dateTime": "Дата и время",
     "rating": "Рейтинг",
-    "review": "Обзор",
+    "review": "Отзыв",
     "actions": "Действия",
     "transactionType": "Тип операции",
-    "amount": "Количество",
+    "amount": "Сумма",
     "documentNumber": "Номер документа",
-    "submit": "Представлять на рассмотрение",
-    "insertTransaction": "Вставить транзакцию",
-    "cost": "Расходы",
+    "submit": "Отправить",
+    "insertTransaction": "Добавить транзакцию",
+    "cost": "Стоимость",
     "goToList": "Перейти к списку",
-    "add": "Добавлять",
+    "add": "Добавить",
     "search": "Поиск",
-    "reset": "Перезагрузить",
+    "reset": "Сбросить",
     "export": "Экспорт",
-    "total": "Общий",
+    "total": "Итого",
     "currency": "Валюта",
-    "next": "Следующий",
-    "select": "Выбирать",
+    "next": "Далее",
+    "select": "Выбрать",
     "delete": "Удалить",
     "phoneNumber": "Номер телефона",
     "userName": "Имя пользователя",
     "commissionPercentage": "Процент комиссии",
-    "commissionFlat": "Комиссионная квартира",
+    "commissionFlat": "Фиксированная комиссия",
     "bankAccountInfo": "Информация о банковском счете",
     "warning": "Предупреждение",
     "clearMap": "Очистить карту",
     "financialRecords": "Финансовые записи",
     "userType": "Тип пользователя",
-    "disabled": "Неполноценный",
+    "disabled": "Отключено",
     "visibilityStatus": "Статус видимости",
     "saveChanges": "Сохранить изменения",
     "enabled": "Включено",
@@ -286,15 +286,15 @@
     "subject": "Предмет",
     "type": "Тип",
     "paymentGateway": "Платежный шлюз",
-    "rider": "Райдер",
+    "rider": "Пассажир",
     "admin": "Администратор",
     "coupon": "Купон",
     "activities": "Хронология деятельности",
     "location": "Расположение",
-    "submittedBy": "Представленный"
+    "submittedBy": "Подано пользователем"
   },
   "complaint": {
-    "inscriptionTime": "Надпись Время",
+    "inscriptionTime": "Время подачи",
     "content": "Содержание"
   },
   "driver": {
@@ -315,19 +315,19 @@
     "viewGateway": "Посмотреть шлюз",
     "min": "Мин.",
     "max": "Макс",
-    "viewDriver": "Посмотреть драйвер",
-    "viewFleet": "Посмотреть флот",
-    "viewRider": "Посмотреть всадника",
+    "viewDriver": "Посмотреть водителя",
+    "viewFleet": "Посмотреть автопарк",
+    "viewRider": "Посмотреть пассажира",
     "viewComplaint": "Посмотреть жалобу"
   },
   "drivers": {
-    "notFoundMessage": "Драйвер не найден!"
+    "notFoundMessage": "Водитель не найден!"
   },
   "dispatcher": {
     "removeLastPoint": "Удалить последнюю точку",
     "rider": {
-      "title": "Райдер",
-      "description": "Выберите гонщика для назначения запроса"
+      "title": "Пассажир",
+      "description": "Выберите пассажира для назначения запроса"
     },
     "location": {
       "title": "Расположение",
@@ -338,7 +338,7 @@
       "description": "Запрашиваемая услуга"
     },
     "looking": {
-      "title": "Смотрящий",
+      "title": "Поиск водителя",
       "description": "Поиск подходящего водителя"
     },
     "determiningLocation": "Определение местоположения, пожалуйста, подождите..."
@@ -349,18 +349,18 @@
   "message": {
     "areYouSure": "Вы уверены?",
     "deleteDriverConfirmation": {
-      "title": "Вы уверены, что хотите удалить драйвер?",
+      "title": "Вы уверены, что хотите удалить водителя?",
       "content": "Удаление информации о водителе скроет водителя из списка водителей, и профиль больше не будет доступен."
     },
-    "deleteDriverCofirmAlert": "Драйвер был удален",
-    "driverAssignedSuccessfully": "Драйвер успешно назначен",
+    "deleteDriverCofirmAlert": "Водитель был удалён",
+    "driverAssignedSuccessfully": "Водитель успешно назначен",
     "deleteConfirmation": {
       "title": "Вы уверены, что хотите удалить?"
     },
     "deleteRiderConfirmation": {
-      "content": "Удаление информации о гонщике скроет гонщика из списка гонщиков, и профиль больше не будет доступен."
+      "content": "Удаление информации о пассажире скроет пассажира из списка пассажиров, и профиль больше не будет доступен."
     },
-    "deleteRiderCofirmAlert": "Райдер был удален."
+    "deleteRiderCofirmAlert": "Пассажир был удалён."
   },
   "error": {
     "nameInvalid": "Имя недействительно",
@@ -381,7 +381,7 @@
   },
   "reviewParameters": {
     "title": "Просмотр параметров",
-    "subtitle": "Список параметров, которые гонщик может назначать опыту обслуживания"
+    "subtitle": "Список параметров, которые пассажир может оценить в качестве обслуживания"
   },
   "services": {
     "editCategory": "Изменить категорию",
@@ -402,7 +402,7 @@
       "distanceTo": "Расстояние до"
     },
     "weekdayMultiplierTable": {
-      "weekday": "будний день"
+      "weekday": "рабочий день"
     },
     "dateRangeMultiplierTable": {
       "dateRange": "Диапазон дат"
@@ -427,11 +427,11 @@
   },
   "coupons": {
     "availabilityTime": "Время доступности",
-    "description": "Создавайте купоны, которые гонщики будут использовать для получения скидок на свои поездки.",
+    "description": "Создавайте купоны, которые пассажиры будут использовать для получения скидок на свои поездки.",
     "expirationTime": "Время истечения"
   },
   "riders": {
-    "notFoundMessage": "Райдер не найден!",
+    "notFoundMessage": "Пассажир не найден!",
     "tab": {
       "details": "Подробности",
       "creditrecords": "Кредитные записи",
@@ -452,17 +452,17 @@
     "arrivedToDestination": "Прибыл в пункт назначения",
     "arrivedToPickupPoint": "Прибыл в пункт самовывоза",
     "bookedByOperator": "Забронировать через оператора",
-    "bookedByRider": "Забронировано Райдером",
+    "bookedByRider": "Забронировано пассажиром",
     "canceledByDriver": "Отменено водителем",
     "canceledByOperator": "Отменено оператором",
-    "canceledByRider": "Отменено Райдером",
+    "canceledByRider": "Отменено пассажиром",
     "driverAccepted": "Водитель принят",
     "expired": "Истекший",
     "paid": "Оплаченный",
     "requestedByOperator": "Запрошено оператором",
-    "requestedByRider": "Запрошено Райдером",
+    "requestedByRider": "Запрошено пассажиром",
     "reviewed": "Просмотрено и оценено",
     "started": "Начал"
   },
-  "done": "Сделанный"
+  "done": "Готово"
 }

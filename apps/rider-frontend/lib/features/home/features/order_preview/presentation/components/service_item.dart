@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:flutter_common/core/color_palette/color_palette.dart';
 import 'package:rider_flutter/core/extensions/extensions.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/service.fragment.graphql.dart';
 
 class ServiceItem extends StatelessWidget {
@@ -35,7 +36,7 @@ class ServiceItem extends StatelessWidget {
         child: Row(
           children: [
             CachedNetworkImage(
-              imageUrl: entity.media.address,
+              imageUrl: entity.media.fullUrl,
               width: 48,
               height: 48,
             ),

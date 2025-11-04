@@ -100,11 +100,8 @@ class LoginBloc extends HydratedCubit<LoginState> {
     final setPasswordResponse = await repository.setPassword(state.newPassword!);
 
     switch (setPasswordResponse) {
-      case ApiResponseLoaded():
-        _processVerifiedUser(
-          Fragment$VerifyOtpOrPassword(
-              jwtToken: state.jwtToken!, user: state.profileFullEntity!, hasPassword: true, hasName: true),
-        );
+      case ApiResponseLoaded(:final data):
+        _processVerifiedUser(data.setPassword);
       case ApiResponseError(:final message):
         emit(state.copyWith(errorMessage: message, isLoading: false));
 

@@ -11,6 +11,7 @@ import 'package:flutter_common/core/presentation/avatars/driver_avatar_secondary
 import 'package:rider_flutter/core/entities/ride_option.prod.dart';
 import 'package:rider_flutter/core/extensions/extensions.dart';
 import 'package:rider_flutter/core/graphql/fragments/favorite_driver.extentions.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/past_order.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/past_order.fragment.graphql.dart';
 import 'package:rider_flutter/core/presentation/driver_rating.dart';
@@ -42,7 +43,7 @@ class RideHistoryDetailsSheet extends StatelessWidget {
           child: Row(
             children: [
               DriverAvatarSecondary(
-                imageUrl: entity.driver?.media?.address,
+                imageUrl: entity.driver?.media?.fullUrl,
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -87,7 +88,7 @@ class RideHistoryDetailsSheet extends StatelessWidget {
           vehicleModel: entity.driver?.car?.name,
           vehicleColor: entity.driver?.carColor?.name,
           vehiclePlateNumber: entity.driver?.carPlate,
-          imageUrl: entity.service?.media.address,
+          imageUrl: entity.service?.media.fullUrl,
         ),
         const Divider(
           height: 24,

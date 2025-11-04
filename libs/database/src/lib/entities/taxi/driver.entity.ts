@@ -129,7 +129,7 @@ export class DriverEntity {
 
   @Field(() => String)
   @Column('enum', {
-    default: DriverStatus.WaitingDocuments,
+    default: DriverStatus.PendingApproval,
     enum: DriverStatus,
   })
   status!: DriverStatus;

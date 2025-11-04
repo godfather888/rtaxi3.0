@@ -46,7 +46,9 @@ export class DriverProfileDocumentsComponent implements OnInit, OnDestroy {
         uid: '-1',
         name: 'image.png',
         status: 'done',
-        url: this.root + doc.media.address,
+        url: doc.media.address ? 
+          this.root + doc.media.address.replace(/^\/+/, '') : 
+          undefined,
       }),
     );
     return files;

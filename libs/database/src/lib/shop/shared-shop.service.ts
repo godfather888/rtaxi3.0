@@ -60,15 +60,31 @@ export class SharedShopService {
     mobileNumber: string;
     countryIso?: string;
   }): Promise<ShopEntity> {
-    const findResult = await this.findUserByMobileNumber(input.mobileNumber);
-    if (findResult?.deletedAt != null) {
-      await this.shopRepository.restore(findResult?.id);
+    // Используем транзакцию для предотвращения race condition
+    return await this.shopRepository.manager.transaction(async (manager) => {
+      let user = await manager.findOne(ShopEntity, {
+        where: { mobileNumber: input.mobileNumber },
+        withDeleted: true,
+        lock: { mode: 'pessimistic_write' },
+      });
+      if (!user) {
+        user = manager.create(ShopEntity, {
+          mobileNumber: input.mobileNumber,
+          countryIso: input.countryIso,
+        });
+        await manager.save(user);
     }
-    if (findResult == null) {
-      return await this.createUserWithMobileNumber(input);
-    } else {
-      return findResult;
-    }
+      if (user.deletedAt != null) {
+        await manager.restore(ShopEntity, {
+          id: user.id,
+        });
+        // Перезагружаем пользователя после восстановления
+        user = await manager.findOne(ShopEntity, {
+          where: { id: user.id },
+        }) as ShopEntity;
+      }
+      return user;
+    });
   }
 
   async deleteById(id: number): Promise<ShopEntity> {

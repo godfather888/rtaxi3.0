@@ -12,7 +12,10 @@ import { RouterHelperService } from '../../../../@services/router-helper.service
 import { environment } from '../../../../../environments/environment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { firstValueFrom, Observable, Observer, Subscription } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   standalone: false,
@@ -60,15 +63,11 @@ export class PaymentGatewayViewComponent implements OnInit, OnDestroy {
     private createGQL: CreatePaymentGatewayGQL,
     private routerHelper: RouterHelperService,
     private msg: NzMessageService,
+    private modal: NzModalService,
+    private apollo: Apollo,
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.route.data.subscribe((data) => {
-      const gateway: ApolloQueryResult<ViewPaymentGatewayQuery> =
-        data.paymentGateway;
-      this.form.patchValue(gateway.data.paymentGateway as any);
-      this.avatarUrl = gateway.data.paymentGateway?.media?.address;
-    });
     this.form = this.fb.group({
       id: [null],
       title: [null, Validators.required],
@@ -79,6 +78,17 @@ export class PaymentGatewayViewComponent implements OnInit, OnDestroy {
       saltKey: [null],
       merchantId: [null],
       mediaId: [null],
+    });
+    
+    this.subscription = this.route.data.subscribe((data) => {
+      const gateway: ApolloQueryResult<ViewPaymentGatewayQuery> =
+        data.paymentGateway;
+      if (gateway?.data?.paymentGateway) {
+        this.form.patchValue(gateway.data.paymentGateway as any);
+        this.avatarUrl = gateway.data.paymentGateway?.media?.address ? 
+          this.root + gateway.data.paymentGateway.media.address.replace(/^\/+/, '') : 
+          undefined;
+      }
     });
   }
 
@@ -96,6 +106,34 @@ export class PaymentGatewayViewComponent implements OnInit, OnDestroy {
     this.routerHelper.goToParent(this.route);
   }
 
+  onDelete() {
+    this.modal.confirm({
+      nzTitle: 'Удалить способ оплаты?',
+      nzContent: 'Это действие необратимо. Продолжить?',
+      nzOkText: 'Удалить',
+      nzOkDanger: true,
+      nzCancelText: 'Отмена',
+      nzOnOk: async () => {
+        const id = this.form.value.id;
+        if (id) {
+          const DELETE_MUTATION = gql`
+            mutation DeletePaymentGateway($id: ID!) {
+              deleteOnePaymentGateway(input: { id: $id }) {
+                id
+              }
+            }
+          `;
+          await firstValueFrom(this.apollo.mutate({ 
+            mutation: DELETE_MUTATION, 
+            variables: { id } 
+          }));
+          this.msg.success('Способ оплаты успешно удален');
+          this.routerHelper.goToParent(this.route);
+        }
+      }
+    });
+  }
+
   handleUploadChange(event: { file: NzUploadFile }) {
     switch (event.file.status) {
       case 'uploading':
@@ -104,7 +142,9 @@ export class PaymentGatewayViewComponent implements OnInit, OnDestroy {
       case 'done':
         this.loadingUpload = false;
         this.form.patchValue({ mediaId: event.file.response.id });
-        this.avatarUrl = event.file.response.address;
+        this.avatarUrl = event.file.response.address ? 
+          this.root + event.file.response.address.replace(/^\/+/, '') : 
+          undefined;
         break;
       case 'error':
         this.msg.error('Network error');

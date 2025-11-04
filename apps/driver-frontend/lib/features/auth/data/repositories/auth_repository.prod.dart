@@ -116,7 +116,7 @@ class LoginRepositoryImpl implements AuthRepository {
 
   @override
   Future<ApiResponse<Mutation$Register>> register({
-    required Fragment$ProfileFull profile,
+required Fragment$ProfileFull profile,
   }) async {
     final registerResponse = await graphqlDatasource.mutate(
       Options$Mutation$Register(
@@ -125,7 +125,7 @@ class LoginRepositoryImpl implements AuthRepository {
           id: profile.id,
           firstName: profile.firstName!,
           lastName: profile.lastName!,
-          profilePictureId: profile.presetAvatarNumber.toString(),
+          profilePictureId: profile.media?.id ?? profile.presetAvatarNumber?.toString() ?? "1",
           documentIds: profile.documents?.map((e) => e.id).toList() ?? [],
           address: profile.address,
           bankName: profile.bankName,

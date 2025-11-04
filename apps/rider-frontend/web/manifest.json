@@ -1,11 +1,11 @@
 {
-    "name": "rider_flutter",
-    "short_name": "rider_flutter",
+    "name": "Bas Taxi",
+    "short_name": "Bas Taxi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#096EFF",
     "theme_color": "#096EFF",
-    "description": "Ride-sharing",
+    "description": "Bas Taxi - Ride-sharing",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

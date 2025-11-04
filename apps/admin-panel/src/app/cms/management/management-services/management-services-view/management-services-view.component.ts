@@ -178,7 +178,9 @@ export class ManagementServicesViewComponent implements OnInit {
         (region: { id: string }) => region.id,
       ) as unknown as any;
       this.form.patchValue(service);
-      this.avatarUrl = service.media.address;
+      this.avatarUrl = service.media.address ? 
+        this.root + service.media.address.replace(/^\/+/, '') : 
+        undefined;
     });
   }
 
@@ -345,7 +347,9 @@ export class ManagementServicesViewComponent implements OnInit {
       case 'done':
         this.loadingUpload = false;
         this.form.patchValue({ mediaId: event.file.response.id });
-        this.avatarUrl = event.file.response.address;
+        this.avatarUrl = event.file.response.address ? 
+          this.root + event.file.response.address.replace(/^\/+/, '') : 
+          undefined;
         break;
       case 'error':
         this.msg.error('Network error');

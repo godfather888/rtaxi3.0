@@ -67,6 +67,12 @@ export class ViewPayoutSessionComponent {
   payoutDialogLoading = false;
   payoutDialogData?: PayoutSessionTransactionsQuery['taxiPayoutSession']['driverTransactions']['nodes'][0];
 
+  getImageUrl(address?: string): string | undefined {
+    if (!address) return undefined;
+    const cleanAddress = address.replace(/^\/+/, '');
+    return this.serverUrl + cleanAddress;
+  }
+
   async exportToCSV(payoutMethodId: string) {
     try {
       const result = await firstValueFrom(

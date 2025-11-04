@@ -2151,5 +2151,7 @@
   "rideShare": "Ride Share",
   "parcelDelivery": "Parcel Delivery",
   "foodDelivery": "Food Delivery",
-  "locationPermissionDescription": "This app transmits background location data to enable real-time order matching and share your location with clients, only when your status is set to online. Going offline disables all location retrieval."
+  "locationPermissionDescription": "This app transmits background location data to enable real-time order matching and share your location with clients, only when your status is set to online. Going offline disables all location retrieval.",
+  "noDriversFoundError": "Unfortunately, no drivers are available at the moment. Please try again later.",
+  "orderCreationError": "Error creating order"
 }

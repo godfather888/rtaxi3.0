@@ -140,7 +140,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzIconModule.forRoot(icons),
     BrowserAnimationsModule,
     TranslateModule.forRoot({
-      defaultLanguage: 'en',
+      defaultLanguage: 'ru',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -213,9 +213,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       );
 
       return {
-        cache: new InMemoryCache({
-          addTypename: false,
-        }),
+        cache: new InMemoryCache(),
         link: splitLink,
 
         defaultOptions,

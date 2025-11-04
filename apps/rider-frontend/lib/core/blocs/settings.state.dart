@@ -8,8 +8,8 @@ sealed class SettingsState with _$SettingsState {
   }) = _SettingsState;
 
   factory SettingsState.initial() => const SettingsState(
-        locale: 'en',
-        mapProvider: Constants.defaultMapProvider,
+        locale: 'ru',
+        mapProvider: MapProviderEnum.googleMaps,
       );
 
   factory SettingsState.fromJson(Map<String, dynamic> json) => _$SettingsStateFromJson(json);

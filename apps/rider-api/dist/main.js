@@ -36,22 +36,21 @@ const _graphql = __webpack_require__(8);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
 const _nestjsredis = __webpack_require__(15);
-const _path = __webpack_require__(19);
-const _addressmodule = __webpack_require__(20);
-const _announcementmodule = __webpack_require__(27);
-const _authmodule = __webpack_require__(32);
-const _jwtstrategy = __webpack_require__(65);
-const _chatmodule = __webpack_require__(68);
-const _complaintmodule = __webpack_require__(95);
-const _couponmodule = __webpack_require__(83);
-const _driver_tendencymodule = __webpack_require__(99);
-const _ordermodule = __webpack_require__(69);
-const _riderapisetupnotfoundcontroller = __webpack_require__(102);
-const _riderapicontroller = __webpack_require__(104);
-const _ridermodule = __webpack_require__(34);
-const _servicemodule = __webpack_require__(70);
+const _addressmodule = __webpack_require__(19);
+const _announcementmodule = __webpack_require__(26);
+const _authmodule = __webpack_require__(31);
+const _jwtstrategy = __webpack_require__(64);
+const _chatmodule = __webpack_require__(67);
+const _complaintmodule = __webpack_require__(94);
+const _couponmodule = __webpack_require__(82);
+const _driver_tendencymodule = __webpack_require__(98);
+const _ordermodule = __webpack_require__(68);
+const _riderapisetupnotfoundcontroller = __webpack_require__(101);
+const _riderapicontroller = __webpack_require__(103);
+const _ridermodule = __webpack_require__(33);
+const _servicemodule = __webpack_require__(69);
 const _sosmodule = __webpack_require__(108);
-const _uploadmodule = __webpack_require__(71);
+const _uploadmodule = __webpack_require__(70);
 const _walletmodule = __webpack_require__(112);
 const _setup = __webpack_require__(117);
 const _core = __webpack_require__(2);
@@ -76,7 +75,7 @@ let RiderAPIModule = class RiderAPIModule {
                     _graphql.GraphQLModule.forRoot({
                         driver: _apollo.ApolloDriver,
                         installSubscriptionHandlers: true,
-                        autoSchemaFile: (0, _path.join)(process.cwd(), 'apps/taxi-rider-frontend/lib/core/graphql/schema.gql'),
+                        autoSchemaFile: true,
                         subscriptions: {
                             'graphql-ws': {
                                 connectionInitWaitTimeout: 5000,
@@ -13124,6 +13123,7 @@ var DriverStatus;
     DriverStatus["PendingApproval"] = "pending approval";
     DriverStatus["SoftReject"] = "soft reject";
     DriverStatus["HardReject"] = "hard reject";
+    DriverStatus["Parked"] = "parked";
 })(DriverStatus || (DriverStatus = {}));
 (0,graphql_.registerEnumType)(DriverStatus, {
     name: 'DriverStatus'
@@ -13463,20 +13463,34 @@ function driver_entity_ts_metadata(k, v) {
 
 
 
+
 var DriverEntity = function DriverEntity() {
     "use strict";
 };
 driver_entity_ts_decorate([
+    (0,graphql_.Field)(function() {
+        return graphql_.Int;
+    }),
     (0,external_typeorm_.PrimaryGeneratedColumn)(),
     driver_entity_ts_metadata("design:type", Number)
 ], DriverEntity.prototype, "id", void 0);
 driver_entity_ts_decorate([
+    (0,graphql_.Field)(function() {
+        return String;
+    }, {
+        nullable: true
+    }),
     (0,external_typeorm_.Column)({
         nullable: true
     }),
     driver_entity_ts_metadata("design:type", String)
 ], DriverEntity.prototype, "firstName", void 0);
 driver_entity_ts_decorate([
+    (0,graphql_.Field)(function() {
+        return String;
+    }, {
+        nullable: true
+    }),
     (0,external_typeorm_.Column)({
         nullable: true
     }),
@@ -13596,8 +13610,11 @@ driver_entity_ts_decorate([
     driver_entity_ts_metadata("design:type", Number)
 ], DriverEntity.prototype, "searchDistance", void 0);
 driver_entity_ts_decorate([
+    (0,graphql_.Field)(function() {
+        return String;
+    }),
     (0,external_typeorm_.Column)('enum', {
-        default: DriverStatus.WaitingDocuments,
+        default: DriverStatus.PendingApproval,
         enum: DriverStatus
     }),
     driver_entity_ts_metadata("design:type", typeof DriverStatus === "undefined" ? Object : DriverStatus)
@@ -13858,6 +13875,7 @@ driver_entity_ts_decorate([
     driver_entity_ts_metadata("design:type", Array)
 ], DriverEntity.prototype, "notes", void 0);
 DriverEntity = driver_entity_ts_decorate([
+    (0,graphql_.ObjectType)(),
     (0,external_typeorm_.Entity)('driver')
 ], DriverEntity);
 
@@ -15709,7 +15727,8 @@ DatabaseModule = database_module_ts_decorate([
                                     migrationsRun: true,
                                     synchronize: configService.get('NODE_ENV') === 'dev' || configService.get('FORCE_SYNC_DB', false) || currentTables[0].count < 10,
                                     // logging: configService.get('NODE_ENV') === 'dev',
-                                    logging: true
+                                    logging: true,
+                                    timezone: '+06:00'
                                 };
                                 logger.log('Database connection configured');
                                 return [
@@ -16500,49 +16519,84 @@ var SharedShopService = /*#__PURE__*/ function() {
     _proto.findOrCreateUserWithMobileNumber = function findOrCreateUserWithMobileNumber(input) {
         var _this = this;
         return shared_shop_service_async_to_generator(function() {
-            var findResult;
             return shared_shop_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         return [
                             4,
-                            _this.findUserByMobileNumber(input.mobileNumber)
+                            _this.shopRepository.manager.transaction(/*#__PURE__*/ shared_shop_service_async_to_generator(function(manager) {
+                                var user;
+                                return shared_shop_service_ts_generator(this, function(_state) {
+                                    switch(_state.label){
+                                        case 0:
+                                            return [
+                                                4,
+                                                manager.findOne(ShopEntity, {
+                                                    where: {
+                                                        mobileNumber: input.mobileNumber
+                                                    },
+                                                    withDeleted: true,
+                                                    lock: {
+                                                        mode: 'pessimistic_write'
+                                                    }
+                                                })
+                                            ];
+                                        case 1:
+                                            user = _state.sent();
+                                            if (!!user) return [
+                                                3,
+                                                3
+                                            ];
+                                            user = manager.create(ShopEntity, {
+                                                mobileNumber: input.mobileNumber,
+                                                countryIso: input.countryIso
+                                            });
+                                            return [
+                                                4,
+                                                manager.save(user)
+                                            ];
+                                        case 2:
+                                            _state.sent();
+                                            _state.label = 3;
+                                        case 3:
+                                            if (!(user.deletedAt != null)) return [
+                                                3,
+                                                6
+                                            ];
+                                            return [
+                                                4,
+                                                manager.restore(ShopEntity, {
+                                                    id: user.id
+                                                })
+                                            ];
+                                        case 4:
+                                            _state.sent();
+                                            return [
+                                                4,
+                                                manager.findOne(ShopEntity, {
+                                                    where: {
+                                                        id: user.id
+                                                    }
+                                                })
+                                            ];
+                                        case 5:
+                                            // Перезагружаем пользователя после восстановления
+                                            user = _state.sent();
+                                            _state.label = 6;
+                                        case 6:
+                                            return [
+                                                2,
+                                                user
+                                            ];
+                                    }
+                                });
+                            }))
                         ];
                     case 1:
-                        findResult = _state.sent();
-                        if (!((findResult == null ? void 0 : findResult.deletedAt) != null)) return [
-                            3,
-                            3
-                        ];
-                        return [
-                            4,
-                            _this.shopRepository.restore(findResult == null ? void 0 : findResult.id)
-                        ];
-                    case 2:
-                        _state.sent();
-                        _state.label = 3;
-                    case 3:
-                        if (!(findResult == null)) return [
-                            3,
-                            5
-                        ];
-                        return [
-                            4,
-                            _this.createUserWithMobileNumber(input)
-                        ];
-                    case 4:
+                        // Используем транзакцию для предотвращения race condition
                         return [
                             2,
                             _state.sent()
-                        ];
-                    case 5:
-                        return [
-                            2,
-                            findResult
-                        ];
-                    case 6:
-                        return [
-                            2
                         ];
                 }
             });
@@ -18999,53 +19053,83 @@ var SharedRiderService = /*#__PURE__*/ function() {
     _proto.findOrCreateUserWithMobileNumber = function findOrCreateUserWithMobileNumber(input) {
         var _this = this;
         return shared_rider_service_async_to_generator(function() {
-            var user;
             return shared_rider_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         return [
                             4,
-                            _this.repo.findOne({
-                                where: {
-                                    mobileNumber: input.mobileNumber
-                                },
-                                withDeleted: true
-                            })
+                            _this.repo.manager.transaction(/*#__PURE__*/ shared_rider_service_async_to_generator(function(manager) {
+                                var user;
+                                return shared_rider_service_ts_generator(this, function(_state) {
+                                    switch(_state.label){
+                                        case 0:
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        mobileNumber: input.mobileNumber
+                                                    },
+                                                    withDeleted: true,
+                                                    lock: {
+                                                        mode: 'pessimistic_write'
+                                                    }
+                                                })
+                                            ];
+                                        case 1:
+                                            user = _state.sent();
+                                            if (!!user) return [
+                                                3,
+                                                3
+                                            ];
+                                            user = manager.create(CustomerEntity, {
+                                                mobileNumber: input.mobileNumber
+                                            });
+                                            return [
+                                                4,
+                                                manager.save(user)
+                                            ];
+                                        case 2:
+                                            _state.sent();
+                                            _state.label = 3;
+                                        case 3:
+                                            if (!(user.deletedAt != null)) return [
+                                                3,
+                                                6
+                                            ];
+                                            return [
+                                                4,
+                                                manager.restore(CustomerEntity, {
+                                                    id: user.id
+                                                })
+                                            ];
+                                        case 4:
+                                            _state.sent();
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        id: user.id
+                                                    }
+                                                })
+                                            ];
+                                        case 5:
+                                            // Перезагружаем пользователя после восстановления
+                                            user = _state.sent();
+                                            _state.label = 6;
+                                        case 6:
+                                            return [
+                                                2,
+                                                user
+                                            ];
+                                    }
+                                });
+                            }))
                         ];
                     case 1:
-                        user = _state.sent();
-                        if (!!user) return [
-                            3,
-                            3
-                        ];
-                        user = _this.repo.create({
-                            mobileNumber: input.mobileNumber
-                        });
-                        return [
-                            4,
-                            _this.repo.save(user)
-                        ];
-                    case 2:
-                        _state.sent();
-                        _state.label = 3;
-                    case 3:
-                        if (!(user.deletedAt != null)) return [
-                            3,
-                            5
-                        ];
-                        return [
-                            4,
-                            _this.repo.restore({
-                                id: user.id
-                            })
-                        ];
-                    case 4:
-                        _state.sent();
-                        _state.label = 5;
-                    case 5:
+                        // Используем транзакцию для предотвращения race condition
                         return [
                             2,
-                            user
+                            _state.sent()
                         ];
                 }
             });
@@ -23846,49 +23930,84 @@ var SharedCustomerService = /*#__PURE__*/ function() {
     _proto.findOrCreateUserWithMobileNumber = function findOrCreateUserWithMobileNumber(input) {
         var _this = this;
         return shared_customer_service_async_to_generator(function() {
-            var findResult;
             return shared_customer_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         return [
                             4,
-                            _this.findUserByMobileNumber(input.mobileNumber)
+                            _this.customerRepository.manager.transaction(/*#__PURE__*/ shared_customer_service_async_to_generator(function(manager) {
+                                var user;
+                                return shared_customer_service_ts_generator(this, function(_state) {
+                                    switch(_state.label){
+                                        case 0:
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        mobileNumber: input.mobileNumber
+                                                    },
+                                                    withDeleted: true,
+                                                    lock: {
+                                                        mode: 'pessimistic_write'
+                                                    }
+                                                })
+                                            ];
+                                        case 1:
+                                            user = _state.sent();
+                                            if (!!user) return [
+                                                3,
+                                                3
+                                            ];
+                                            user = manager.create(CustomerEntity, {
+                                                mobileNumber: input.mobileNumber,
+                                                countryIso: input.countryIso
+                                            });
+                                            return [
+                                                4,
+                                                manager.save(user)
+                                            ];
+                                        case 2:
+                                            _state.sent();
+                                            _state.label = 3;
+                                        case 3:
+                                            if (!(user.deletedAt != null)) return [
+                                                3,
+                                                6
+                                            ];
+                                            return [
+                                                4,
+                                                manager.restore(CustomerEntity, {
+                                                    id: user.id
+                                                })
+                                            ];
+                                        case 4:
+                                            _state.sent();
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        id: user.id
+                                                    }
+                                                })
+                                            ];
+                                        case 5:
+                                            // Перезагружаем пользователя после восстановления
+                                            user = _state.sent();
+                                            _state.label = 6;
+                                        case 6:
+                                            return [
+                                                2,
+                                                user
+                                            ];
+                                    }
+                                });
+                            }))
                         ];
                     case 1:
-                        findResult = _state.sent();
-                        if (!((findResult == null ? void 0 : findResult.deletedAt) != null)) return [
-                            3,
-                            3
-                        ];
-                        return [
-                            4,
-                            _this.customerRepository.restore(findResult == null ? void 0 : findResult.id)
-                        ];
-                    case 2:
-                        _state.sent();
-                        _state.label = 3;
-                    case 3:
-                        if (!(findResult == null)) return [
-                            3,
-                            5
-                        ];
-                        return [
-                            4,
-                            _this.createUserWithMobileNumber(input)
-                        ];
-                    case 4:
+                        // Используем транзакцию для предотвращения race condition
                         return [
                             2,
                             _state.sent()
-                        ];
-                    case 5:
-                        return [
-                            2,
-                            findResult
-                        ];
-                    case 6:
-                        return [
-                            2
                         ];
                 }
             });
@@ -27594,11 +27713,14 @@ function smsc_service_ts_generator(thisArg, body) {
 
 var SMSCService = /*#__PURE__*/ function() {
     "use strict";
-    function SMSCService() {}
+    function SMSCService() {
+        this.logger = new common_.Logger(SMSCService.name);
+    }
     var _proto = SMSCService.prototype;
     _proto.sendOTP = function sendOTP(input) {
+        var _this = this;
         return smsc_service_async_to_generator(function() {
-            var login, password, sender, params, url, response, error;
+            var login, password, sender, params, url, urlWithoutPassword, response, errorMsg, errorCode, error;
             return smsc_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
@@ -27608,10 +27730,14 @@ var SMSCService = /*#__PURE__*/ function() {
                             ,
                             3
                         ]);
-                        console.log("HIT SMSC");
+                        _this.logger.log("=== SMSC SMS Service ===");
                         login = input.providerEntity.accountId;
                         password = input.providerEntity.authToken;
                         sender = input.providerEntity.fromNumber;
+                        _this.logger.log("Sending SMS to: " + input.phoneNumber);
+                        _this.logger.log("Sender: " + sender);
+                        _this.logger.log("Login: " + login);
+                        _this.logger.log("Message: " + input.message);
                         params = {
                             login: login,
                             psw: password,
@@ -27621,21 +27747,30 @@ var SMSCService = /*#__PURE__*/ function() {
                             fmt: 3
                         };
                         url = "https://smsc.kz/sys/send.php?" + external_qs_namespaceObject.stringify(params);
+                        urlWithoutPassword = url.replace(password, '***');
+                        _this.logger.log("Request URL: " + urlWithoutPassword);
                         return [
                             4,
                             external_axios_default().get(url)
                         ];
                     case 1:
                         response = _state.sent();
+                        _this.logger.log("SMSC Response status: " + response.status);
+                        _this.logger.log("SMSC Response data: " + JSON.stringify(response.data));
                         if (response.data.error) {
-                            throw new Error(response.data.error);
+                            errorMsg = response.data.error;
+                            errorCode = response.data.error_code;
+                            _this.logger.error("SMSC Error: " + errorMsg + " (code: " + errorCode + ")");
+                            throw new Error("SMSC API Error: " + errorMsg + " (code: " + errorCode + ")");
                         }
+                        _this.logger.log("SMS sent successfully via SMSC");
                         return [
                             3,
                             3
                         ];
                     case 2:
                         error = _state.sent();
+                        _this.logger.error("SMSC Service Error: " + error.message);
                         throw new apollo_.ForbiddenError(error.message);
                     case 3:
                         return [
@@ -27797,7 +27932,6 @@ function sms_service_ts_metadata(k, v) {
 
 
 
-
 var SMSService = /*#__PURE__*/ function() {
     "use strict";
     function SMSService(smsProviderService, sharedConfigService, twilioService, broadnetService, plivoService, vonageService, pahappaService, ventisService, smscService) {
@@ -27815,7 +27949,7 @@ var SMSService = /*#__PURE__*/ function() {
     _proto.sendVerificationCodeSms = function sendVerificationCodeSms(phoneNumber) {
         var _this = this;
         return sms_service_async_to_generator(function() {
-            var _defaultProvider_verificationTemplate, defaultProvider, random6Digit, _defaultProvider_verificationTemplate_replace, message, _;
+            var _defaultProvider_verificationTemplate, defaultProvider, random6Digit, _defaultProvider_verificationTemplate_replace, message;
             return sms_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
@@ -27829,173 +27963,69 @@ var SMSService = /*#__PURE__*/ function() {
                         random6Digit = Math.floor(100000 + Math.random() * 900000).toString();
                         common_.Logger.log("random6Digit: " + random6Digit);
                         message = (_defaultProvider_verificationTemplate_replace = (_defaultProvider_verificationTemplate = defaultProvider.verificationTemplate) == null ? void 0 : _defaultProvider_verificationTemplate.replace("{code}", random6Digit)) != null ? _defaultProvider_verificationTemplate_replace : "OTP is {code}";
-                        common_.Logger.log("defaultProvider: " + JSON.stringify(defaultProvider));
-                        _ = defaultProvider == null ? void 0 : defaultProvider.type;
-                        switch(_){
-                            case SMSProviderType.Twilio:
-                                return [
-                                    3,
-                                    2
-                                ];
-                            case SMSProviderType.BroadNet:
-                                return [
-                                    3,
-                                    4
-                                ];
-                            case SMSProviderType.Vonage:
-                                return [
-                                    3,
-                                    6
-                                ];
-                            case SMSProviderType.Plivo:
-                                return [
-                                    3,
-                                    8
-                                ];
-                            case SMSProviderType.Pahappa:
-                                return [
-                                    3,
-                                    10
-                                ];
-                            case SMSProviderType.VentisSMS:
-                                return [
-                                    3,
-                                    12
-                                ];
-                            case SMSProviderType.SMSC:
-                                return [
-                                    3,
-                                    14
-                                ];
-                            case SMSProviderType.Firebase:
-                                return [
-                                    3,
-                                    16
-                                ];
-                        }
-                        return [
-                            3,
-                            17
-                        ];
-                    case 2:
-                        return [
-                            4,
-                            _this.twilioService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 3:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 4:
-                        return [
-                            4,
-                            _this.broadnetService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 5:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 6:
-                        return [
-                            4,
-                            _this.vonageService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 7:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 8:
-                        return [
-                            4,
-                            _this.plivoService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 9:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 10:
-                        return [
-                            4,
-                            _this.pahappaService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 11:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 12:
-                        return [
-                            4,
-                            _this.ventisService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 13:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 14:
-                        return [
-                            4,
-                            _this.smscService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 15:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 16:
                         return [
                             2,
-                            random6Digit
-                        ];
-                    case 17:
-                        throw new apollo_.ForbiddenError("The default SMS provider is not supported");
-                    case 18:
-                        return [
-                            2,
-                            random6Digit
-                        ];
+                            '123456'
+                        ]; // TEMPORARY DISABLE SMS SENDING
                 }
             });
+        // Logger.log(`defaultProvider: ${JSON.stringify(defaultProvider)}`);
+        // switch (defaultProvider?.type) {
+        //   case SMSProviderType.Twilio:
+        //     await this.twilioService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.BroadNet:
+        //     await this.broadnetService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Vonage:
+        //     await this.vonageService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Plivo:
+        //     await this.plivoService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Pahappa:
+        //     await this.pahappaService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.VentisSMS:
+        //     await this.ventisService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.SMSC:
+        //     await this.smscService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Firebase:
+        //     return random6Digit;
+        //   default:
+        //     throw new ForbiddenError("The default SMS provider is not supported");
+        // }
+        // return random6Digit;
         })();
     };
     _proto.sendVerificationCodeWhatsapp = function sendVerificationCodeWhatsapp(phoneNumber) {
@@ -28224,12 +28254,6 @@ module.exports = require("rxjs");
 
 /***/ }),
 /* 19 */
-/***/ ((module) => {
-
-module.exports = require("path");
-
-/***/ }),
-/* 20 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28244,12 +28268,12 @@ Object.defineProperty(exports, "AddressModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _common = __webpack_require__(1);
 const _database = __webpack_require__(10);
-const _accesstokenguard = __webpack_require__(22);
-const _createrideraddressinput = __webpack_require__(24);
-const _rideraddressdto = __webpack_require__(26);
+const _accesstokenguard = __webpack_require__(21);
+const _createrideraddressinput = __webpack_require__(23);
+const _rideraddressdto = __webpack_require__(25);
 let AddressModule = class AddressModule {
 };
 AddressModule = _ts_decorate._([
@@ -28295,13 +28319,13 @@ AddressModule = _ts_decorate._([
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ ((module) => {
 
 module.exports = require("@ptc-org/nestjs-query-typeorm");
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28318,7 +28342,7 @@ const _ts_decorate = __webpack_require__(4);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
 const _apollo = __webpack_require__(6);
-const _passport = __webpack_require__(23);
+const _passport = __webpack_require__(22);
 let GqlAuthGuard = class GqlAuthGuard extends (0, _passport.AuthGuard)('jwt') {
     getRequest(context) {
         const ctx = _graphql.GqlExecutionContext.create(context).getContext();
@@ -28355,13 +28379,13 @@ GqlAuthGuard = _ts_decorate._([
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/passport");
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28379,7 +28403,7 @@ const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _phonenumberdto = __webpack_require__(25);
+const _phonenumberdto = __webpack_require__(24);
 let CreateRiderAddressInput = class CreateRiderAddressInput {
 };
 _ts_decorate._([
@@ -28426,7 +28450,7 @@ CreateRiderAddressInput = _ts_decorate._([
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28463,7 +28487,7 @@ PhoneNumberDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28481,7 +28505,7 @@ const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _phonenumberdto = __webpack_require__(25);
+const _phonenumberdto = __webpack_require__(24);
 let RiderAddressDTO = class RiderAddressDTO {
 };
 _ts_decorate._([
@@ -28537,7 +28561,7 @@ RiderAddressDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28552,8 +28576,8 @@ Object.defineProperty(exports, "AnnouncementModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _common = __webpack_require__(1);
-const _announcementservice = __webpack_require__(28);
-const _announcementresolver = __webpack_require__(30);
+const _announcementservice = __webpack_require__(27);
+const _announcementresolver = __webpack_require__(29);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
 let AnnouncementModule = class AnnouncementModule {
@@ -28574,7 +28598,7 @@ AnnouncementModule = _ts_decorate._([
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28589,7 +28613,7 @@ Object.defineProperty(exports, "AnnouncementService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
@@ -28622,13 +28646,13 @@ AnnouncementService = _ts_decorate._([
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ ((module) => {
 
 module.exports = require("@swc/helpers/_/_ts_param");
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28644,8 +28668,8 @@ Object.defineProperty(exports, "AnnouncementResolver", ({
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
-const _announcementdto = __webpack_require__(31);
-const _announcementservice = __webpack_require__(28);
+const _announcementdto = __webpack_require__(30);
+const _announcementservice = __webpack_require__(27);
 let AnnouncementResolver = class AnnouncementResolver {
     constructor(announcementService){
         this.announcementService = announcementService;
@@ -28672,7 +28696,7 @@ AnnouncementResolver = _ts_decorate._([
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28731,7 +28755,7 @@ AnnouncementDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28746,13 +28770,13 @@ Object.defineProperty(exports, "AuthModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _common = __webpack_require__(1);
-const _jwt = __webpack_require__(33);
-const _passport = __webpack_require__(23);
+const _jwt = __webpack_require__(32);
+const _passport = __webpack_require__(22);
 const _database = __webpack_require__(10);
-const _ridermodule = __webpack_require__(34);
-const _authresolver = __webpack_require__(58);
-const _authservice = __webpack_require__(62);
-const _jwtstrategy = __webpack_require__(65);
+const _ridermodule = __webpack_require__(33);
+const _authresolver = __webpack_require__(57);
+const _authservice = __webpack_require__(61);
+const _jwtstrategy = __webpack_require__(64);
 const _typeorm = __webpack_require__(9);
 const _licenseverify = __webpack_require__(17);
 let AuthModule = class AuthModule {
@@ -28794,13 +28818,13 @@ AuthModule = _ts_decorate._([
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/jwt");
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28816,11 +28840,11 @@ Object.defineProperty(exports, "RiderModule", ({
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _common = __webpack_require__(1);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _database = __webpack_require__(10);
-const _riderdto = __webpack_require__(35);
-const _updateriderinput = __webpack_require__(57);
-const _accesstokenguard = __webpack_require__(22);
+const _riderdto = __webpack_require__(34);
+const _updateriderinput = __webpack_require__(56);
+const _accesstokenguard = __webpack_require__(21);
 const _typeorm = __webpack_require__(9);
 let RiderModule = class RiderModule {
 };
@@ -28878,7 +28902,7 @@ RiderModule = _ts_decorate._([
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -28896,14 +28920,14 @@ const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _database = __webpack_require__(10);
-const _mediadto = __webpack_require__(36);
-const _coupondto = __webpack_require__(39);
-const _orderdto = __webpack_require__(40);
-const _nestjsquerycore = __webpack_require__(54);
-const _riderwalletdto = __webpack_require__(55);
-const _ridertransactiondto = __webpack_require__(56);
-const _savedpaymentmethoddto = __webpack_require__(49);
-const _driverdto = __webpack_require__(45);
+const _mediadto = __webpack_require__(35);
+const _coupondto = __webpack_require__(38);
+const _orderdto = __webpack_require__(39);
+const _nestjsquerycore = __webpack_require__(53);
+const _riderwalletdto = __webpack_require__(54);
+const _ridertransactiondto = __webpack_require__(55);
+const _savedpaymentmethoddto = __webpack_require__(48);
+const _driverdto = __webpack_require__(44);
 let RiderDTO = class RiderDTO {
 };
 _ts_decorate._([
@@ -29033,7 +29057,7 @@ RiderDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29046,12 +29070,12 @@ Object.defineProperty(exports, "MediaDTO", ({
         return MediaDTO;
     }
 }));
-const _interop_require_default = __webpack_require__(37);
+const _interop_require_default = __webpack_require__(36);
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
-const _properurljoin = /*#__PURE__*/ _interop_require_default._(__webpack_require__(38));
+const _properurljoin = /*#__PURE__*/ _interop_require_default._(__webpack_require__(37));
 let MediaDTO = class MediaDTO {
 };
 _ts_decorate._([
@@ -29082,19 +29106,19 @@ MediaDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ ((module) => {
 
 module.exports = require("@swc/helpers/_/_interop_require_default");
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ ((module) => {
 
 module.exports = require("proper-url-join");
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29147,7 +29171,7 @@ CouponDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29165,15 +29189,15 @@ const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _ordermessagedto = __webpack_require__(41);
-const _riderdto = __webpack_require__(35);
-const _serviceoptiondto = __webpack_require__(42);
-const _servicedto = __webpack_require__(43);
-const _paymentgatewaydto = __webpack_require__(44);
-const _driverdto = __webpack_require__(45);
-const _savedpaymentmethoddto = __webpack_require__(49);
-const _deliverycontactdto = __webpack_require__(50);
-const _taxiordershopdto = __webpack_require__(51);
+const _ordermessagedto = __webpack_require__(40);
+const _riderdto = __webpack_require__(34);
+const _serviceoptiondto = __webpack_require__(41);
+const _servicedto = __webpack_require__(42);
+const _paymentgatewaydto = __webpack_require__(43);
+const _driverdto = __webpack_require__(44);
+const _savedpaymentmethoddto = __webpack_require__(48);
+const _deliverycontactdto = __webpack_require__(49);
+const _taxiordershopdto = __webpack_require__(50);
 let OrderDTO = class OrderDTO {
 };
 _ts_decorate._([
@@ -29425,7 +29449,7 @@ OrderDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29443,7 +29467,7 @@ const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _orderdto = __webpack_require__(40);
+const _orderdto = __webpack_require__(39);
 let OrderMessageDTO = class OrderMessageDTO {
 };
 _ts_decorate._([
@@ -29485,7 +29509,7 @@ OrderMessageDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29545,7 +29569,7 @@ ServiceOptionDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29563,8 +29587,8 @@ const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _mediadto = __webpack_require__(36);
-const _serviceoptiondto = __webpack_require__(42);
+const _mediadto = __webpack_require__(35);
+const _serviceoptiondto = __webpack_require__(41);
 let ServiceDTO = class ServiceDTO {
 };
 _ts_decorate._([
@@ -29633,7 +29657,7 @@ ServiceDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29651,7 +29675,7 @@ const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _mediadto = __webpack_require__(36);
+const _mediadto = __webpack_require__(35);
 let PaymentGatewayDTO = class PaymentGatewayDTO {
 };
 _ts_decorate._([
@@ -29707,7 +29731,7 @@ PaymentGatewayDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29724,10 +29748,10 @@ const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
-const _mediadto = __webpack_require__(36);
-const _carcolordto = __webpack_require__(46);
-const _carmodeldto = __webpack_require__(47);
-const _driverservicesservicedto = __webpack_require__(48);
+const _mediadto = __webpack_require__(35);
+const _carcolordto = __webpack_require__(45);
+const _carmodeldto = __webpack_require__(46);
+const _driverservicesservicedto = __webpack_require__(47);
 let DriverDTO = class DriverDTO {
 };
 _ts_decorate._([
@@ -29788,7 +29812,7 @@ DriverDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29823,7 +29847,7 @@ CarColorDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29858,7 +29882,7 @@ CarModelDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29875,7 +29899,7 @@ const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _servicedto = __webpack_require__(43);
+const _servicedto = __webpack_require__(42);
 let DriverServicesServiceDTO = class DriverServicesServiceDTO {
 };
 _ts_decorate._([
@@ -29898,12 +29922,14 @@ _ts_decorate._([
 ], DriverServicesServiceDTO.prototype, "driverEnabled", void 0);
 DriverServicesServiceDTO = _ts_decorate._([
     (0, _graphql.ObjectType)(),
-    (0, _nestjsquerygraphql.Relation)('service', ()=>_servicedto.ServiceDTO)
+    (0, _nestjsquerygraphql.Relation)('service', ()=>_servicedto.ServiceDTO, {
+        nullable: true
+    })
 ], DriverServicesServiceDTO);
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -29987,7 +30013,7 @@ SavedPaymentMethodDto = _ts_decorate._([
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30003,7 +30029,7 @@ Object.defineProperty(exports, "DeliveryContactDTO", ({
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
-const _phonenumberdto = __webpack_require__(25);
+const _phonenumberdto = __webpack_require__(24);
 let DeliveryContactDTO = class DeliveryContactDTO {
 };
 _ts_decorate._([
@@ -30091,7 +30117,7 @@ DeliveryContactDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30108,7 +30134,7 @@ const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _shopordercartdto = __webpack_require__(52);
+const _shopordercartdto = __webpack_require__(51);
 let TaxiOrderShopDTO = class TaxiOrderShopDTO {
 };
 _ts_decorate._([
@@ -30128,7 +30154,7 @@ TaxiOrderShopDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30146,7 +30172,7 @@ const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _database = __webpack_require__(10);
-const _shopdto = __webpack_require__(53);
+const _shopdto = __webpack_require__(52);
 let ShopOrderCartDTO = class ShopOrderCartDTO {
 };
 _ts_decorate._([
@@ -30166,7 +30192,7 @@ ShopOrderCartDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30182,8 +30208,8 @@ Object.defineProperty(exports, "ShopDTO", ({
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
-const _phonenumberdto = __webpack_require__(25);
-const _mediadto = __webpack_require__(36);
+const _phonenumberdto = __webpack_require__(24);
+const _mediadto = __webpack_require__(35);
 const _nestjsquerygraphql = __webpack_require__(12);
 let ShopDTO = class ShopDTO {
 };
@@ -30216,13 +30242,13 @@ ShopDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ ((module) => {
 
 module.exports = require("@ptc-org/nestjs-query-core");
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30274,7 +30300,7 @@ RiderWalletDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30364,7 +30390,7 @@ RiderTransactionDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30460,7 +30486,7 @@ UpdateRiderInput = _ts_decorate._([
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30475,21 +30501,21 @@ Object.defineProperty(exports, "AuthResolver", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
-const _jwt = __webpack_require__(33);
+const _jwt = __webpack_require__(32);
 const _database = __webpack_require__(10);
-const _riderdto = __webpack_require__(35);
-const _authenticateduser = __webpack_require__(59);
-const _logindto = __webpack_require__(60);
-const _logininput = __webpack_require__(61);
-const _accesstokenguard = __webpack_require__(22);
+const _riderdto = __webpack_require__(34);
+const _authenticateduser = __webpack_require__(58);
+const _logindto = __webpack_require__(59);
+const _logininput = __webpack_require__(60);
+const _accesstokenguard = __webpack_require__(21);
 const _apollo = __webpack_require__(6);
 const _firebaseadmin = __webpack_require__(16);
-const _authservice = __webpack_require__(62);
-const _verifynumberdto = __webpack_require__(63);
-const _verificationdto = __webpack_require__(64);
+const _authservice = __webpack_require__(61);
+const _verifynumberdto = __webpack_require__(62);
+const _verificationdto = __webpack_require__(63);
 let AuthResolver = class AuthResolver {
     constructor(sharedRiderService, jwtService, authService, userContext){
         this.sharedRiderService = sharedRiderService;
@@ -30585,6 +30611,10 @@ let AuthResolver = class AuthResolver {
         };
     }
     async verifyPassword(mobileNumber, password) {
+        _common.Logger.log(`verifyPassword called: mobileNumber=${mobileNumber}, password length=${password?.length || 0}`, 'AuthResolver');
+        if (mobileNumber.startsWith('+')) {
+            mobileNumber = mobileNumber.substring(1);
+        }
         const user = await this.sharedRiderService.findWithDeleted({
             mobileNumber: mobileNumber
         });
@@ -30728,7 +30758,7 @@ AuthResolver = _ts_decorate._([
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30751,7 +30781,7 @@ AuthenticatedRiderDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30787,7 +30817,7 @@ LoginDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30817,7 +30847,7 @@ LoginInput = _ts_decorate._([
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30833,7 +30863,7 @@ Object.defineProperty(exports, "AuthService", ({
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _common = __webpack_require__(1);
-const _jwt = __webpack_require__(33);
+const _jwt = __webpack_require__(32);
 const _database = __webpack_require__(10);
 const _firebaseadmin = __webpack_require__(16);
 let AuthService = class AuthService {
@@ -30895,7 +30925,7 @@ AuthService = _ts_decorate._([
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30932,7 +30962,7 @@ VerifyNumberDto = _ts_decorate._([
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -30948,7 +30978,7 @@ Object.defineProperty(exports, "VerificationDto", ({
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
-const _riderdto = __webpack_require__(35);
+const _riderdto = __webpack_require__(34);
 let VerificationDto = class VerificationDto {
 };
 _ts_decorate._([
@@ -30981,7 +31011,7 @@ VerificationDto = _ts_decorate._([
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31004,10 +31034,10 @@ _export(exports, {
 });
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _passportjwt = __webpack_require__(66);
-const _passport = __webpack_require__(23);
+const _passportjwt = __webpack_require__(65);
+const _passport = __webpack_require__(22);
 const _common = __webpack_require__(1);
-const _jwtdecode = __webpack_require__(67);
+const _jwtdecode = __webpack_require__(66);
 let JwtStrategy = class JwtStrategy extends (0, _passport.PassportStrategy)(_passportjwt.Strategy, 'jwt') {
     constructor(){
         super({
@@ -31037,19 +31067,19 @@ async function validateToken(token) {
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ ((module) => {
 
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ ((module) => {
 
 module.exports = require("jwt-decode");
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31064,16 +31094,16 @@ Object.defineProperty(exports, "ChatModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _common = __webpack_require__(1);
 const _database = __webpack_require__(10);
-const _accesstokenguard = __webpack_require__(22);
-const _ordermodule = __webpack_require__(69);
-const _chatservice = __webpack_require__(91);
-const _chatsubscriptionservice = __webpack_require__(92);
-const _ordermessagedto = __webpack_require__(41);
-const _ordermessageinput = __webpack_require__(93);
-const _chatresolver = __webpack_require__(94);
+const _accesstokenguard = __webpack_require__(21);
+const _ordermodule = __webpack_require__(68);
+const _chatservice = __webpack_require__(90);
+const _chatsubscriptionservice = __webpack_require__(91);
+const _ordermessagedto = __webpack_require__(40);
+const _ordermessageinput = __webpack_require__(92);
+const _chatresolver = __webpack_require__(93);
 let ChatModule = class ChatModule {
 };
 ChatModule = _ts_decorate._([
@@ -31133,7 +31163,7 @@ ChatModule = _ts_decorate._([
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31148,30 +31178,30 @@ Object.defineProperty(exports, "OrderModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _common = __webpack_require__(1);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
-const _accesstokenguard = __webpack_require__(22);
-const _ridermodule = __webpack_require__(34);
-const _servicemodule = __webpack_require__(70);
-const _carcolordto = __webpack_require__(46);
-const _carmodeldto = __webpack_require__(47);
-const _driverdto = __webpack_require__(45);
-const _orderdto = __webpack_require__(40);
-const _orderresolver = __webpack_require__(73);
-const _riderorderservice = __webpack_require__(78);
-const _ordersubscriptionservice = __webpack_require__(81);
-const _couponmodule = __webpack_require__(83);
-const _feedbackparameterdto = __webpack_require__(87);
-const _updateorderinput = __webpack_require__(88);
-const _riderorderqueryservice = __webpack_require__(89);
+const _accesstokenguard = __webpack_require__(21);
+const _ridermodule = __webpack_require__(33);
+const _servicemodule = __webpack_require__(69);
+const _carcolordto = __webpack_require__(45);
+const _carmodeldto = __webpack_require__(46);
+const _driverdto = __webpack_require__(44);
+const _orderdto = __webpack_require__(39);
+const _orderresolver = __webpack_require__(72);
+const _riderorderservice = __webpack_require__(77);
+const _ordersubscriptionservice = __webpack_require__(80);
+const _couponmodule = __webpack_require__(82);
+const _feedbackparameterdto = __webpack_require__(86);
+const _updateorderinput = __webpack_require__(87);
+const _riderorderqueryservice = __webpack_require__(88);
 const _axios = __webpack_require__(14);
-const _cancelreasondto = __webpack_require__(90);
-const _shopordercartdto = __webpack_require__(52);
-const _shopdto = __webpack_require__(53);
-const _taxiordershopdto = __webpack_require__(51);
-const _driverservicesservicedto = __webpack_require__(48);
+const _cancelreasondto = __webpack_require__(89);
+const _shopordercartdto = __webpack_require__(51);
+const _shopdto = __webpack_require__(52);
+const _taxiordershopdto = __webpack_require__(50);
+const _driverservicesservicedto = __webpack_require__(47);
 let OrderModule = class OrderModule {
 };
 OrderModule = _ts_decorate._([
@@ -31431,7 +31461,7 @@ OrderModule = _ts_decorate._([
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31446,12 +31476,12 @@ Object.defineProperty(exports, "ServiceModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _common = __webpack_require__(1);
 const _database = __webpack_require__(10);
-const _uploadmodule = __webpack_require__(71);
-const _servicecategorydto = __webpack_require__(72);
-const _servicedto = __webpack_require__(43);
+const _uploadmodule = __webpack_require__(70);
+const _servicecategorydto = __webpack_require__(71);
+const _servicedto = __webpack_require__(42);
 let ServiceModule = class ServiceModule {
 };
 ServiceModule = _ts_decorate._([
@@ -31516,7 +31546,7 @@ ServiceModule = _ts_decorate._([
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31531,10 +31561,10 @@ Object.defineProperty(exports, "UploadModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _common = __webpack_require__(1);
 const _database = __webpack_require__(10);
-const _mediadto = __webpack_require__(36);
+const _mediadto = __webpack_require__(35);
 let UploadModule = class UploadModule {
 };
 UploadModule = _ts_decorate._([
@@ -31573,7 +31603,7 @@ UploadModule = _ts_decorate._([
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31590,7 +31620,7 @@ const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphql = __webpack_require__(8);
-const _servicedto = __webpack_require__(43);
+const _servicedto = __webpack_require__(42);
 let ServiceCategoryDTO = class ServiceCategoryDTO {
 };
 _ts_decorate._([
@@ -31617,7 +31647,7 @@ ServiceCategoryDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31632,27 +31662,30 @@ Object.defineProperty(exports, "OrderResolver", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _authenticateduser = __webpack_require__(59);
-const _accesstokenguard = __webpack_require__(22);
-const _calculatefaredto = __webpack_require__(74);
-const _calculatefareinput = __webpack_require__(75);
-const _createorderinput = __webpack_require__(76);
-const _orderdto = __webpack_require__(40);
-const _submitfeedbackinput = __webpack_require__(77);
-const _riderorderservice = __webpack_require__(78);
-const _currentorderdto = __webpack_require__(79);
-const _startridebyqrdto = __webpack_require__(80);
+const _authenticateduser = __webpack_require__(58);
+const _accesstokenguard = __webpack_require__(21);
+const _calculatefaredto = __webpack_require__(73);
+const _calculatefareinput = __webpack_require__(74);
+const _createorderinput = __webpack_require__(75);
+const _orderdto = __webpack_require__(39);
+const _submitfeedbackinput = __webpack_require__(76);
+const _riderorderservice = __webpack_require__(77);
+const _currentorderdto = __webpack_require__(78);
+const _startridebyqrdto = __webpack_require__(79);
+const _typeorm = __webpack_require__(9);
+const _typeorm1 = __webpack_require__(11);
 let OrderResolver = class OrderResolver {
-    constructor(context, orderService, riderOrderService, driverRedisService, commonCouponService){
+    constructor(context, orderService, riderOrderService, driverRedisService, commonCouponService, driverRepository){
         this.context = context;
         this.orderService = orderService;
         this.riderOrderService = riderOrderService;
         this.driverRedisService = driverRedisService;
         this.commonCouponService = commonCouponService;
+        this.driverRepository = driverRepository;
     }
     async activeOrders() {
         return this.riderOrderService.getActiveOrders(this.context.req.user.id);
@@ -31768,7 +31801,29 @@ let OrderResolver = class OrderResolver {
     async getDriversLocation(center) {
         if (center == null) return [];
         const closeDrivers = await this.driverRedisService.getClose(center, 1000);
-        return closeDrivers.map((item)=>item.location);
+        // Фильтруем только Online водителей
+        if (closeDrivers.length === 0) return [];
+        const driverIds = closeDrivers.map((d)=>d.driverId);
+        const onlineDrivers = await this.driverRepository.find({
+            where: {
+                id: (0, _typeorm1.In)(driverIds),
+                status: _database.DriverStatus.Online
+            },
+            select: [
+                'id'
+            ]
+        });
+        const onlineDriverIds = new Set(onlineDrivers.map((d)=>d.id));
+        return closeDrivers.filter((item)=>onlineDriverIds.has(item.driverId)).map((item)=>item.location);
+    }
+    async parkedDriversLocation(center, radius) {
+        const closeDrivers = await this.driverRedisService.getClose(center, radius ?? 1000);
+        if (closeDrivers.length === 0) return [];
+        // Получаем статусы водителей из БД
+        const driverIds = closeDrivers.map((d)=>d.driverId);
+        const drivers = await this.orderService["driverRepository"].findByIds(driverIds);
+        const parkedIds = drivers.filter((d)=>d.status === 'parked').map((d)=>d.id);
+        return closeDrivers.filter((d)=>parkedIds.includes(d.driverId)).map((d)=>d.location);
     }
     async submitReview(review) {
         return this.riderOrderService.submitReview(this.context.req.user.id, review);
@@ -31900,6 +31955,28 @@ _ts_decorate._([
     _ts_metadata._("design:returntype", Promise)
 ], OrderResolver.prototype, "getDriversLocation", null);
 _ts_decorate._([
+    (0, _graphql.Query)(()=>[
+            _database.Point
+        ], {
+        description: 'Get locations of parked drivers near a point'
+    }),
+    _ts_param._(0, (0, _graphql.Args)("center", {
+        type: ()=>_database.Point,
+        nullable: false
+    })),
+    _ts_param._(1, (0, _graphql.Args)({
+        name: 'radius',
+        type: ()=>Number,
+        nullable: true
+    })),
+    _ts_metadata._("design:type", Function),
+    _ts_metadata._("design:paramtypes", [
+        typeof _database.Point === "undefined" ? Object : _database.Point,
+        Number
+    ]),
+    _ts_metadata._("design:returntype", Promise)
+], OrderResolver.prototype, "parkedDriversLocation", null);
+_ts_decorate._([
     (0, _graphql.Mutation)(()=>_orderdto.OrderDTO),
     (0, _common.UseGuards)(_accesstokenguard.GqlAuthGuard),
     _ts_param._(0, (0, _graphql.Args)("review", {
@@ -31921,19 +31998,21 @@ _ts_decorate._([
 OrderResolver = _ts_decorate._([
     (0, _graphql.Resolver)(()=>_orderdto.OrderDTO),
     _ts_param._(0, (0, _common.Inject)(_graphql.CONTEXT)),
+    _ts_param._(5, (0, _typeorm.InjectRepository)(_database.DriverEntity)),
     _ts_metadata._("design:type", Function),
     _ts_metadata._("design:paramtypes", [
         typeof _authenticateduser.UserContextOptional === "undefined" ? Object : _authenticateduser.UserContextOptional,
         typeof _database.SharedOrderService === "undefined" ? Object : _database.SharedOrderService,
         typeof _riderorderservice.RiderOrderService === "undefined" ? Object : _riderorderservice.RiderOrderService,
         typeof _database.DriverRedisService === "undefined" ? Object : _database.DriverRedisService,
-        typeof _database.CommonCouponService === "undefined" ? Object : _database.CommonCouponService
+        typeof _database.CommonCouponService === "undefined" ? Object : _database.CommonCouponService,
+        typeof _typeorm1.Repository === "undefined" ? Object : _typeorm1.Repository
     ])
 ], OrderResolver);
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -31958,7 +32037,7 @@ const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _servicecategorydto = __webpack_require__(72);
+const _servicecategorydto = __webpack_require__(71);
 var CalculateFareError;
 (function(CalculateFareError) {
     CalculateFareError["RegionUnsupported"] = "REGION_UNSUPPORTED";
@@ -32015,7 +32094,7 @@ CalculateFareDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32080,7 +32159,7 @@ CalculateFareInput = _ts_decorate._([
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32177,7 +32256,7 @@ CreateOrderInput = _ts_decorate._([
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32231,7 +32310,7 @@ SubmitFeedbackInput = _ts_decorate._([
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32246,7 +32325,7 @@ Object.defineProperty(exports, "RiderOrderService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _axios = __webpack_require__(14);
 const _common = __webpack_require__(1);
@@ -32508,7 +32587,7 @@ RiderOrderService = _ts_decorate._([
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32525,7 +32604,7 @@ const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _orderdto = __webpack_require__(40);
+const _orderdto = __webpack_require__(39);
 let CurrentOrder = class CurrentOrder {
 };
 _ts_decorate._([
@@ -32546,7 +32625,7 @@ CurrentOrder = _ts_decorate._([
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32611,7 +32690,7 @@ StartRideByQrInput = _ts_decorate._([
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32626,13 +32705,13 @@ Object.defineProperty(exports, "OrderSubscriptionService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
 const _graphqlredissubscriptions = __webpack_require__(13);
-const _orderdto = __webpack_require__(40);
-const _driverlocationupdatedto = __webpack_require__(82);
+const _orderdto = __webpack_require__(39);
+const _driverlocationupdatedto = __webpack_require__(81);
 let OrderSubscriptionService = class OrderSubscriptionService {
     constructor(pubSub){
         this.pubSub = pubSub;
@@ -32705,7 +32784,7 @@ OrderSubscriptionService = _ts_decorate._([
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32748,7 +32827,7 @@ DriverLocationUpdateDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32765,9 +32844,9 @@ const _ts_decorate = __webpack_require__(4);
 const _common = __webpack_require__(1);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
-const _ordermodule = __webpack_require__(69);
-const _couponresolver = __webpack_require__(84);
-const _couponservice = __webpack_require__(86);
+const _ordermodule = __webpack_require__(68);
+const _couponresolver = __webpack_require__(83);
+const _couponservice = __webpack_require__(85);
 let CouponModule = class CouponModule {
 };
 CouponModule = _ts_decorate._([
@@ -32794,7 +32873,7 @@ CouponModule = _ts_decorate._([
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32809,15 +32888,15 @@ Object.defineProperty(exports, "CouponResolver", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _authenticateduser = __webpack_require__(59);
-const _accesstokenguard = __webpack_require__(22);
-const _orderdto = __webpack_require__(40);
-const _coupondto = __webpack_require__(39);
-const _giftcarddto = __webpack_require__(85);
+const _authenticateduser = __webpack_require__(58);
+const _accesstokenguard = __webpack_require__(21);
+const _orderdto = __webpack_require__(39);
+const _coupondto = __webpack_require__(38);
+const _giftcarddto = __webpack_require__(84);
 let CouponResolver = class CouponResolver {
     constructor(commonCouponService, commonGiftCardService, context){
         this.commonCouponService = commonCouponService;
@@ -32892,7 +32971,7 @@ CouponResolver = _ts_decorate._([
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32933,7 +33012,7 @@ GiftCardDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -32965,7 +33044,7 @@ CouponService = _ts_decorate._([
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33006,7 +33085,7 @@ FeedbackParameterDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33055,7 +33134,7 @@ UpdateOrderInput = _ts_decorate._([
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33070,16 +33149,16 @@ Object.defineProperty(exports, "RiderOrderQueryService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
-const _nestjsquerycore = __webpack_require__(54);
+const _ts_param = __webpack_require__(28);
+const _nestjsquerycore = __webpack_require__(53);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
 const _apollo = __webpack_require__(6);
 const _graphqlredissubscriptions = __webpack_require__(13);
 const _typeorm1 = __webpack_require__(11);
-const _riderorderservice = __webpack_require__(78);
+const _riderorderservice = __webpack_require__(77);
 let RiderOrderQueryService = class RiderOrderQueryService extends _nestjsquerytypeorm.TypeOrmQueryService {
     constructor(orderRepository, orderService, commonCouponService, pubSub){
         super(orderRepository);
@@ -33148,7 +33227,7 @@ RiderOrderQueryService = _ts_decorate._([
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33202,7 +33281,7 @@ OrderCancelReasonDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33217,10 +33296,10 @@ Object.defineProperty(exports, "ChatService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
-const _nestjsquerycore = __webpack_require__(54);
+const _ts_param = __webpack_require__(28);
+const _nestjsquerycore = __webpack_require__(53);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
 const _graphqlredissubscriptions = __webpack_require__(13);
@@ -33280,7 +33359,7 @@ ChatService = _ts_decorate._([
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33295,12 +33374,12 @@ Object.defineProperty(exports, "ChatSubscriptionService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
 const _graphqlredissubscriptions = __webpack_require__(13);
-const _ordermessagedto = __webpack_require__(41);
+const _ordermessagedto = __webpack_require__(40);
 let ChatSubscriptionService = class ChatSubscriptionService {
     constructor(pubSub){
         this.pubSub = pubSub;
@@ -33334,7 +33413,7 @@ ChatSubscriptionService = _ts_decorate._([
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33368,7 +33447,7 @@ OrderMessageInput = _ts_decorate._([
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33383,9 +33462,9 @@ Object.defineProperty(exports, "ChatResolver", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _graphql = __webpack_require__(8);
-const _chatservice = __webpack_require__(91);
+const _chatservice = __webpack_require__(90);
 let ChatResolver = class ChatResolver {
     constructor(chatService){
         this.chatService = chatService;
@@ -33415,7 +33494,7 @@ ChatResolver = _ts_decorate._([
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33430,13 +33509,13 @@ Object.defineProperty(exports, "ComplaintModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _common = __webpack_require__(1);
 const _database = __webpack_require__(10);
-const _accesstokenguard = __webpack_require__(22);
-const _complaintqueryservice = __webpack_require__(96);
-const _complaintdto = __webpack_require__(97);
-const _complaintinput = __webpack_require__(98);
+const _accesstokenguard = __webpack_require__(21);
+const _complaintqueryservice = __webpack_require__(95);
+const _complaintdto = __webpack_require__(96);
+const _complaintinput = __webpack_require__(97);
 let ComplaintModule = class ComplaintModule {
 };
 ComplaintModule = _ts_decorate._([
@@ -33485,7 +33564,7 @@ ComplaintModule = _ts_decorate._([
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33500,15 +33579,15 @@ Object.defineProperty(exports, "ComplaintQueryService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
-const _nestjsquerycore = __webpack_require__(54);
+const _ts_param = __webpack_require__(28);
+const _nestjsquerycore = __webpack_require__(53);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
 const _graphqlredissubscriptions = __webpack_require__(13);
 const _typeorm1 = __webpack_require__(11);
-const _complaintdto = __webpack_require__(97);
+const _complaintdto = __webpack_require__(96);
 let ComplaintQueryService = class ComplaintQueryService extends _nestjsquerytypeorm.TypeOrmQueryService {
     constructor(repo, operatorRepo, pubSub){
         super(repo);
@@ -33553,7 +33632,7 @@ ComplaintQueryService = _ts_decorate._([
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33601,7 +33680,7 @@ ComplaintDTO = _ts_decorate._([
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33652,7 +33731,7 @@ ComplaintInput = _ts_decorate._([
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33669,8 +33748,8 @@ const _ts_decorate = __webpack_require__(4);
 const _common = __webpack_require__(1);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
-const _driver_tendenyservice = __webpack_require__(100);
-const _driver_tendencyresolver = __webpack_require__(101);
+const _driver_tendenyservice = __webpack_require__(99);
+const _driver_tendencyresolver = __webpack_require__(100);
 let DriverTendencyModule = class DriverTendencyModule {
 };
 DriverTendencyModule = _ts_decorate._([
@@ -33689,7 +33768,7 @@ DriverTendencyModule = _ts_decorate._([
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33704,7 +33783,7 @@ Object.defineProperty(exports, "DriverTendencyService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);
@@ -33728,7 +33807,7 @@ DriverTendencyService = _ts_decorate._([
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33743,12 +33822,12 @@ Object.defineProperty(exports, "DriverTendencyResolver", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _graphql = __webpack_require__(8);
-const _driver_tendenyservice = __webpack_require__(100);
+const _driver_tendenyservice = __webpack_require__(99);
 const _common = __webpack_require__(1);
-const _authenticateduser = __webpack_require__(59);
-const _accesstokenguard = __webpack_require__(22);
+const _authenticateduser = __webpack_require__(58);
+const _accesstokenguard = __webpack_require__(21);
 let DriverTendencyResolver = class DriverTendencyResolver {
     constructor(driverTendencyService, context){
         this.driverTendencyService = driverTendencyService;
@@ -33783,7 +33862,7 @@ DriverTendencyResolver = _ts_decorate._([
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33798,9 +33877,9 @@ Object.defineProperty(exports, "RiderApiSetupNotFoundController", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
-const _express = __webpack_require__(103);
+const _express = __webpack_require__(102);
 let RiderApiSetupNotFoundController = class RiderApiSetupNotFoundController {
     main(res) {
         return res.redirect('/admin', 301);
@@ -33834,13 +33913,13 @@ RiderApiSetupNotFoundController = _ts_decorate._([
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ ((module) => {
 
 module.exports = require("express");
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -33853,23 +33932,23 @@ Object.defineProperty(exports, "RiderAPIController", ({
         return RiderAPIController;
     }
 }));
-const _interop_require_default = __webpack_require__(37);
+const _interop_require_default = __webpack_require__(36);
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _database = __webpack_require__(10);
-const _express = __webpack_require__(103);
-const _path = __webpack_require__(19);
+const _express = __webpack_require__(102);
+const _path = __webpack_require__(104);
 const _platformexpress = __webpack_require__(105);
 const _multer = __webpack_require__(106);
 const _restjwtauthguard = __webpack_require__(107);
 const _typeorm = __webpack_require__(9);
 const _typeorm1 = __webpack_require__(11);
-const _riderorderservice = __webpack_require__(78);
+const _riderorderservice = __webpack_require__(77);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _graphqlredissubscriptions = __webpack_require__(13);
-const _properurljoin = /*#__PURE__*/ _interop_require_default._(__webpack_require__(38));
+const _properurljoin = /*#__PURE__*/ _interop_require_default._(__webpack_require__(37));
 let RiderAPIController = class RiderAPIController {
     constructor(sharedCustomerWalletService, sharedOrderService, riderOrderService, cryptoService, pubSub, riderRepository, paymentRepository, mediaRepository){
         this.sharedCustomerWalletService = sharedCustomerWalletService;
@@ -34097,6 +34176,12 @@ RiderAPIController = _ts_decorate._([
 
 
 /***/ }),
+/* 104 */
+/***/ ((module) => {
+
+module.exports = require("path");
+
+/***/ }),
 /* 105 */
 /***/ ((module) => {
 
@@ -34124,7 +34209,7 @@ Object.defineProperty(exports, "RestJwtAuthGuard", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _common = __webpack_require__(1);
-const _passport = __webpack_require__(23);
+const _passport = __webpack_require__(22);
 let RestJwtAuthGuard = class RestJwtAuthGuard extends (0, _passport.AuthGuard)('jwt') {
     canActivate(context) {
         return super.canActivate(context);
@@ -34196,11 +34281,11 @@ Object.defineProperty(exports, "SOSResolver", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
 const _database = __webpack_require__(10);
-const _accesstokenguard = __webpack_require__(22);
+const _accesstokenguard = __webpack_require__(21);
 const _sosdto = __webpack_require__(110);
 const _sosservice = __webpack_require__(111);
 let SOSResolver = class SOSResolver {
@@ -34285,7 +34370,7 @@ Object.defineProperty(exports, "SOSService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _nestjsquerygraphql = __webpack_require__(12);
 const _common = __webpack_require__(1);
 const _typeorm = __webpack_require__(9);
@@ -34354,16 +34439,16 @@ Object.defineProperty(exports, "WalletModule", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _nestjsquerygraphql = __webpack_require__(12);
-const _nestjsquerytypeorm = __webpack_require__(21);
+const _nestjsquerytypeorm = __webpack_require__(20);
 const _common = __webpack_require__(1);
 const _database = __webpack_require__(10);
-const _accesstokenguard = __webpack_require__(22);
-const _paymentgatewaydto = __webpack_require__(44);
-const _ridertransactiondto = __webpack_require__(56);
-const _riderwalletdto = __webpack_require__(55);
+const _accesstokenguard = __webpack_require__(21);
+const _paymentgatewaydto = __webpack_require__(43);
+const _ridertransactiondto = __webpack_require__(55);
+const _riderwalletdto = __webpack_require__(54);
 const _walletresolver = __webpack_require__(113);
 const _axios = __webpack_require__(14);
-const _savedpaymentmethoddto = __webpack_require__(49);
+const _savedpaymentmethoddto = __webpack_require__(48);
 const _walletservice = __webpack_require__(115);
 let WalletModule = class WalletModule {
 };
@@ -34491,22 +34576,22 @@ Object.defineProperty(exports, "WalletResolver", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _graphql = __webpack_require__(8);
 const _typeorm = __webpack_require__(9);
 const _typeorm1 = __webpack_require__(11);
-const _authenticateduser = __webpack_require__(59);
-const _accesstokenguard = __webpack_require__(22);
+const _authenticateduser = __webpack_require__(58);
+const _accesstokenguard = __webpack_require__(21);
 const _topupwalletinput = __webpack_require__(114);
 const _database = __webpack_require__(10);
 const _axios = __webpack_require__(14);
 const _rxjs = __webpack_require__(18);
 const _walletservice = __webpack_require__(115);
 const _setup_payment_methoddto = __webpack_require__(116);
-const _giftcarddto = __webpack_require__(85);
-const _savedpaymentmethoddto = __webpack_require__(49);
-const _paymentgatewaydto = __webpack_require__(44);
+const _giftcarddto = __webpack_require__(84);
+const _savedpaymentmethoddto = __webpack_require__(48);
+const _paymentgatewaydto = __webpack_require__(43);
 let WalletResolver = class WalletResolver {
     constructor(customerRepo, savedPaymentMethodRepo, gatewayRepo, cryptoService, commongGiftCardService, context, httpService, walletService){
         this.customerRepo = customerRepo;
@@ -34899,7 +34984,7 @@ Object.defineProperty(exports, "WalletService", ({
 }));
 const _ts_decorate = __webpack_require__(4);
 const _ts_metadata = __webpack_require__(5);
-const _ts_param = __webpack_require__(29);
+const _ts_param = __webpack_require__(28);
 const _common = __webpack_require__(1);
 const _typeorm = __webpack_require__(9);
 const _database = __webpack_require__(10);

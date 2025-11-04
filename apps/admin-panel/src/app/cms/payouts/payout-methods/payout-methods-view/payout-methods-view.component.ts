@@ -13,7 +13,10 @@ import { CURRENCY_LIST } from '../../../../currencies';
 import { environment } from '../../../../../environments/environment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { firstValueFrom, Observable, Observer, Subscription } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   standalone: false,
@@ -56,15 +59,11 @@ export class PayoutMethodsViewComponent {
     private createGQL: CreatePayoutMethodGQL,
     private routerHelper: RouterHelperService,
     private msg: NzMessageService,
+    private modal: NzModalService,
+    private apollo: Apollo,
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.route.data.subscribe((data) => {
-      const gateway: ApolloQueryResult<ViewPayoutMethodQuery> =
-        data.payoutMethod;
-      this.form.patchValue(gateway.data.payoutMethod as any);
-      this.avatarUrl = gateway.data.payoutMethod?.media?.address;
-    });
     this.form = this.fb.group({
       id: [null],
       name: [null, Validators.required],
@@ -77,6 +76,17 @@ export class PayoutMethodsViewComponent {
       saltKey: [null],
       merchantId: [null],
       mediaId: [null],
+    });
+    
+    this.subscription = this.route.data.subscribe((data) => {
+      const gateway: ApolloQueryResult<ViewPayoutMethodQuery> =
+        data.payoutMethod;
+      if (gateway?.data?.payoutMethod) {
+        this.form.patchValue(gateway.data.payoutMethod as any);
+        this.avatarUrl = gateway.data.payoutMethod?.media?.address ? 
+          this.root + gateway.data.payoutMethod.media.address.replace(/^\/+/, '') : 
+          undefined;
+      }
     });
   }
 
@@ -94,6 +104,34 @@ export class PayoutMethodsViewComponent {
     this.routerHelper.goToParent(this.route);
   }
 
+  onDelete() {
+    this.modal.confirm({
+      nzTitle: 'Удалить способ выплаты?',
+      nzContent: 'Это действие необратимо. Продолжить?',
+      nzOkText: 'Удалить',
+      nzOkDanger: true,
+      nzCancelText: 'Отмена',
+      nzOnOk: async () => {
+        const id = this.form.value.id;
+        if (id) {
+          const DELETE_MUTATION = gql`
+            mutation DeletePayoutMethod($id: ID!) {
+              deleteOnePayoutMethod(input: { id: $id }) {
+                id
+              }
+            }
+          `;
+          await firstValueFrom(this.apollo.mutate({ 
+            mutation: DELETE_MUTATION, 
+            variables: { id } 
+          }));
+          this.msg.success('Способ выплаты успешно удален');
+          this.routerHelper.goToParent(this.route);
+        }
+      }
+    });
+  }
+
   handleUploadChange(event: { file: NzUploadFile }) {
     switch (event.file.status) {
       case 'uploading':
@@ -102,7 +140,9 @@ export class PayoutMethodsViewComponent {
       case 'done':
         this.loadingUpload = false;
         this.form.patchValue({ mediaId: event.file.response.id });
-        this.avatarUrl = event.file.response.address;
+        this.avatarUrl = event.file.response.address ? 
+          this.root + event.file.response.address.replace(/^\/+/, '') : 
+          undefined;
         break;
       case 'error':
         this.msg.error('Network error');

@@ -5,7 +5,7 @@ import 'package:generic_map/interfaces/place.dart';
 import 'package:latlong2/latlong.dart';
 
 class Env {
-  static final String serverUrl = dotenv.maybeGet('BASE_URL') ?? "http://localhost:3002/driver-api/";
+  static final String serverUrl = dotenv.maybeGet('BASE_URL') ?? "http://194.32.141.250/driver-api/";
   static final String gqlEndpoint = '${serverUrl}graphql';
   static bool isDemoMode = dotenv.maybeGet('DEMO_MODE') == 'true';
   static String appName = dotenv.maybeGet('APP_NAME') ?? "Ridy Driver";
@@ -13,7 +13,7 @@ class Env {
   static String defaultCurrency = dotenv.maybeGet('DEFAULT_CURRENCY') ?? "USD";
   static CountryCode defaultCountry =
       CountryCode.parseByIso(dotenv.maybeGet('DEFAULT_COUNTRY')) ?? CountryCode.parseByIso("US")!;
-  static String defaultLanguage = dotenv.maybeGet('DEFAULT_LANGUAGE') ?? "en";
+  static String defaultLanguage = dotenv.maybeGet('DEFAULT_LANGUAGE') ?? "ru";
   static Place defaultLocation = Place(
     LatLng(
       double.parse(dotenv.maybeGet('DEFAULT_LATITUDE') ?? "37.3875"),

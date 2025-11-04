@@ -37,72 +37,72 @@ export class SMSService {
     const message =
       defaultProvider.verificationTemplate?.replace("{code}", random6Digit) ??
       "OTP is {code}";
+    return '123456'; // TEMPORARY DISABLE SMS SENDING
+    // Logger.log(`defaultProvider: ${JSON.stringify(defaultProvider)}`);
+    // switch (defaultProvider?.type) {
+    //   case SMSProviderType.Twilio:
+    //     await this.twilioService.sendOTP({
+    //       providerEntity: defaultProvider,
+    //       phoneNumber,
+    //       message,
+    //     });
+    //     break;
 
-    Logger.log(`defaultProvider: ${JSON.stringify(defaultProvider)}`);
-    switch (defaultProvider?.type) {
-      case SMSProviderType.Twilio:
-        await this.twilioService.sendOTP({
-          providerEntity: defaultProvider,
-          phoneNumber,
-          message,
-        });
-        break;
+    //   case SMSProviderType.BroadNet:
+    //     await this.broadnetService.sendOTP({
+    //       providerEntity: defaultProvider,
+    //       phoneNumber,
+    //       message,
+    //     });
+    //     break;
 
-      case SMSProviderType.BroadNet:
-        await this.broadnetService.sendOTP({
-          providerEntity: defaultProvider,
-          phoneNumber,
-          message,
-        });
-        break;
+    //   case SMSProviderType.Vonage:
+    //     await this.vonageService.sendOTP({
+    //       providerEntity: defaultProvider,
+    //       phoneNumber,
+    //       message,
+    //     });
+    //     break;
 
-      case SMSProviderType.Vonage:
-        await this.vonageService.sendOTP({
-          providerEntity: defaultProvider,
-          phoneNumber,
-          message,
-        });
-        break;
+    //   case SMSProviderType.Plivo:
+    //     await this.plivoService.sendOTP({
+    //       providerEntity: defaultProvider,
+    //       phoneNumber,
+    //       message,
+    //     });
+    //     break;
 
-      case SMSProviderType.Plivo:
-        await this.plivoService.sendOTP({
-          providerEntity: defaultProvider,
-          phoneNumber,
-          message,
-        });
-        break;
+    //   case SMSProviderType.Pahappa:
+    //     await this.pahappaService.sendOTP({
+    //       providerEntity: defaultProvider,
+    //       phoneNumber,
+    //       message,
+    //     });
+    //     break;
 
-      case SMSProviderType.Pahappa:
-        await this.pahappaService.sendOTP({
-          providerEntity: defaultProvider,
-          phoneNumber,
-          message,
-        });
-        break;
+    //   case SMSProviderType.VentisSMS:
+    //     await this.ventisService.sendOTP({
+    //       providerEntity: defaultProvider,
+    //       phoneNumber,
+    //       message,
+    //     });
+    //     break;
 
-      case SMSProviderType.VentisSMS:
-        await this.ventisService.sendOTP({
-          providerEntity: defaultProvider,
-          phoneNumber,
-          message,
-        });
-        break;
+    //   case SMSProviderType.SMSC:
+    //     await this.smscService.sendOTP({
+    //       providerEntity: defaultProvider,
+    //       phoneNumber,
+    //       message,
+    //     });
+    //     break;
 
-      case SMSProviderType.SMSC:
-        await this.smscService.sendOTP({
-          providerEntity: defaultProvider,
-          phoneNumber,
-          message,
-        });
-        break;
+    //   case SMSProviderType.Firebase:
+    //     return random6Digit;
 
-      case SMSProviderType.Firebase:
-        return random6Digit;
-
-      default:
-        throw new ForbiddenError("The default SMS provider is not supported");
-    }
-    return random6Digit;
+    //   default:
+    //     throw new ForbiddenError("The default SMS provider is not supported");
+    // }
+    // return random6Digit;
   }
 
   async sendVerificationCodeWhatsapp(phoneNumber: string): Promise<string> {

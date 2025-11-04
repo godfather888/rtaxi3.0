@@ -70,8 +70,8 @@ class _SelectProfileImageDialogState extends State<SelectProfileImageDialog> {
           initialValue: avatar,
           onSaved: (newValue) => avatar = newValue,
           uploadButtonText: context.translate.uploadImage,
-          fileUploader: (path) {
-            return locator<UploadDatasource>().uploadProfilePicture(path);
+          fileUploader: (file) {
+            return locator<UploadDatasource>().uploadProfilePicture(file);
           },
           displayValue: (media) => media.address,
         ),

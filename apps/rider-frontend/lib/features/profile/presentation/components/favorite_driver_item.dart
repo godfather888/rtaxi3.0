@@ -7,6 +7,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:rider_flutter/core/extensions/extensions.dart';
 import 'package:rider_flutter/core/graphql/fragments/favorite_driver.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/favorite_driver.fragment.graphql.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 
 class FavoriteDriverItem extends StatelessWidget {
   final Fragment$FavoriteDriver entity;
@@ -38,7 +39,7 @@ class FavoriteDriverItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(children: [
               DriverAvatarSecondary(
-                imageUrl: entity.media?.address,
+                imageUrl: entity.media?.fullUrl,
               ),
               const SizedBox(width: 12),
               Expanded(

@@ -3,7 +3,7 @@ import { FilterableField, Relation } from '@ptc-org/nestjs-query-graphql';
 import { ServiceDTO } from '../../service/dto/service.dto';
 
 @ObjectType()
-@Relation('service', () => ServiceDTO)
+@Relation('service', () => ServiceDTO, { nullable: true })
 export class DriverServicesServiceDTO {
   @FilterableField(() => ID, { nullable: false })
   driverId!: number;

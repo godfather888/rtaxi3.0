@@ -43,6 +43,12 @@ export class DriverProfileComponent implements OnInit {
     this.query = this.route.data.pipe(map((data) => data.driver));
   }
 
+  getImageUrl(address?: string): string | undefined {
+    if (!address) return undefined;
+    const cleanAddress = address.replace(/^\/+/, '');
+    return this.root + cleanAddress;
+  }
+
   async changeStatus(status: DriverStatus) {
     const id = this.route.snapshot.params.id ?? 0;
     await firstValueFrom(this.updateGQL.mutate({ id, status }));

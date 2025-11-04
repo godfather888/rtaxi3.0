@@ -12,6 +12,7 @@ import 'package:flutter_common/core/presentation/waypoints_view/waypoints_view.d
 import 'package:flutter_common/core/presentation/chips/square_icon_chip.dart';
 import 'package:rider_flutter/core/extensions/extensions.dart';
 import 'package:rider_flutter/core/graphql/fragments/active_order.extentions.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/active_order.fragment.graphql.dart';
 import 'package:rider_flutter/core/graphql/fragments/ride_option.extentions.dart';
 import 'package:rider_flutter/core/presentation/app_generic_map.dart';
@@ -98,7 +99,7 @@ class ScheduledRidesDetailsSheet extends StatelessWidget {
                       children: [
                         if (entity.service?.media.address != null) ...[
                           CachedNetworkImage(
-                            imageUrl: entity.service!.media.address,
+                            imageUrl: entity.service!.media.fullUrl,
                             width: 48,
                             height: 48,
                           ),

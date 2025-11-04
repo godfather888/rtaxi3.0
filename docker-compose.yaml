@@ -1,0 +1,168 @@
+services:
+  mysql:
+    image: mysql:8.0.22
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      - bettersuite-network
+    volumes:
+      - mysqlvol:/var/lib/mysql
+      - ./backup:/var/backup
+    environment:
+      MYSQL_ROOT_PASSWORD: defaultpassword
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis
+    networks:
+      - bettersuite-network
+    volumes:
+      - redisvol:/data
+
+  taxi-rider-api:
+   # image: ghcr.io/lumeagency/taxi-rider-api:latest
+    image: taxi-rider-api:latest
+    restart: always
+    depends_on:
+      - "mysql"
+      - "redis"
+      - "taxi-admin-api"
+    volumes:
+      - ./apps:/app/apps
+      - ./img:/app/uploads
+      - ./config-new:/app/config
+      - ./apps/driver-frontend:/app/apps/driver-frontend
+    networks:
+      - bettersuite-network
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=mysql
+      - GATEWAY_SERVER_URL=http://194.32.141.250/payment
+      - RIDER_SERVER_URL=http://194.32.141.250/rider-api
+      - ENCRYPTION_KEY=lPw3ethAy4WqnWa3b4TAbCUJr89RifEs
+      - REDIS_HOST=redis
+    ports:
+      - "4000:3000"
+
+  taxi-driver-api:
+    # image: ghcr.io/lumeagency/taxi-driver-api:latest
+    image: taxi-driver-api:latest
+    restart: always
+    depends_on:
+      - "mysql"
+      - "redis"
+      - "taxi-admin-api"
+    volumes:
+      - ./img:/app/uploads
+      - ./config-new:/app/config
+    networks:
+      - bettersuite-network
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=mysql
+      - GATEWAY_SERVER_URL=http://194.32.141.250/payment
+      - DRIVER_SERVER_URL=http://194.32.141.250/driver-api
+      - REDIS_HOST=redis
+      - ENCRYPTION_KEY=lPw3ethAy4WqnWa3b4TAbCUJr89RifEs
+    ports:
+      - "4002:3000"
+
+  taxi-admin-api:
+    #image: ghcr.io/lumeagency/taxi-admin-api:latest
+    image: admin-api:v6
+    restart: always
+    depends_on:
+      - "mysql"
+      - "redis"
+    networks:
+      - bettersuite-network
+    volumes:
+      - ./img:/app/uploads
+      - ./config-new:/app/config
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=mysql
+      - REDIS_HOST=redis
+    ports:
+      - "4001:3000"
+
+  taxi-admin-panel:
+    #image: ghcr.io/lumeagency/taxi-legacy-admin-panel:latest
+    image: sha256:8d5dca9f858e42256c3ff6ceef6da1709c3315feb5d68e0d4f6450681c299508
+    restart: always
+    networks:
+      - bettersuite-network
+    volumes:
+      - taxiassets:/usr/share/nginx/html/assets
+    ports:
+      - "4003:80"
+
+  payment-gateways: 
+    #image: service-payment:latest 
+    image: ghcr.io/lumeagency/service-payment:latest
+    restart: always
+    depends_on:
+      - "taxi-rider-api"
+    ports:
+      - "3333:3333"
+    networks:
+      - bettersuite-network
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=mysql
+      - TEST_MODE=true
+      - MYSQL_DB=ridy
+      - GATEWAY_SERVER_URL=http://194.32.141.250/payment
+      - ENCRYPTION_KEY=lPw3ethAy4WqnWa3b4TAbCUJr89RifEs
+
+  taxi-rider-web-app:
+    image: ridyio/rider-web-app
+    restart: always
+    networks:
+      - bettersuite-network
+    ports:
+      - "4004:80"
+    environment:
+      - BASE_URL=http://194.32.141.250/rider-api
+      - DEMO_MODE=true
+
+  nginx:
+    image: nginx
+    depends_on:
+      - "payment-gateways"
+      - "taxi-rider-api"
+      - "taxi-driver-api"
+      - "taxi-rider-web-app"
+      - "taxi-admin-panel"
+      - "taxi-admin-api"
+
+    volumes:
+      - ./templates:/etc/nginx/templates
+      - ./certbot:/etc/letsencrypt
+      - ./img:/app/uploads
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_HOST=_
+    networks:
+      - bettersuite-network
+    # depends_on:
+    #   - certbot
+
+    # certbot:
+    #   image: certbot/certbot
+    #   volumes:
+    #     - ./certbot:/etc/letsencrypt
+    #   entrypoint: "/bin/sh"
+    #   command: "-c 'mkdir -p /etc/letsencrypt/www; trap exit TERM; while :; do certbot certonly --webroot -w /etc/letsencrypt/www --non-interactive --agree-tos --email devops@bettersuite.io -d bettersuite.io && sleep 12h & wait $!; done'"
+
+volumes:
+  redisvol:
+  mysqlvol:
+  taxiassets:
+
+
+networks:
+  bettersuite-network:

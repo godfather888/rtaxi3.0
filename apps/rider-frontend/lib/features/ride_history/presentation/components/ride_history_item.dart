@@ -7,6 +7,7 @@ import 'package:flutter_common/core/color_palette/color_palette.dart';
 import 'package:rider_flutter/core/extensions/extensions.dart';
 import 'package:flutter_common/core/presentation/avatars/driver_avatar_secondary.dart';
 import 'package:rider_flutter/core/graphql/fragments/favorite_driver.extentions.dart';
+import 'package:rider_flutter/core/graphql/fragments/media.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/past_order.extentions.dart';
 import 'package:rider_flutter/core/graphql/fragments/past_order.fragment.graphql.dart';
 import 'package:rider_flutter/core/presentation/driver_rating.dart';
@@ -135,7 +136,7 @@ class RideHistoryItem extends StatelessWidget {
                   Row(
                     children: [
                       DriverAvatarSecondary(
-                        imageUrl: entity.driver?.media?.address,
+                        imageUrl: entity.driver?.media?.fullUrl,
                       ),
                       const SizedBox(width: 12),
                       Expanded(

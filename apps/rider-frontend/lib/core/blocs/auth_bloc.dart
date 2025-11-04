@@ -64,7 +64,9 @@ class AuthBloc extends HydratedCubit<AuthState> {
     );
   }
 
-  void onLoggedOut() {
+  void onLoggedOut() async {
     emit(const AuthState.unauthenticated());
+    // Принудительно очищаем сохраненное состояние при выходе
+    await HydratedBloc.storage.delete(storageToken);
   }
 }

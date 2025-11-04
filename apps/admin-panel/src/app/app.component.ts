@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     }
     if (currentConfig.currentConfiguration.adminPanelAPIKey != null) {
       await this.loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${currentConfig.currentConfiguration.adminPanelAPIKey}&libraries=drawing,places&callback=initMap`,
+        `https://maps.googleapis.com/maps/api/js?key=${currentConfig.currentConfiguration.adminPanelAPIKey}&libraries=drawing,places&loading=async`,
       );
       this.isLoaded = true;
     } else if (
@@ -53,8 +53,11 @@ export class AppComponent implements OnInit {
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = name;
-      (window as unknown as any).initMap = (ev: any) => {
+      script.onload = () => {
         resolve();
+      };
+      script.onerror = (error) => {
+        reject(error);
       };
       document.getElementsByTagName('head')[0].appendChild(script);
     });

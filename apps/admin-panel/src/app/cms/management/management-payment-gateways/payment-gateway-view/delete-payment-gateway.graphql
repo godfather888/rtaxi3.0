@@ -1,0 +1,10 @@
+mutation DeletePaymentGateway($id: ID!) {
+  deleteOnePaymentGateway(input: { id: $id }) {
+    id
+  }
+}
+
+
+
+
+

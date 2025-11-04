@@ -160,6 +160,10 @@ export class AuthResolver {
     @Args('mobileNumber') mobileNumber: string,
     @Args('password') password: string,
   ): Promise<VerificationDto> {
+    Logger.log(`verifyPassword called: mobileNumber=${mobileNumber}, password length=${password?.length || 0}`, 'AuthResolver');
+    if (mobileNumber.startsWith('+')) {
+      mobileNumber = mobileNumber.substring(1);
+    }
     const user = await this.sharedRiderService.findWithDeleted({
       mobileNumber: mobileNumber,
     });

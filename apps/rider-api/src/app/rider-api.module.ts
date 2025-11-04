@@ -61,10 +61,7 @@ export class RiderAPIModule implements OnModuleInit {
           GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
             installSubscriptionHandlers: true,
-            autoSchemaFile: join(
-              process.cwd(),
-              'apps/taxi-rider-frontend/lib/core/graphql/schema.gql',
-            ),
+            autoSchemaFile: true,
             subscriptions: {
               'graphql-ws': {
                 connectionInitWaitTimeout: 5000,

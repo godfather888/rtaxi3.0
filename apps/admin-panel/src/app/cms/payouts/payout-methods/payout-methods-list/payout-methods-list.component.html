@@ -19,7 +19,7 @@
                 <tr *ngFor="let data of table.data" class="group cursor-pointer" [routerLink]="data.id + '/edit'">
                     <td>
                         <div class="flex flex-row items-center">
-                            <img *ngIf="data.media !== null" [src]="data.media?.address" width="32" height="32">
+                            <img *ngIf="data.media !== null" [src]="getImageUrl(data.media?.address)" width="32" height="32">
                             <span class="ml-2">{{ data.name }} ({{ data.type }})</span>
                         </div>
                     </td>

@@ -13619,7 +13619,7 @@ driver_entity_ts_decorate([
         return String;
     }),
     (0,external_typeorm_.Column)('enum', {
-        default: DriverStatus.WaitingDocuments,
+        default: DriverStatus.PendingApproval,
         enum: DriverStatus
     }),
     driver_entity_ts_metadata("design:type", typeof DriverStatus === "undefined" ? Object : DriverStatus)
@@ -15732,7 +15732,8 @@ DatabaseModule = database_module_ts_decorate([
                                     migrationsRun: true,
                                     synchronize: configService.get('NODE_ENV') === 'dev' || configService.get('FORCE_SYNC_DB', false) || currentTables[0].count < 10,
                                     // logging: configService.get('NODE_ENV') === 'dev',
-                                    logging: true
+                                    logging: true,
+                                    timezone: '+06:00'
                                 };
                                 logger.log('Database connection configured');
                                 return [
@@ -16523,49 +16524,84 @@ var SharedShopService = /*#__PURE__*/ function() {
     _proto.findOrCreateUserWithMobileNumber = function findOrCreateUserWithMobileNumber(input) {
         var _this = this;
         return shared_shop_service_async_to_generator(function() {
-            var findResult;
             return shared_shop_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         return [
                             4,
-                            _this.findUserByMobileNumber(input.mobileNumber)
+                            _this.shopRepository.manager.transaction(/*#__PURE__*/ shared_shop_service_async_to_generator(function(manager) {
+                                var user;
+                                return shared_shop_service_ts_generator(this, function(_state) {
+                                    switch(_state.label){
+                                        case 0:
+                                            return [
+                                                4,
+                                                manager.findOne(ShopEntity, {
+                                                    where: {
+                                                        mobileNumber: input.mobileNumber
+                                                    },
+                                                    withDeleted: true,
+                                                    lock: {
+                                                        mode: 'pessimistic_write'
+                                                    }
+                                                })
+                                            ];
+                                        case 1:
+                                            user = _state.sent();
+                                            if (!!user) return [
+                                                3,
+                                                3
+                                            ];
+                                            user = manager.create(ShopEntity, {
+                                                mobileNumber: input.mobileNumber,
+                                                countryIso: input.countryIso
+                                            });
+                                            return [
+                                                4,
+                                                manager.save(user)
+                                            ];
+                                        case 2:
+                                            _state.sent();
+                                            _state.label = 3;
+                                        case 3:
+                                            if (!(user.deletedAt != null)) return [
+                                                3,
+                                                6
+                                            ];
+                                            return [
+                                                4,
+                                                manager.restore(ShopEntity, {
+                                                    id: user.id
+                                                })
+                                            ];
+                                        case 4:
+                                            _state.sent();
+                                            return [
+                                                4,
+                                                manager.findOne(ShopEntity, {
+                                                    where: {
+                                                        id: user.id
+                                                    }
+                                                })
+                                            ];
+                                        case 5:
+                                            // Перезагружаем пользователя после восстановления
+                                            user = _state.sent();
+                                            _state.label = 6;
+                                        case 6:
+                                            return [
+                                                2,
+                                                user
+                                            ];
+                                    }
+                                });
+                            }))
                         ];
                     case 1:
-                        findResult = _state.sent();
-                        if (!((findResult == null ? void 0 : findResult.deletedAt) != null)) return [
-                            3,
-                            3
-                        ];
-                        return [
-                            4,
-                            _this.shopRepository.restore(findResult == null ? void 0 : findResult.id)
-                        ];
-                    case 2:
-                        _state.sent();
-                        _state.label = 3;
-                    case 3:
-                        if (!(findResult == null)) return [
-                            3,
-                            5
-                        ];
-                        return [
-                            4,
-                            _this.createUserWithMobileNumber(input)
-                        ];
-                    case 4:
+                        // Используем транзакцию для предотвращения race condition
                         return [
                             2,
                             _state.sent()
-                        ];
-                    case 5:
-                        return [
-                            2,
-                            findResult
-                        ];
-                    case 6:
-                        return [
-                            2
                         ];
                 }
             });
@@ -19022,53 +19058,83 @@ var SharedRiderService = /*#__PURE__*/ function() {
     _proto.findOrCreateUserWithMobileNumber = function findOrCreateUserWithMobileNumber(input) {
         var _this = this;
         return shared_rider_service_async_to_generator(function() {
-            var user;
             return shared_rider_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         return [
                             4,
-                            _this.repo.findOne({
-                                where: {
-                                    mobileNumber: input.mobileNumber
-                                },
-                                withDeleted: true
-                            })
+                            _this.repo.manager.transaction(/*#__PURE__*/ shared_rider_service_async_to_generator(function(manager) {
+                                var user;
+                                return shared_rider_service_ts_generator(this, function(_state) {
+                                    switch(_state.label){
+                                        case 0:
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        mobileNumber: input.mobileNumber
+                                                    },
+                                                    withDeleted: true,
+                                                    lock: {
+                                                        mode: 'pessimistic_write'
+                                                    }
+                                                })
+                                            ];
+                                        case 1:
+                                            user = _state.sent();
+                                            if (!!user) return [
+                                                3,
+                                                3
+                                            ];
+                                            user = manager.create(CustomerEntity, {
+                                                mobileNumber: input.mobileNumber
+                                            });
+                                            return [
+                                                4,
+                                                manager.save(user)
+                                            ];
+                                        case 2:
+                                            _state.sent();
+                                            _state.label = 3;
+                                        case 3:
+                                            if (!(user.deletedAt != null)) return [
+                                                3,
+                                                6
+                                            ];
+                                            return [
+                                                4,
+                                                manager.restore(CustomerEntity, {
+                                                    id: user.id
+                                                })
+                                            ];
+                                        case 4:
+                                            _state.sent();
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        id: user.id
+                                                    }
+                                                })
+                                            ];
+                                        case 5:
+                                            // Перезагружаем пользователя после восстановления
+                                            user = _state.sent();
+                                            _state.label = 6;
+                                        case 6:
+                                            return [
+                                                2,
+                                                user
+                                            ];
+                                    }
+                                });
+                            }))
                         ];
                     case 1:
-                        user = _state.sent();
-                        if (!!user) return [
-                            3,
-                            3
-                        ];
-                        user = _this.repo.create({
-                            mobileNumber: input.mobileNumber
-                        });
-                        return [
-                            4,
-                            _this.repo.save(user)
-                        ];
-                    case 2:
-                        _state.sent();
-                        _state.label = 3;
-                    case 3:
-                        if (!(user.deletedAt != null)) return [
-                            3,
-                            5
-                        ];
-                        return [
-                            4,
-                            _this.repo.restore({
-                                id: user.id
-                            })
-                        ];
-                    case 4:
-                        _state.sent();
-                        _state.label = 5;
-                    case 5:
+                        // Используем транзакцию для предотвращения race condition
                         return [
                             2,
-                            user
+                            _state.sent()
                         ];
                 }
             });
@@ -23869,49 +23935,84 @@ var SharedCustomerService = /*#__PURE__*/ function() {
     _proto.findOrCreateUserWithMobileNumber = function findOrCreateUserWithMobileNumber(input) {
         var _this = this;
         return shared_customer_service_async_to_generator(function() {
-            var findResult;
             return shared_customer_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         return [
                             4,
-                            _this.findUserByMobileNumber(input.mobileNumber)
+                            _this.customerRepository.manager.transaction(/*#__PURE__*/ shared_customer_service_async_to_generator(function(manager) {
+                                var user;
+                                return shared_customer_service_ts_generator(this, function(_state) {
+                                    switch(_state.label){
+                                        case 0:
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        mobileNumber: input.mobileNumber
+                                                    },
+                                                    withDeleted: true,
+                                                    lock: {
+                                                        mode: 'pessimistic_write'
+                                                    }
+                                                })
+                                            ];
+                                        case 1:
+                                            user = _state.sent();
+                                            if (!!user) return [
+                                                3,
+                                                3
+                                            ];
+                                            user = manager.create(CustomerEntity, {
+                                                mobileNumber: input.mobileNumber,
+                                                countryIso: input.countryIso
+                                            });
+                                            return [
+                                                4,
+                                                manager.save(user)
+                                            ];
+                                        case 2:
+                                            _state.sent();
+                                            _state.label = 3;
+                                        case 3:
+                                            if (!(user.deletedAt != null)) return [
+                                                3,
+                                                6
+                                            ];
+                                            return [
+                                                4,
+                                                manager.restore(CustomerEntity, {
+                                                    id: user.id
+                                                })
+                                            ];
+                                        case 4:
+                                            _state.sent();
+                                            return [
+                                                4,
+                                                manager.findOne(CustomerEntity, {
+                                                    where: {
+                                                        id: user.id
+                                                    }
+                                                })
+                                            ];
+                                        case 5:
+                                            // Перезагружаем пользователя после восстановления
+                                            user = _state.sent();
+                                            _state.label = 6;
+                                        case 6:
+                                            return [
+                                                2,
+                                                user
+                                            ];
+                                    }
+                                });
+                            }))
                         ];
                     case 1:
-                        findResult = _state.sent();
-                        if (!((findResult == null ? void 0 : findResult.deletedAt) != null)) return [
-                            3,
-                            3
-                        ];
-                        return [
-                            4,
-                            _this.customerRepository.restore(findResult == null ? void 0 : findResult.id)
-                        ];
-                    case 2:
-                        _state.sent();
-                        _state.label = 3;
-                    case 3:
-                        if (!(findResult == null)) return [
-                            3,
-                            5
-                        ];
-                        return [
-                            4,
-                            _this.createUserWithMobileNumber(input)
-                        ];
-                    case 4:
+                        // Используем транзакцию для предотвращения race condition
                         return [
                             2,
                             _state.sent()
-                        ];
-                    case 5:
-                        return [
-                            2,
-                            findResult
-                        ];
-                    case 6:
-                        return [
-                            2
                         ];
                 }
             });
@@ -27617,11 +27718,14 @@ function smsc_service_ts_generator(thisArg, body) {
 
 var SMSCService = /*#__PURE__*/ function() {
     "use strict";
-    function SMSCService() {}
+    function SMSCService() {
+        this.logger = new common_.Logger(SMSCService.name);
+    }
     var _proto = SMSCService.prototype;
     _proto.sendOTP = function sendOTP(input) {
+        var _this = this;
         return smsc_service_async_to_generator(function() {
-            var login, password, sender, params, url, response, error;
+            var login, password, sender, params, url, urlWithoutPassword, response, errorMsg, errorCode, error;
             return smsc_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
@@ -27631,10 +27735,14 @@ var SMSCService = /*#__PURE__*/ function() {
                             ,
                             3
                         ]);
-                        console.log("HIT SMSC");
+                        _this.logger.log("=== SMSC SMS Service ===");
                         login = input.providerEntity.accountId;
                         password = input.providerEntity.authToken;
                         sender = input.providerEntity.fromNumber;
+                        _this.logger.log("Sending SMS to: " + input.phoneNumber);
+                        _this.logger.log("Sender: " + sender);
+                        _this.logger.log("Login: " + login);
+                        _this.logger.log("Message: " + input.message);
                         params = {
                             login: login,
                             psw: password,
@@ -27644,21 +27752,30 @@ var SMSCService = /*#__PURE__*/ function() {
                             fmt: 3
                         };
                         url = "https://smsc.kz/sys/send.php?" + external_qs_namespaceObject.stringify(params);
+                        urlWithoutPassword = url.replace(password, '***');
+                        _this.logger.log("Request URL: " + urlWithoutPassword);
                         return [
                             4,
                             external_axios_default().get(url)
                         ];
                     case 1:
                         response = _state.sent();
+                        _this.logger.log("SMSC Response status: " + response.status);
+                        _this.logger.log("SMSC Response data: " + JSON.stringify(response.data));
                         if (response.data.error) {
-                            throw new Error(response.data.error);
+                            errorMsg = response.data.error;
+                            errorCode = response.data.error_code;
+                            _this.logger.error("SMSC Error: " + errorMsg + " (code: " + errorCode + ")");
+                            throw new Error("SMSC API Error: " + errorMsg + " (code: " + errorCode + ")");
                         }
+                        _this.logger.log("SMS sent successfully via SMSC");
                         return [
                             3,
                             3
                         ];
                     case 2:
                         error = _state.sent();
+                        _this.logger.error("SMSC Service Error: " + error.message);
                         throw new apollo_.ForbiddenError(error.message);
                     case 3:
                         return [
@@ -27820,7 +27937,6 @@ function sms_service_ts_metadata(k, v) {
 
 
 
-
 var SMSService = /*#__PURE__*/ function() {
     "use strict";
     function SMSService(smsProviderService, sharedConfigService, twilioService, broadnetService, plivoService, vonageService, pahappaService, ventisService, smscService) {
@@ -27838,7 +27954,7 @@ var SMSService = /*#__PURE__*/ function() {
     _proto.sendVerificationCodeSms = function sendVerificationCodeSms(phoneNumber) {
         var _this = this;
         return sms_service_async_to_generator(function() {
-            var _defaultProvider_verificationTemplate, defaultProvider, random6Digit, _defaultProvider_verificationTemplate_replace, message, _;
+            var _defaultProvider_verificationTemplate, defaultProvider, random6Digit, _defaultProvider_verificationTemplate_replace, message;
             return sms_service_ts_generator(this, function(_state) {
                 switch(_state.label){
                     case 0:
@@ -27852,173 +27968,69 @@ var SMSService = /*#__PURE__*/ function() {
                         random6Digit = Math.floor(100000 + Math.random() * 900000).toString();
                         common_.Logger.log("random6Digit: " + random6Digit);
                         message = (_defaultProvider_verificationTemplate_replace = (_defaultProvider_verificationTemplate = defaultProvider.verificationTemplate) == null ? void 0 : _defaultProvider_verificationTemplate.replace("{code}", random6Digit)) != null ? _defaultProvider_verificationTemplate_replace : "OTP is {code}";
-                        common_.Logger.log("defaultProvider: " + JSON.stringify(defaultProvider));
-                        _ = defaultProvider == null ? void 0 : defaultProvider.type;
-                        switch(_){
-                            case SMSProviderType.Twilio:
-                                return [
-                                    3,
-                                    2
-                                ];
-                            case SMSProviderType.BroadNet:
-                                return [
-                                    3,
-                                    4
-                                ];
-                            case SMSProviderType.Vonage:
-                                return [
-                                    3,
-                                    6
-                                ];
-                            case SMSProviderType.Plivo:
-                                return [
-                                    3,
-                                    8
-                                ];
-                            case SMSProviderType.Pahappa:
-                                return [
-                                    3,
-                                    10
-                                ];
-                            case SMSProviderType.VentisSMS:
-                                return [
-                                    3,
-                                    12
-                                ];
-                            case SMSProviderType.SMSC:
-                                return [
-                                    3,
-                                    14
-                                ];
-                            case SMSProviderType.Firebase:
-                                return [
-                                    3,
-                                    16
-                                ];
-                        }
-                        return [
-                            3,
-                            17
-                        ];
-                    case 2:
-                        return [
-                            4,
-                            _this.twilioService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 3:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 4:
-                        return [
-                            4,
-                            _this.broadnetService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 5:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 6:
-                        return [
-                            4,
-                            _this.vonageService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 7:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 8:
-                        return [
-                            4,
-                            _this.plivoService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 9:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 10:
-                        return [
-                            4,
-                            _this.pahappaService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 11:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 12:
-                        return [
-                            4,
-                            _this.ventisService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 13:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 14:
-                        return [
-                            4,
-                            _this.smscService.sendOTP({
-                                providerEntity: defaultProvider,
-                                phoneNumber: phoneNumber,
-                                message: message
-                            })
-                        ];
-                    case 15:
-                        _state.sent();
-                        return [
-                            3,
-                            18
-                        ];
-                    case 16:
                         return [
                             2,
-                            random6Digit
-                        ];
-                    case 17:
-                        throw new apollo_.ForbiddenError("The default SMS provider is not supported");
-                    case 18:
-                        return [
-                            2,
-                            random6Digit
-                        ];
+                            '123456'
+                        ]; // TEMPORARY DISABLE SMS SENDING
                 }
             });
+        // Logger.log(`defaultProvider: ${JSON.stringify(defaultProvider)}`);
+        // switch (defaultProvider?.type) {
+        //   case SMSProviderType.Twilio:
+        //     await this.twilioService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.BroadNet:
+        //     await this.broadnetService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Vonage:
+        //     await this.vonageService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Plivo:
+        //     await this.plivoService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Pahappa:
+        //     await this.pahappaService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.VentisSMS:
+        //     await this.ventisService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.SMSC:
+        //     await this.smscService.sendOTP({
+        //       providerEntity: defaultProvider,
+        //       phoneNumber,
+        //       message,
+        //     });
+        //     break;
+        //   case SMSProviderType.Firebase:
+        //     return random6Digit;
+        //   default:
+        //     throw new ForbiddenError("The default SMS provider is not supported");
+        // }
+        // return random6Digit;
         })();
     };
     _proto.sendVerificationCodeWhatsapp = function sendVerificationCodeWhatsapp(phoneNumber) {
@@ -28756,30 +28768,52 @@ let DriverService = class DriverService {
         });
     }
     async findOrCreateUserWithMobileNumber(input) {
-        const findResult = await this.findWithDeleted({
-            mobileNumber: input.mobileNumber
-        });
-        if (findResult?.deletedAt != null) {
-            await this.repo.restore(findResult.id);
-        }
-        if (findResult == null) {
-            const driver = this.repo.create(input);
-            return this.repo.save(driver);
-        }
-        const user = await this.repo.findOne({
-            where: {
-                mobileNumber: input.mobileNumber
-            },
-            withDeleted: true,
-            relations: {
-                documents: true,
-                media: true
+        // Используем транзакцию для предотвращения race condition
+        return await this.repo.manager.transaction(async (manager)=>{
+            let user = await manager.findOne(_database.DriverEntity, {
+                where: {
+                    mobileNumber: input.mobileNumber
+                },
+                withDeleted: true,
+                relations: {
+                    documents: true,
+                    media: true
+                },
+                lock: {
+                    mode: 'pessimistic_write'
+                }
+            });
+            if (!user) {
+                user = manager.create(_database.DriverEntity, input);
+                await manager.save(user);
+                // Перезагружаем с relations после создания
+                user = await manager.findOne(_database.DriverEntity, {
+                    where: {
+                        id: user.id
+                    },
+                    relations: {
+                        documents: true,
+                        media: true
+                    }
+                });
             }
+            if (user.deletedAt != null) {
+                await manager.restore(_database.DriverEntity, {
+                    id: user.id
+                });
+                // Перезагружаем пользователя после восстановления
+                user = await manager.findOne(_database.DriverEntity, {
+                    where: {
+                        id: user.id
+                    },
+                    relations: {
+                        documents: true,
+                        media: true
+                    }
+                });
+            }
+            return user;
         });
-        if (!user) {
-            throw new Error(`Driver with mobile number ${input.mobileNumber} not found`);
-        }
-        return user;
     }
     async findByIds(ids) {
         return this.repo.find({
@@ -28853,21 +28887,6 @@ let DriverService = class DriverService {
             throw new Error(`Driver with id ${driverId} not found`);
         }
         return driver;
-    }
-    async getDriversByStatusAndLocation(status, lat, lng, radiusKm = 5) {
-        // location - поле типа Point (PostGIS)
-        return this.repo.createQueryBuilder("driver").where("driver.status = :status", {
-            status
-        }).andWhere(`ST_DWithin(driver.location, ST_SetSRID(ST_MakePoint(:lng, :lat), 4326)::geography, :radius)`, {
-            lat,
-            lng,
-            radius: radiusKm * 1000
-        }).select([
-            "driver.id",
-            "driver.location",
-            "driver.car",
-            "driver.carColor"
-        ]).getMany();
     }
 };
 DriverService = _ts_decorate._([
@@ -30763,9 +30782,6 @@ let DriverResolver = class DriverResolver {
         console.log("hit the route");
         return this.driverService.generateQrCode(this.context.req.user.id);
     }
-    async parkedDriversNearby(lat, lng, radiusKm) {
-        return this.driverService.getDriversByStatusAndLocation(_database.DriverStatus.Parked, lat, lng, radiusKm ?? 5);
-    }
     async parkDriver(lat, lng) {
         const driver = await this.driverService.setStatusAndLocation(this.context.req.user.id, _database.DriverStatus.Parked, lat, lng);
         return {
@@ -30781,25 +30797,6 @@ _ts_decorate._([
     _ts_metadata._("design:paramtypes", []),
     _ts_metadata._("design:returntype", Promise)
 ], DriverResolver.prototype, "getQrCode", null);
-_ts_decorate._([
-    (0, _graphql.Query)(()=>[
-            _database.DriverEntity
-        ]),
-    _ts_param._(0, (0, _graphql.Args)('lat')),
-    _ts_param._(1, (0, _graphql.Args)('lng')),
-    _ts_param._(2, (0, _graphql.Args)({
-        name: 'radiusKm',
-        type: ()=>Number,
-        nullable: true
-    })),
-    _ts_metadata._("design:type", Function),
-    _ts_metadata._("design:paramtypes", [
-        Number,
-        Number,
-        Number
-    ]),
-    _ts_metadata._("design:returntype", Promise)
-], DriverResolver.prototype, "parkedDriversNearby", null);
 _ts_decorate._([
     (0, _graphql.Mutation)(()=>_parkdriveroutputdto.ParkDriverOutput),
     (0, _common.UseGuards)(_jwtgqlauthguard.GqlAuthGuard),
@@ -33208,12 +33205,23 @@ let DriverAPIController = class DriverAPIController {
             mediaId: insert.id
         });
         insert.id = insert.id.toString();
+        // Используем CDN_URL или базовый URL driver-api
+        const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
         res.send({
             id: insert.id,
-            address: (0, _properurljoin.default)(process.env.CDN_URL, file.filename)
+            address: (0, _properurljoin.default)(cdnUrl, file.filename)
         });
     }
     async uploadDocument(file, req, res) {
+        // Проверяем что файл загружен
+        if (!file) {
+            console.error('No file uploaded! Request body:', req.body);
+            console.error('Request headers:', req.headers);
+            return res.status(400).send({
+                error: 'No file uploaded',
+                message: 'Please select a file to upload'
+            });
+        }
         const insert = await this.mediaRepository.save({
             address: file.filename,
             driverDocumentId: req.user.id
@@ -33222,9 +33230,11 @@ let DriverAPIController = class DriverAPIController {
         const doc = this.driverDocumentRepository.create();
         doc.driverId = req.user.id;
         doc.driverDocumentId = parseInt(req.body.requestedDocumentId);
+        // Используем CDN_URL или базовый URL driver-api
+        const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
         res.send({
             id: insert.id,
-            address: (0, _properurljoin.default)(process.env.CDN_URL, file.filename)
+            address: (0, _properurljoin.default)(cdnUrl, file.filename)
         });
     }
     async uploadMedia(file, req, res) {

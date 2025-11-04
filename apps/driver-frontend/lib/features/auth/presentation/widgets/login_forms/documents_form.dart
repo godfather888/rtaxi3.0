@@ -31,7 +31,7 @@ class DocumentsForm extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "Your face should be recognizable in the image",
+                    context.translate.profilePhotoDescription,
                     style: context.bodyMedium,
                   ),
                   const SizedBox(
@@ -39,7 +39,7 @@ class DocumentsForm extends StatelessWidget {
                   ),
                   UploadImageField(
                     displayValue: (p0) => p0.address,
-                    validator: (p0) => p0 == null ? "Please upload your profile picture" : null,
+                    validator: (p0) => p0 == null ? context.translate.pleaseUploadProfilePhoto : null,
                     initialValue: state.profileFullEntity?.media,
                     onSaved: (value) => locator<LoginBloc>().onProfilePhotoChanged(value),
                     uploadButtonText: context.translate.uploadImage,
@@ -49,14 +49,14 @@ class DocumentsForm extends StatelessWidget {
                     height: 28,
                   ),
                   Text(
-                    "Required documents",
+                    context.translate.requiredDocuments,
                     style: context.titleLarge,
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   Text(
-                    "In order to verification above documents we require below documents uploaded \n1-ID \n2-Driver License \n3-ride’s ownership document",
+                    context.translate.documentsRequiredList,
                     style: context.bodyMedium,
                   ),
                   const SizedBox(
@@ -66,40 +66,59 @@ class DocumentsForm extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: FormField<List<Fragment$Media>>(
                       initialValue: state.profileFullEntity?.documents!.toList() ?? [],
+                      validator: (value) {
+                        // Требуем минимум 2 документа (водительское удостоверение + техпаспорт)
+                        if (value == null || value.length < 2) {
+                          return context.translate.pleaseUploadAllDocuments;
+                        }
+                        return null;
+                      },
                       onSaved: (newValue) => locator<LoginBloc>().setDocuments(newValue ?? []),
-                      builder: (fieldState) => Wrap(
-                        spacing: 16,
-                        runSpacing: 16,
+                      builder: (fieldState) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ...fieldState.value?.mapIndexed(
-                                (index, e) => UploadImageField(
-                                  initialValue: e,
-                                  shape: BoxShape.rectangle,
-                                  displayValue: (media) => media.address,
-                                  borderRadius: 12,
-                                  onChanged: (newValue) {
-                                    if (newValue != null) {
-                                      fieldState.value![index] = newValue;
-                                      fieldState.didChange(fieldState.value);
-                                    }
-                                  },
-                                  uploadButtonText: context.translate.uploadImage,
-                                  fileUploader: locator<UploadDatasource>().uploadDocument,
-                                ),
-                              ) ??
-                              [],
-                          UploadImageField(
-                            displayValue: (p0) => p0.address,
-                            onChanged: (newValue) {
-                              if (newValue != null) {
-                                fieldState.didChange(fieldState.value?.followedBy([newValue]).toList());
-                              }
-                            },
-                            uploadButtonText: context.translate.uploadImage,
-                            shape: BoxShape.rectangle,
-                            borderRadius: 16,
-                            fileUploader: locator<UploadDatasource>().uploadDocument,
-                          )
+                          Wrap(
+                            spacing: 16,
+                            runSpacing: 16,
+                            children: [
+                              ...fieldState.value?.mapIndexed(
+                                    (index, e) => UploadImageField(
+                                      initialValue: e,
+                                      shape: BoxShape.rectangle,
+                                      displayValue: (media) => media.address,
+                                      borderRadius: 12,
+                                      onChanged: (newValue) {
+                                        if (newValue != null) {
+                                          fieldState.value![index] = newValue;
+                                          fieldState.didChange(fieldState.value);
+                                        }
+                                      },
+                                      uploadButtonText: context.translate.uploadImage,
+                                      fileUploader: locator<UploadDatasource>().uploadDocument,
+                                    ),
+                                  ) ??
+                                  [],
+                              UploadImageField(
+                                displayValue: (p0) => p0.address,
+                                onChanged: (newValue) {
+                                  if (newValue != null) {
+                                    fieldState.didChange(fieldState.value?.followedBy([newValue]).toList());
+                                  }
+                                },
+                                uploadButtonText: context.translate.uploadImage,
+                                shape: BoxShape.rectangle,
+                                borderRadius: 16,
+                                fileUploader: locator<UploadDatasource>().uploadDocument,
+                              )
+                            ],
+                          ),
+                          if (fieldState.hasError) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              fieldState.errorText!,
+                              style: context.bodyMedium?.copyWith(color: context.theme.colorScheme.error),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -116,8 +135,6 @@ class DocumentsForm extends StatelessWidget {
               if (formKey.currentState?.validate() == true) {
                 formKey.currentState?.save();
                 loginBloc.onConfirmDocumentsPressed();
-              } else {
-                context.showSnackBar(message: "Please upload all required documents");
               }
             },
             child: Text(

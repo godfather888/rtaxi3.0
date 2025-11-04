@@ -32,12 +32,11 @@ class ContactDetails extends StatelessWidget {
                 children: [
                   FormField<Gender>(
                     initialValue: state.profileFullEntity?.gender?.toEntity,
+                    validator: (value) => value == null ? context.translate.pleaseSelectGender : null,
                     onSaved: (newValue) {
-                      if (newValue == null) {
-                        context.showSnackBar(message: "Please select a gender");
-                        return;
+                      if (newValue != null) {
+                        loginBloc.onGenderChanged(newValue);
                       }
-                      loginBloc.onGenderChanged(newValue);
                     },
                     builder: (state) {
                       return Column(
@@ -78,7 +77,14 @@ class ContactDetails extends StatelessWidget {
                                   ),
                                 )
                                 .toList(),
-                          )
+                          ),
+                          if (state.hasError) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              state.errorText!,
+                              style: context.bodyMedium?.copyWith(color: context.theme.colorScheme.error),
+                            ),
+                          ],
                         ],
                       );
                     },
@@ -145,11 +151,9 @@ class ContactDetails extends StatelessWidget {
         ),
         AppPrimaryButton(
           onPressed: () {
+            // Валидируем ВСЕ поля (включая gender)
             if (formKey.currentState?.validate() == true) {
               formKey.currentState?.save();
-              if (state.profileFullEntity?.gender == null) {
-                return;
-              }
               loginBloc.onConfirmContactDetailsPressed();
             }
           },

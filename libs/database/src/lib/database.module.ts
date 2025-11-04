@@ -171,6 +171,7 @@ import { DriverShiftRuleEntity, RewardEntity } from './entities';
             currentTables[0].count < 10,
           // logging: configService.get('NODE_ENV') === 'dev',
           logging: true, // Disable logging by default
+          timezone: '+06:00', // Казахстанское время (UTC+6)
         };
 
         logger.log('Database connection configured');

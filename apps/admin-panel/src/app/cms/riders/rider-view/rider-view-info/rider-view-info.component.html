@@ -34,12 +34,12 @@
       <input nz-input formControlName="email" id="email" />
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item [hidden]="form.value.isResident == null">
+  <nz-form-item [hidden]="!form || form.value?.isResident == null">
     <nz-form-control>
       <label nz-checkbox id="isResident" formControlName="isResident">Is Resident?</label>
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item [hidden]="form.value.isResident == null">
+  <nz-form-item [hidden]="!form || form.value?.isResident == null">
     <nz-form-label nzFor="idNumber" nzRequired>ID Number</nz-form-label>
     <nz-form-control>
       <input nz-input formControlName="idNumber" id="idNumber" />

@@ -1,0 +1,10 @@
+mutation DeletePayoutMethod($id: ID!) {
+  deleteOnePayoutMethod(input: { id: $id }) {
+    id
+  }
+}
+
+
+
+
+

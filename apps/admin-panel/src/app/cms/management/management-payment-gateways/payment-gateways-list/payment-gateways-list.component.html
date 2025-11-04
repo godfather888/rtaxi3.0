@@ -18,7 +18,12 @@
         <tr *ngFor="let data of table.data" class="group cursor-pointer" [routerLink]="'view/' + data.id">
           <td>
             <div class="flex flex-row items-center">
-              <img *ngIf="data.media != null" [src]="data.media.address" width="32" height="32">
+              <img *ngIf="data.media != null" 
+                   [src]="data.media?.address ? (data.media.address.startsWith('http') ? data.media.address : serverUrl + data.media.address) : '/assets/logo.png'" 
+                   width="32" height="32" 
+                   (error)="$event.target.src='/assets/logo.png'"
+                   loading="lazy"
+                   style="object-fit: contain; border-radius: 4px;">
               <span class="ml-2">{{ data.title }} ({{ data.type }})</span>
             </div>
           </td>

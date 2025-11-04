@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rider_flutter/config/env.dart';
 import 'package:rider_flutter/core/extensions/extensions.dart';
 import 'package:rider_flutter/core/graphql/fragments/favorite_driver.fragment.graphql.dart';
 
@@ -21,5 +22,18 @@ extension CurrentOrderX on Fragment$FavoriteDriver {
       default:
         return context.translate.howWasYourTrip;
     }
+  }
+}
+
+extension Fragment$FavoriteDriver$mediaX on Fragment$FavoriteDriver$media {
+  String get fullUrl {
+    // If address is already a full URL, return as is
+    if (address.startsWith('http://') || address.startsWith('https://')) {
+      return address;
+    }
+    
+    // Remove leading slashes and combine with server URL
+    final cleanAddress = address.startsWith('/') ? address.substring(1) : address;
+    return '${Env.serverUrl}$cleanAddress';
   }
 }

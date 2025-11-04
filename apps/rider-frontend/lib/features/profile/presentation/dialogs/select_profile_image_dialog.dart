@@ -99,8 +99,8 @@ class _SelectProfileImageDialogState extends State<SelectProfileImageDialog> {
                     state.didChange(dartz.right(media!));
                   },
                   uploadButtonText: context.translate.uploadImage,
-                  fileUploader: (path) {
-                    return locator<UploadDatasource>().uploadProfilePicture(path);
+                  fileUploader: (file) {
+                    return locator<UploadDatasource>().uploadProfilePicture(file);
                   },
                 ),
                 const SizedBox(

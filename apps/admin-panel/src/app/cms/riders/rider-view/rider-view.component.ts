@@ -41,6 +41,12 @@ export class RiderViewComponent implements OnInit {
     this.query = this.route.data.pipe(map((data) => data.rider));
   }
 
+  getImageUrl(address?: string): string | undefined {
+    if (!address) return undefined;
+    const cleanAddress = address.replace(/^\/+/, '');
+    return this.environment.root + cleanAddress;
+  }
+
   async changeStatus(status: RiderStatus) {
     try {
       await firstValueFrom(

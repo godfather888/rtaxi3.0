@@ -8,7 +8,7 @@ sealed class SettingsState with _$SettingsState {
   }) = _SettingsState;
 
   factory SettingsState.initial() => const SettingsState(
-        locale: 'en',
+        locale: 'ru',
         mapProvider: Constants.defaultMapProvider,
       );
 

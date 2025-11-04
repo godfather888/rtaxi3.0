@@ -124,9 +124,13 @@ export class DriverAPIController {
       mediaId: insert.id,
     });
     insert.id = insert.id.toString() as unknown as any;
+    
+    // Используем CDN_URL или базовый URL driver-api
+    const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
+    
     res.send({
       id: insert.id,
-      address: urlJoin(process.env.CDN_URL, file.filename),
+      address: urlJoin(cdnUrl, file.filename),
     });
   }
 
@@ -167,6 +171,16 @@ export class DriverAPIController {
     @Req() req: Request,
     @Res() res: Response,
   ) {
+    // Проверяем что файл загружен
+    if (!file) {
+      console.error('No file uploaded! Request body:', req.body);
+      console.error('Request headers:', req.headers);
+      return res.status(400).send({
+        error: 'No file uploaded',
+        message: 'Please select a file to upload'
+      });
+    }
+    
     const insert = await this.mediaRepository.save({
       address: file.filename,
       driverDocumentId: (req as unknown as any).user.id,
@@ -175,9 +189,13 @@ export class DriverAPIController {
     const doc = this.driverDocumentRepository.create();
     doc.driverId = (req as unknown as any).user.id;
     doc.driverDocumentId = parseInt(req.body.requestedDocumentId);
+    
+    // Используем CDN_URL или базовый URL driver-api
+    const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
+    
     res.send({
       id: insert.id,
-      address: urlJoin(process.env.CDN_URL, file.filename),
+      address: urlJoin(cdnUrl, file.filename),
     });
   }
 
