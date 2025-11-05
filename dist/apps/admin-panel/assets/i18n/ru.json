@@ -1,0 +1,468 @@
+{
+  "enum": {
+    "request": {
+      "Requested": "Запрошено",
+      "NotFound": "Не найдено",
+      "NoCloseFound": "Рядом не найдено",
+      "Found": "Найдено",
+      "DriverAccepted": "Водитель принял заказ",
+      "Arrived": "Прибыл",
+      "WaitingForPrefy": "Ожидание предоплаты",
+      "DriverCanceled": "Отменено водителем",
+      "RiderCanceled": "Отменено пассажиром",
+      "Started": "Поездка началась",
+      "WaitingForPostPay": "Ожидание оплаты",
+      "WaitingForReview": "Ожидание отзыва",
+      "Finished": "Завершено",
+      "Booked": "Забронировано",
+      "Expired": "Истёк срок",
+      "WaitingForPrePay": "Ожидание предоплаты"
+    },
+    "transactionType": {
+      "OrderFee": "Плата за заказ",
+      "Cash": "Наличные",
+      "BankTransfer": "Банковский перевод",
+      "Gift": "Подарок",
+      "Commission": "Комиссия",
+      "Correction": "Коррекция",
+      "InAppPayment": "Оплата в приложении",
+      "Withdraw": "Вывод средств"
+    },
+    "transactionStatus": {
+      "Processing": "Обрабатывается",
+      "Done": "Выполнено",
+      "Canceled": "Отменено",
+      "Rejected": "Отклонено"
+    },
+    "gender": {
+      "male": "Мужской",
+      "female": "Женский",
+      "genderless": "Не указан"
+    },
+    "complaintStatus": {
+      "submitted": "Подана",
+      "underInvestigation": "На рассмотрении",
+      "resolved": "Решено"
+    },
+    "sosStatus": {
+      "submitted": "Подан",
+      "underReview": "На рассмотрении",
+      "falseAlarm": "Ложная тревога",
+      "resolved": "Решено"
+    },
+    "driver": {
+      "status": {
+        "pendingApproval": "В ожидании утверждения",
+        "approved": "Одобрен",
+        "blocked": "Заблокировано",
+        "softReject": "Мягкий отказ",
+        "hardReject": "Жесткий отказ",
+        "offline": "Не в сети",
+        "waitingDocuments": "Ожидает документы",
+        "inService": "В сервисе",
+        "online": "В сети"
+      }
+    },
+    "rider": {
+      "status": {
+        "blocked": "Заблокировано",
+        "enabled": "Включено"
+      }
+    },
+    "sosActivityAction": {
+      "submitted": "Поданный",
+      "seen": "Видимый",
+      "contactDriver": "Связался с водителем",
+      "contactAuthorities": "Связавшиеся с властями",
+      "markedAsResolved": "Отмечено как решенное",
+      "markedAsFalseAlarm": "Помечен как ложная тревога"
+    }
+  },
+  "branding": {
+    "menu": {
+      "header": "BasTaxi"
+    },
+    "footer": {
+      "address": "",
+      "prefix": "© 2018-2023",
+      "title": "BasTaxi",
+      "suffix": "Все права защищены."
+    },
+    "page": {
+      "title": "BasTaxi Панель администратора"
+    }
+  },
+  "menu": {
+    "home": {
+      "overview": "Обзор",
+      "dispatcher": "Диспетчер",
+      "header": "Главная"
+    },
+    "driver": {
+      "pendingVerification": "Ожидание проверки",
+      "all": "Посмотреть все",
+      "header": "Водители"
+    },
+    "payouts": "Выплаты",
+    "payoutMethods": "Способы выплаты",
+    "marketing": {
+      "coupons": "Купоны",
+      "announcements": "Объявления",
+      "header": "Маркетинг",
+      "rewards": "Награды и рефералы"
+    },
+    "accounting": {
+      "admin": "Администратор",
+      "fleets": "Автопарки",
+      "drivers": "Водители",
+      "riders": "Пассажиры",
+      "header": "Бухгалтерский учет"
+    },
+    "riders": "Пассажиры",
+    "requests": "Запросы",
+    "sos": "SOS",
+    "complaints": "Жалобы",
+    "management": {
+      "regions": "Регионы",
+      "services": "Услуги",
+      "serviceOptions": "Варианты обслуживания",
+      "fleets": "Автопарки",
+      "zonePrices": "Цены в зонах",
+      "orderCancelReasons": "Причины отмены",
+      "reviewParameters": "Просмотр параметров",
+      "cars": "Легковые автомобили",
+      "userRoles": "Роли пользователей",
+      "users": "Пользователи",
+      "paymentGateways": "Платежные шлюзы",
+      "settings": "Настройки",
+      "header": "Управление"
+    },
+    "drivers": {
+      "header": "Водители",
+      "subtitle": "Список всех зарегистрированных водителей."
+    }
+  },
+  "overview": {
+    "switch": {
+      "language": "Переключить язык",
+      "darkMode": "Переключить светлый/темный режим"
+    },
+    "notification": {
+      "title": "Центр уведомлений"
+    },
+    "logout": "Выйти",
+    "driversOnline": "Водители онлайн",
+    "autoZoom": "Автозум",
+    "viewDriver": "Посмотреть водителя",
+    "complaints": {
+      "title": "Жалобы",
+      "suffix": "Не рассмотрено"
+    },
+    "activeOrders": {
+      "title": "Активные заказы",
+      "suffix": "Заказы"
+    },
+    "pendingDrivers": {
+      "title": "Ожидающие водители",
+      "suffix": "Непроверенный"
+    },
+    "bookedOrders": {
+      "title": "Забронированные заказы",
+      "suffix": "Забронировано"
+    },
+    "chart": {
+      "requestsTitle": "Заказы",
+      "revenue": "Доход",
+      "newDriverRegisters": "Регистрация новых водителей",
+      "newRiderRegisters": "Регистрация новых пассажиров"
+    }
+  },
+  "notification": {
+    "distressSignals": {
+      "suffix": "Ожидание сигналов бедствия"
+    },
+    "complaints": {
+      "suffix": "Жалобы не рассмотрены"
+    },
+    "pendingDrivers": {
+      "suffix": "Водители непроверены"
+    }
+  },
+  "requests": {
+    "expectedTime": "Ожидаемое время",
+    "startTime": "Время начала",
+    "finishTime": "Время окончания",
+    "costAfterCoupon": "Стоимость после купона",
+    "estimatedCost": "Ориентировочная стоимость",
+    "header": "Запрос #",
+    "requestTIme": "Время запроса",
+    "service": "Услуга",
+    "distance": "Расстояние",
+    "duration": "Продолжительность",
+    "chats": "Чаты",
+    "complaints": "Жалобы",
+    "assign": "Назначить водителя (альфа)"
+  },
+  "profile": {
+    "status": "Положение дел",
+    "locations": "Места",
+    "view": "Вид",
+    "requestInfo": "Запросить информацию",
+    "name": "Имя",
+    "mobileNumber": "Номер мобильного телефона",
+    "registeredOn": "Зарегистрирован",
+    "driverInfo": "Информация о водителе",
+    "riderInfo": "Информация о пассажире",
+    "details": "Подробности",
+    "title": "Заголовок",
+    "content": "Содержание",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "gender": "Пол",
+    "email": "Электронная почта",
+    "fleet": "Автопарк",
+    "carModel": "Модель автомобиля",
+    "carColor": "Цвет автомобиля",
+    "carProductionYear": "Год выпуска автомобиля",
+    "carPlateNumber": "Автомобильный номерной знак",
+    "accountNumber": "Номер счета",
+    "bankName": "Название банка",
+    "bankRoutingNumber": "Маршрутный номер банка",
+    "bankSwift": "SWIFT код банка",
+    "address": "Адрес",
+    "services": "Услуги",
+    "avatarImage": "Изображение аватара",
+    "upload": "Загрузить",
+    "save": "Сохранить",
+    "dateTime": "Дата и время",
+    "rating": "Рейтинг",
+    "review": "Отзыв",
+    "actions": "Действия",
+    "transactionType": "Тип операции",
+    "amount": "Сумма",
+    "documentNumber": "Номер документа",
+    "submit": "Отправить",
+    "insertTransaction": "Добавить транзакцию",
+    "cost": "Стоимость",
+    "goToList": "Перейти к списку",
+    "add": "Добавить",
+    "search": "Поиск",
+    "reset": "Сбросить",
+    "export": "Экспорт",
+    "total": "Итого",
+    "currency": "Валюта",
+    "next": "Далее",
+    "select": "Выбрать",
+    "delete": "Удалить",
+    "phoneNumber": "Номер телефона",
+    "userName": "Имя пользователя",
+    "commissionPercentage": "Процент комиссии",
+    "commissionFlat": "Фиксированная комиссия",
+    "bankAccountInfo": "Информация о банковском счете",
+    "warning": "Предупреждение",
+    "clearMap": "Очистить карту",
+    "financialRecords": "Финансовые записи",
+    "userType": "Тип пользователя",
+    "disabled": "Отключено",
+    "visibilityStatus": "Статус видимости",
+    "saveChanges": "Сохранить изменения",
+    "enabled": "Включено",
+    "deleteNotice": "Вы уверены, что хотите удалить эти данные? Это действие необратимо",
+    "dangerArea": "Опасная зона",
+    "code": "Код",
+    "beneficiary": "Бенефициар",
+    "availabilityTime": "Время доступности",
+    "appType": "Тип приложения",
+    "creditGift": "Кредитный подарок",
+    "tripFeePercentGift": "Подарок в процентах от платы за поездку",
+    "creditCurrency": "Валюта кредита",
+    "conditionTripCountsLessThan": "Поездка считается меньше, чем",
+    "conditionUserNumberFirstDigits": "Первые цифры мобильных номеров получателей (список, через запятую)",
+    "description": "Описание",
+    "createdAt": "Создан в",
+    "totalAmount": "Общая сумма",
+    "driver": "Водитель",
+    "transactionNumber": "Номер транзакции",
+    "subject": "Предмет",
+    "type": "Тип",
+    "paymentGateway": "Платежный шлюз",
+    "rider": "Пассажир",
+    "admin": "Администратор",
+    "coupon": "Купон",
+    "activities": "Хронология деятельности",
+    "location": "Расположение",
+    "submittedBy": "Подано пользователем"
+  },
+  "complaint": {
+    "inscriptionTime": "Время подачи",
+    "content": "Содержание"
+  },
+  "driver": {
+    "profile": {
+      "changeStatus": "Обновить состояние",
+      "lastSeenAt": "Последний раз видели в",
+      "rating": "Рейтинг",
+      "details": "Подробности",
+      "orders": "Заказы",
+      "financials": "Кредитные записи",
+      "reviews": "Отзывы",
+      "documents": "Документы"
+    }
+  },
+  "table": {
+    "viewRequest": "Посмотреть запрос",
+    "viewOperator": "Просмотр оператора",
+    "viewGateway": "Посмотреть шлюз",
+    "min": "Мин.",
+    "max": "Макс",
+    "viewDriver": "Посмотреть водителя",
+    "viewFleet": "Посмотреть автопарк",
+    "viewRider": "Посмотреть пассажира",
+    "viewComplaint": "Посмотреть жалобу"
+  },
+  "drivers": {
+    "notFoundMessage": "Водитель не найден!"
+  },
+  "dispatcher": {
+    "removeLastPoint": "Удалить последнюю точку",
+    "rider": {
+      "title": "Пассажир",
+      "description": "Выберите пассажира для назначения запроса"
+    },
+    "location": {
+      "title": "Расположение",
+      "description": "Места посадки и высадки"
+    },
+    "service": {
+      "title": "Услуга",
+      "description": "Запрашиваемая услуга"
+    },
+    "looking": {
+      "title": "Поиск водителя",
+      "description": "Поиск подходящего водителя"
+    },
+    "determiningLocation": "Определение местоположения, пожалуйста, подождите..."
+  },
+  "chart": {
+    "emptyState": "Здесь нечего смотреть."
+  },
+  "message": {
+    "areYouSure": "Вы уверены?",
+    "deleteDriverConfirmation": {
+      "title": "Вы уверены, что хотите удалить водителя?",
+      "content": "Удаление информации о водителе скроет водителя из списка водителей, и профиль больше не будет доступен."
+    },
+    "deleteDriverCofirmAlert": "Водитель был удалён",
+    "driverAssignedSuccessfully": "Водитель успешно назначен",
+    "deleteConfirmation": {
+      "title": "Вы уверены, что хотите удалить?"
+    },
+    "deleteRiderConfirmation": {
+      "content": "Удаление информации о пассажире скроет пассажира из списка пассажиров, и профиль больше не будет доступен."
+    },
+    "deleteRiderCofirmAlert": "Пассажир был удалён."
+  },
+  "error": {
+    "nameInvalid": "Имя недействительно",
+    "titleInvalid": "Название недействительно",
+    "PERMISSION_NOT_GRANTED": "Разрешение не предоставлено"
+  },
+  "fleet": {
+    "exclusitivityAreaTitle": "Эксклюзивная зона",
+    "exclusitivityAreaWarning": "Будьте осторожны при использовании этой функции. После того как вы назначите автопарку эксклюзивную зону, все запросы на поездки, исходящие из этого региона, будут направляться исключительно водителям, принадлежащим этому конкретному автопарку. Водители, не связанные с автопарком, не получат эти запросы."
+  },
+  "cancelReasons": {
+    "title": "Причины отмены",
+    "subtitle": "Причины отмены, с которыми пользователи могут столкнуться и которые могут выбрать при отмене поездки."
+  },
+  "cancelReason": {
+    "title": "Причина отмены",
+    "subtitle": "Причина отмены, с которой пользователи столкнутся и которую смогут выбрать при отмене поездки."
+  },
+  "reviewParameters": {
+    "title": "Просмотр параметров",
+    "subtitle": "Список параметров, которые пассажир может оценить в качестве обслуживания"
+  },
+  "services": {
+    "editCategory": "Изменить категорию",
+    "newCategory": "Новая категория",
+    "newService": "Новая услуга"
+  },
+  "service": {
+    "createFirstNotice": "Создайте свою первую категорию услуг, которая будет отображаться в клиентских приложениях",
+    "Regions": "Регионы",
+    "timeMultiplierTable": {
+      "startTime": "Время начала",
+      "endTime": "Время окончания",
+      "multiplyBy": "Умножить на"
+    },
+    "insertRule": "Вставить правило",
+    "distanceMultiplierTable": {
+      "distanceFrom": "Расстояние от",
+      "distanceTo": "Расстояние до"
+    },
+    "weekdayMultiplierTable": {
+      "weekday": "рабочий день"
+    },
+    "dateRangeMultiplierTable": {
+      "dateRange": "Диапазон дат"
+    }
+  },
+  "settings": {
+    "generalSettings": "общие настройки"
+  },
+  "users": {
+    "tab": {
+      "details": "Подробности"
+    },
+    "noRole": "Роль не назначена"
+  },
+  "zonePrice": {
+    "pickupAreas": "Зона выдачи",
+    "destinationAres": "Район(ы) назначения"
+  },
+  "zonePrices": {
+    "title": "Цены зоны",
+    "subtitle": "Определите определенные регионы, которые переопределяют цену по умолчанию и имеют конкретную цену за поездку клиента."
+  },
+  "coupons": {
+    "availabilityTime": "Время доступности",
+    "description": "Создавайте купоны, которые пассажиры будут использовать для получения скидок на свои поездки.",
+    "expirationTime": "Время истечения"
+  },
+  "riders": {
+    "notFoundMessage": "Пассажир не найден!",
+    "tab": {
+      "details": "Подробности",
+      "creditrecords": "Кредитные записи",
+      "orders": "Заказы",
+      "addresses": "Адреса"
+    }
+  },
+  "weekday": {
+    "monday": "Понедельник",
+    "tuesday": "Вторник",
+    "wednesday": "Среда",
+    "thursday": "Четверг",
+    "friday": "Пятница",
+    "saturday": "Суббота",
+    "sunday": "Воскресенье"
+  },
+  "requestActivityType": {
+    "arrivedToDestination": "Прибыл в пункт назначения",
+    "arrivedToPickupPoint": "Прибыл в пункт самовывоза",
+    "bookedByOperator": "Забронировать через оператора",
+    "bookedByRider": "Забронировано пассажиром",
+    "canceledByDriver": "Отменено водителем",
+    "canceledByOperator": "Отменено оператором",
+    "canceledByRider": "Отменено пассажиром",
+    "driverAccepted": "Водитель принят",
+    "expired": "Истекший",
+    "paid": "Оплаченный",
+    "requestedByOperator": "Запрошено оператором",
+    "requestedByRider": "Запрошено пассажиром",
+    "reviewed": "Просмотрено и оценено",
+    "started": "Начал"
+  },
+  "done": "Готово"
+}

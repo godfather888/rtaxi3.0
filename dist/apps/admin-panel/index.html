@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-beasties-container>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <base href="/admin/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+  <script>
+    window.mAPI = "";
+  </script>
+  <style>
+    @-webkit-keyframes spin {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @-moz-keyframes spin {
+      0% {
+        -moz-transform: rotate(0);
+      }
+
+      100% {
+        -moz-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1003;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .spinner div:first-child {
+      display: block;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border-radius: 50%;
+      box-shadow: 0 3px 3px 0 rgba(255, 56, 106, 1);
+      transform: translate3d(0, 0, 0);
+      animation: spin 2s linear infinite;
+    }
+
+    .spinner div:first-child:after,
+    .spinner div:first-child:before {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .spinner div:first-child:before {
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      box-shadow: 0 3px 3px 0 rgb(255, 228, 32);
+      -webkit-animation: spin 3s linear infinite;
+      animation: spin 3s linear infinite;
+    }
+
+    .spinner div:first-child:after {
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      box-shadow: 0 3px 3px 0 rgba(61, 175, 255, 1);
+      animation: spin 1.5s linear infinite;
+    }
+  </style>
+  <link rel="manifest" href="/admin/manifest.webmanifest">
+  <meta name="theme-color" content="#1976d2">
+<style>*,:before,:after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:before,:after{--tw-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}*{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji"}</style><link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.css"></noscript></head>
+
+<body>
+  <app-root>
+    <div id="nb-global-spinner" class="spinner">
+      <div class="blob blob-0"></div>
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="blob blob-4"></div>
+      <div class="blob blob-5"></div>
+    </div>
+  </app-root>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+<script src="runtime.js" type="module"></script><script src="polyfills.js" type="module"></script><script src="main.js" type="module"></script></body>
+
+</html>

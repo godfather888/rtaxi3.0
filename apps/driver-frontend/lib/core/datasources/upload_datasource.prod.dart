@@ -31,57 +31,86 @@ class UploadDatasourceImpl implements UploadDatasource {
   }
 
   Future<Fragment$Media> _uploadFile(String serverUrl, String authorizationToken, XFile file) async {
-    var postUri = Uri.parse(serverUrl);
-    var request = MultipartRequest("POST", postUri);
-    request.headers['Authorization'] = 'Bearer $authorizationToken';
-    
-    // Читаем байты из XFile (работает и на Web, и на мобильных)
-    final bytes = await file.readAsBytes();
-    final fileName = file.name.isNotEmpty ? file.name : 'upload.jpg';
-    
-    // Определяем MIME type
-    String? mimeType;
-    if (fileName.toLowerCase().endsWith('.jpg') || fileName.toLowerCase().endsWith('.jpeg')) {
-      mimeType = 'image/jpeg';
-    } else if (fileName.toLowerCase().endsWith('.png')) {
-      mimeType = 'image/png';
-    } else if (fileName.toLowerCase().endsWith('.gif')) {
-      mimeType = 'image/gif';
-    }
-    
-    request.files.add(MultipartFile.fromBytes(
-      'file',
-      bytes,
-      filename: fileName,
-      contentType: mimeType != null ? MediaType.parse(mimeType) : null,
-    ));
-    
-    final stramedResponse = await request.send();
-    var response = await Response.fromStream(stramedResponse);
-    
-    // Проверяем статус
-    if (response.statusCode >= 400) {
-      throw Exception('Upload failed: ${response.statusCode} - ${response.body}');
-    }
-    
-    var json = jsonDecode(response.body);
-    
-    // Преобразуем id в String (сервер возвращает int)
-    if (json['id'] is int) {
-      json['id'] = json['id'].toString();
-    }
-    
-    // Добавляем __typename если отсутствует (REST API не возвращает его)
-    if (!json.containsKey('__typename')) {
-      json['__typename'] = 'Media';
-    }
-    
-    final media = Fragment$Media.fromJson(json);
+    try {
+      var postUri = Uri.parse(serverUrl);
+      var request = MultipartRequest("POST", postUri);
+      request.headers['Authorization'] = 'Bearer $authorizationToken';
+      
+      // Читаем байты из XFile (работает и на Web, и на мобильных)
+      final bytes = await file.readAsBytes();
+      final fileName = file.name.isNotEmpty ? file.name : 'upload.jpg';
+      
+      if (kDebugMode) {
+        print('Uploading file: $fileName, size: ${bytes.length} bytes');
+      }
+      
+      // Определяем MIME type
+      String? mimeType;
+      if (fileName.toLowerCase().endsWith('.jpg') || fileName.toLowerCase().endsWith('.jpeg')) {
+        mimeType = 'image/jpeg';
+      } else if (fileName.toLowerCase().endsWith('.png')) {
+        mimeType = 'image/png';
+      } else if (fileName.toLowerCase().endsWith('.gif')) {
+        mimeType = 'image/gif';
+      }
+      
+      request.files.add(MultipartFile.fromBytes(
+        'file',
+        bytes,
+        filename: fileName,
+        contentType: mimeType != null ? MediaType.parse(mimeType) : null,
+      ));
+      
+      final stramedResponse = await request.send();
+      var response = await Response.fromStream(stramedResponse);
+      
+      if (kDebugMode) {
+        print('Upload response status: ${response.statusCode}');
+        print('Upload response body: ${response.body}');
+      }
+      
+      // Проверяем статус
+      if (response.statusCode >= 400) {
+        throw Exception('Upload failed: ${response.statusCode} - ${response.body}');
+      }
+      
+      var json = jsonDecode(response.body);
+      
+      // Преобразуем id в String (сервер возвращает int)
+      if (json['id'] is int) {
+        json['id'] = json['id'].toString();
+      }
+      
+      // Проверяем наличие обязательных полей
+      if (json['id'] == null) {
+        throw Exception('Server response missing id field');
+      }
+      if (json['address'] == null) {
+        throw Exception('Server response missing address field');
+      }
+      
+      // Добавляем __typename если отсутствует (REST API не возвращает его)
+      if (!json.containsKey('__typename')) {
+        json['__typename'] = 'Media';
+      }
+      
+      final media = Fragment$Media.fromJson(json);
 
-    return Fragment$Media(
-      id: media.id,
-      address: media.address,
-    );
+      // Проверяем что media содержит нужные данные
+      if (media.id.isEmpty || media.address.isEmpty) {
+        throw Exception('Invalid media response: id or address is empty');
+      }
+
+      return Fragment$Media(
+        id: media.id,
+        address: media.address,
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error in _uploadFile: $e');
+      }
+      rethrow;
+    }
   }
 
   @override

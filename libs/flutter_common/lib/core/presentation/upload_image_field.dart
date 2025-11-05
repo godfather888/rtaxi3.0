@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_common/core/extensions/extensions.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_common/core/color_palette/color_palette.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:cross_file/cross_file.dart';
@@ -85,9 +86,16 @@ class UploadImageField<T> extends StatelessWidget {
                   }
                 } catch (e) {
                   print('Upload error: $e');
-                  state.didChange(null);
-                  // Показываем ошибку пользователю
-                  rethrow;
+                  // Не сбрасываем значение, чтобы сохранить предыдущее изображение если оно было
+                  // Показываем ошибку через ScaffoldMessenger
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Ошибка загрузки: ${e.toString()}'),
+                        backgroundColor: context.theme.colorScheme.error,
+                      ),
+                    );
+                  }
                 }
               },
               child: Container(

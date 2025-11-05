@@ -26325,16 +26325,6 @@
       },
       {
         "source": "admin-panel",
-        "target": "npm:apollo-angular",
-        "type": "static"
-      },
-      {
-        "source": "admin-panel",
-        "target": "npm:@apollo/client",
-        "type": "static"
-      },
-      {
-        "source": "admin-panel",
         "target": "npm:@angular/platform-browser",
         "type": "static"
       },
@@ -26365,7 +26355,22 @@
       },
       {
         "source": "admin-panel",
+        "target": "npm:apollo-angular",
+        "type": "static"
+      },
+      {
+        "source": "admin-panel",
+        "target": "npm:@apollo/client",
+        "type": "static"
+      },
+      {
+        "source": "admin-panel",
         "target": "npm:camel-case",
+        "type": "static"
+      },
+      {
+        "source": "admin-panel",
+        "target": "npm:graphql-tag",
         "type": "static"
       },
       {
@@ -26397,8 +26402,43 @@
     "driver-api": [
       {
         "source": "driver-api",
-        "target": "@ridy/database",
+        "target": "npm:@nestjs/common",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/common",
         "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/core",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/core",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@swc/helpers",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/config",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/config",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/graphql",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
@@ -26407,8 +26447,18 @@
       },
       {
         "source": "driver-api",
-        "target": "npm:@nestjs/common",
+        "target": "npm:@nestjs/schedule",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/schedule",
         "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/typeorm",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
@@ -26418,12 +26468,142 @@
       {
         "source": "driver-api",
         "target": "npm:typeorm",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:typeorm",
         "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:ioredis",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@googlemaps/routing",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@googlemaps/google-maps-services-js",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:plivo",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:twilio",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:axios",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:qs",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@ptc-org/nestjs-query-graphql",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
         "target": "npm:@ptc-org/nestjs-query-graphql",
         "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:graphql-redis-subscriptions",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:graphql-redis-subscriptions",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/apollo",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/apollo",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/axios",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/axios",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@liaoliaots/nestjs-redis",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@liaoliaots/nestjs-redis",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:firebase-admin",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:firebase-admin",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:license-verify",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:license-verify",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:rxjs",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:rxjs",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@sentry/nestjs",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@sentry/nestjs",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/jwt",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
@@ -26433,22 +26613,47 @@
       {
         "source": "driver-api",
         "target": "npm:@nestjs/passport",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@nestjs/passport",
         "type": "static"
       },
       {
         "source": "driver-api",
-        "target": "npm:license-verify",
+        "target": "npm:proper-url-join",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:proper-url-join",
         "type": "static"
       },
       {
         "source": "driver-api",
-        "target": "npm:@nestjs/apollo",
+        "target": "npm:@ptc-org/nestjs-query-core",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@ptc-org/nestjs-query-core",
         "type": "static"
       },
       {
         "source": "driver-api",
-        "target": "npm:firebase-admin",
+        "target": "npm:@ptc-org/nestjs-query-typeorm",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:@ptc-org/nestjs-query-typeorm",
         "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:passport-jwt",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
@@ -26458,22 +26663,17 @@
       {
         "source": "driver-api",
         "target": "npm:jwt-decode",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:jwt-decode",
         "type": "static"
       },
       {
         "source": "driver-api",
-        "target": "npm:@ptc-org/nestjs-query-typeorm",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:@ptc-org/nestjs-query-core",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:graphql-redis-subscriptions",
-        "type": "static"
+        "target": "npm:express",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
@@ -26482,8 +26682,8 @@
       },
       {
         "source": "driver-api",
-        "target": "npm:proper-url-join",
-        "type": "static"
+        "target": "npm:@nestjs/platform-express",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
@@ -26493,47 +26693,17 @@
       {
         "source": "driver-api",
         "target": "npm:multer",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:multer",
         "type": "static"
       },
       {
         "source": "driver-api",
-        "target": "npm:@nestjs/config",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:@nestjs/schedule",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:@liaoliaots/nestjs-redis",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:@sentry/nestjs",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:@nestjs/core",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:graphql-ws",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:@nestjs/axios",
-        "type": "static"
-      },
-      {
-        "source": "driver-api",
-        "target": "npm:rxjs",
-        "type": "static"
+        "target": "npm:@sentry/profiling-node",
+        "type": "dynamic"
       },
       {
         "source": "driver-api",
@@ -26543,6 +26713,21 @@
       {
         "source": "driver-api",
         "target": "npm:dotenv",
+        "type": "dynamic"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:dotenv",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "@ridy/database",
+        "type": "static"
+      },
+      {
+        "source": "driver-api",
+        "target": "npm:graphql-ws",
         "type": "static"
       },
       {
@@ -26649,22 +26834,22 @@
       },
       {
         "source": "admin-api",
-        "target": "npm:@nestjs/config",
+        "target": "npm:typeorm",
         "type": "dynamic"
       },
       {
         "source": "admin-api",
-        "target": "npm:@nestjs/config",
+        "target": "npm:typeorm",
         "type": "static"
       },
       {
         "source": "admin-api",
-        "target": "npm:typeorm",
+        "target": "npm:@nestjs/config",
         "type": "dynamic"
       },
       {
         "source": "admin-api",
-        "target": "npm:typeorm",
+        "target": "npm:@nestjs/config",
         "type": "static"
       },
       {
@@ -26674,68 +26859,8 @@
       },
       {
         "source": "admin-api",
-        "target": "npm:@ptc-org/nestjs-query-graphql",
-        "type": "dynamic"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:@ptc-org/nestjs-query-graphql",
-        "type": "static"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:graphql-redis-subscriptions",
-        "type": "dynamic"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:graphql-redis-subscriptions",
-        "type": "static"
-      },
-      {
-        "source": "admin-api",
         "target": "npm:@googlemaps/routing",
         "type": "dynamic"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:@liaoliaots/nestjs-redis",
-        "type": "dynamic"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:@liaoliaots/nestjs-redis",
-        "type": "static"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:firebase-admin",
-        "type": "dynamic"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:firebase-admin",
-        "type": "static"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:license-verify",
-        "type": "dynamic"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:license-verify",
-        "type": "static"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:rxjs",
-        "type": "dynamic"
-      },
-      {
-        "source": "admin-api",
-        "target": "npm:rxjs",
-        "type": "static"
       },
       {
         "source": "admin-api",
@@ -26761,6 +26886,66 @@
         "source": "admin-api",
         "target": "npm:qs",
         "type": "dynamic"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:@ptc-org/nestjs-query-graphql",
+        "type": "dynamic"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:@ptc-org/nestjs-query-graphql",
+        "type": "static"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:graphql-redis-subscriptions",
+        "type": "dynamic"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:graphql-redis-subscriptions",
+        "type": "static"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:@liaoliaots/nestjs-redis",
+        "type": "dynamic"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:@liaoliaots/nestjs-redis",
+        "type": "static"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:firebase-admin",
+        "type": "dynamic"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:firebase-admin",
+        "type": "static"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:license-verify",
+        "type": "dynamic"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:license-verify",
+        "type": "static"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:rxjs",
+        "type": "dynamic"
+      },
+      {
+        "source": "admin-api",
+        "target": "npm:rxjs",
+        "type": "static"
       },
       {
         "source": "admin-api",
@@ -66240,5 +66425,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1753939687311
+  "computedAt": 1762273622495
 }
