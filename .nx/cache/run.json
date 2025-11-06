@@ -1,8 +1,8 @@
 {
   "run": {
-    "command": "nx build rider-api --prod",
-    "startTime": "2025-11-06T11:11:46.109Z",
-    "endTime": "2025-11-06T11:11:54.723Z",
+    "command": "nx build rider-api --prod --skip-nx-cache",
+    "startTime": "2025-11-06T11:15:49.693Z",
+    "endTime": "2025-11-06T11:15:57.415Z",
     "inner": false
   },
   "tasks": [
@@ -11,8 +11,8 @@
       "target": "build",
       "projectName": "rider-api",
       "hash": "1488582699416415770",
-      "startTime": "2025-11-06T11:11:46.138Z",
-      "endTime": "2025-11-06T11:11:54.705Z",
+      "startTime": "2025-11-06T11:15:49.717Z",
+      "endTime": "2025-11-06T11:15:57.409Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0
