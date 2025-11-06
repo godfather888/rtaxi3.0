@@ -19,7 +19,9 @@ export class MediaDTO {
         next: NextFn,
       ): Promise<Promise<string> | string> => {
         let value: string = await next();
-        value = urlJoin(process.env.CDN_URL, value);
+        // Используем CDN_URL или fallback на базовый URL
+        const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
+        value = urlJoin(cdnUrl, value);
         return value;
       },
     ],

@@ -29087,7 +29087,9 @@ _ts_decorate._([
         middleware: [
             async (ctx, next)=>{
                 let value = await next();
-                value = (0, _properurljoin.default)(process.env.CDN_URL, value);
+                // Используем CDN_URL или fallback на базовый URL
+                const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
+                value = (0, _properurljoin.default)(cdnUrl, value);
                 return value;
             }
         ]

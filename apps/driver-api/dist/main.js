@@ -29107,9 +29107,45 @@ DriverDTO = _ts_decorate._([
         };
     }),
     (0, _nestjsquerygraphql.BeforeUpdateOne)((input, context)=>{
+        const update = {
+            ...input.update
+        };
+        const coerceId = (value)=>{
+            if (value == null) return value;
+            if (typeof value === 'number') return value;
+            if (typeof value === 'string') {
+                const trimmed = value.trim();
+                if (trimmed === '' || trimmed.toLowerCase() === 'null' || trimmed.toLowerCase() === 'undefined') {
+                    return null;
+                }
+                const parsed = Number(trimmed);
+                return Number.isNaN(parsed) ? null : parsed;
+            }
+            return null;
+        };
+        // Coerce common ID fields that may arrive as strings from clients
+        const idFields = [
+            'mediaId',
+            'carId',
+            'carModelId',
+            'carColorId',
+            'presetAvatarNumber',
+            'searchDistance',
+            'carProductionYear'
+        ];
+        for (const field of idFields){
+            if (Object.prototype.hasOwnProperty.call(update, field)) {
+                const coerced = coerceId(update[field]);
+                if (coerced === undefined) {
+                    delete update[field];
+                } else {
+                    update[field] = coerced;
+                }
+            }
+        }
         return {
             id: context.req.user.id,
-            update: input.update
+            update
         };
     }),
     (0, _nestjsquerygraphql.UnPagedRelation)('documents', ()=>_mediadto.MediaDTO, {
@@ -29609,7 +29645,9 @@ _ts_decorate._([
         middleware: [
             async (ctx, next)=>{
                 let value = await next();
-                value = (0, _properurljoin.default)(process.env.CDN_URL, value);
+                // Используем CDN_URL или fallback на базовый URL
+                const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
+                value = (0, _properurljoin.default)(cdnUrl, value);
                 return value;
             }
         ]
@@ -33243,9 +33281,10 @@ let DriverAPIController = class DriverAPIController {
             uploadedByDriverId: req.user.id
         });
         insert.id = insert.id.toString();
+        const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
         res.send({
             id: insert.id,
-            address: (0, _properurljoin.default)(process.env.CDN_URL, file.filename)
+            address: (0, _properurljoin.default)(cdnUrl, file.filename)
         });
     }
     getError() {

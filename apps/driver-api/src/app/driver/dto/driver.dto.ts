@@ -39,8 +39,37 @@ import { DriverServicesServiceDTO } from './driver-services-service.dto';
 @BeforeFindOne((input: FindOneArgsType, context: UserContext) => {
   return { id: context.req.user.id };
 })
-@BeforeUpdateOne((input: UpdateOneInputType<unknown>, context: UserContext) => {
-  return { id: context.req.user.id, update: input.update };
+@BeforeUpdateOne((input: UpdateOneInputType<Record<string, unknown>>, context: UserContext) => {
+  const update: Record<string, unknown> = { ...(input.update as Record<string, unknown>) };
+
+  const coerceId = (value: unknown): number | null | undefined => {
+    if (value == null) return value as undefined;
+    if (typeof value === 'number') return value;
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (trimmed === '' || trimmed.toLowerCase() === 'null' || trimmed.toLowerCase() === 'undefined') {
+        return null;
+      }
+      const parsed = Number(trimmed);
+      return Number.isNaN(parsed) ? null : parsed;
+    }
+    return null;
+  };
+
+  // Coerce common ID fields that may arrive as strings from clients
+  const idFields = ['mediaId', 'carId', 'carModelId', 'carColorId', 'presetAvatarNumber', 'searchDistance', 'carProductionYear'];
+  for (const field of idFields) {
+    if (Object.prototype.hasOwnProperty.call(update, field)) {
+      const coerced = coerceId(update[field]);
+      if (coerced === undefined) {
+        delete update[field];
+      } else {
+        update[field] = coerced;
+      }
+    }
+  }
+
+  return { id: context.req.user.id, update };
 })
 @UnPagedRelation('documents', () => MediaDTO, {
   update: { enabled: true },

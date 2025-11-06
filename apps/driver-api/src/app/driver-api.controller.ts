@@ -241,9 +241,12 @@ export class DriverAPIController {
       uploadedByDriverId: (req as unknown as any).user.id,
     });
     insert.id = insert.id.toString() as unknown as any;
+    
+    const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
+    
     res.send({
       id: insert.id,
-      address: urlJoin(process.env.CDN_URL, file.filename),
+      address: urlJoin(cdnUrl, file.filename),
     });
   }
 

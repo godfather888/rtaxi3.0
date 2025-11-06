@@ -1,18 +1,18 @@
 {
   "run": {
-    "command": "ng build admin-panel",
-    "startTime": "2025-11-04T16:22:04.520Z",
-    "endTime": "2025-11-04T16:24:32.773Z",
+    "command": "nx build rider-api --prod",
+    "startTime": "2025-11-06T11:11:46.109Z",
+    "endTime": "2025-11-06T11:11:54.723Z",
     "inner": false
   },
   "tasks": [
     {
-      "taskId": "admin-panel:build",
+      "taskId": "rider-api:build",
       "target": "build",
-      "projectName": "admin-panel",
-      "hash": "15711091135388133843",
-      "startTime": "2025-11-04T16:22:04.549Z",
-      "endTime": "2025-11-04T16:24:32.763Z",
+      "projectName": "rider-api",
+      "hash": "1488582699416415770",
+      "startTime": "2025-11-06T11:11:46.138Z",
+      "endTime": "2025-11-06T11:11:54.705Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0
