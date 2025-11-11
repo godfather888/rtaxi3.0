@@ -181,20 +181,33 @@ export class DriverAPIController {
       });
     }
     
-    const insert = await this.mediaRepository.save({
+    const driverId = (req as unknown as any).user.id;
+    const requestedDocumentId = parseInt(req.body.requestedDocumentId);
+
+    if (Number.isNaN(requestedDocumentId)) {
+      return res.status(400).send({
+        error: 'Invalid requestedDocumentId',
+        message: 'requestedDocumentId must be a valid number',
+      });
+    }
+
+    const mediaEntity = await this.mediaRepository.save({
       address: file.filename,
-      driverDocumentId: (req as unknown as any).user.id,
+      driverDocumentId: driverId,
     });
-    insert.id = parseInt(insert.id.toString() as unknown as string);
-    const doc = this.driverDocumentRepository.create();
-    doc.driverId = (req as unknown as any).user.id;
-    doc.driverDocumentId = parseInt(req.body.requestedDocumentId);
-    
+
+    const doc = this.driverDocumentRepository.create({
+      driverId,
+      driverDocumentId: requestedDocumentId,
+      mediaId: mediaEntity.id,
+    });
+    await this.driverDocumentRepository.save(doc);
+
     // Используем CDN_URL или базовый URL driver-api
     const cdnUrl = process.env.CDN_URL || 'http://194.32.141.250/uploads';
     
     res.send({
-      id: insert.id,
+      id: mediaEntity.id.toString(),
       address: urlJoin(cdnUrl, file.filename),
     });
   }
