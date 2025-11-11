@@ -54,9 +54,6 @@ fragment ProfileFull on Driver {
     ...Media
   }
   presetAvatarNumber
-  documents {
-    ...Media
-  }
   wallet {
     ...Wallet
   }

@@ -26,5 +26,5 @@ sealed class AuthState with _$AuthState {
       };
 
   Fragment$ProfileFull? get profile => authenticatedState?.profile;
-  String? get avatar => profile?.address;
+  String? get avatar => profile?.media?.address;
 }

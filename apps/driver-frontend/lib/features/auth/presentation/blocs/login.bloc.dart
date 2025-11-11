@@ -443,11 +443,15 @@ class LoginBloc extends HydratedCubit<LoginState> {
 
     switch (registerResponse) {
       case ApiResponseLoaded(:final data):
+        // Используем setDocumentsOnDriver, так как он выполняется последним и содержит актуальные данные
+        final updatedProfile = data.setDocumentsOnDriver ?? data.updateOneDriver;
         emit(
           state.copyWith(
             loginPage: LoginPage.success(
-              profile: data.updateOneDriver,
+              profile: updatedProfile,
             ),
+            profileFullEntity: updatedProfile,
+            isLoading: false,
           ),
         );
       case ApiResponseError(:final message):

@@ -63,6 +63,20 @@ export class DriverQueryService extends TypeOrmQueryService<DriverEntity> {
     if (update.status == DriverStatus.Offline) {
       await this.driverRedisService.expire([id]);
     }
-    return super.updateOne(id, update, opts);
+    await super.updateOne(id, update, opts);
+    // Перезагружаем driver с relations для корректного возврата media и documents
+    const driver = await this.driverReposotriy.findOne({
+      where: { id: id as number },
+      relations: {
+        media: true,
+        documents: true,
+        car: true,
+        carColor: true,
+      },
+    });
+    if (!driver) {
+      throw new Error(`Driver with id ${id} not found`);
+    }
+    return driver;
   }
 }

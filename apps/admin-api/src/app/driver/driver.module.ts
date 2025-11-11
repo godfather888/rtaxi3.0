@@ -25,6 +25,7 @@ import { CreateDriverNoteInput } from './input/create-driver-note.input';
 import { DriverSessionDTO } from './dto/driver-session.dto';
 import { DriverServicesServiceEntity } from '@ridy/database';
 import { DriverServicesServiceDTO } from './dto/driver-services-service.dto';
+import { DriverQueryService } from './driver-query.service';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { DriverServicesServiceDTO } from './dto/driver-services-service.dto';
           enableTotalCount: true,
           enableAggregate: true,
           guards: [JwtAuthGuard],
+          QueryServiceClass: DriverQueryService,
         },
         {
           EntityClass: DriverServicesServiceEntity,
@@ -113,6 +115,6 @@ import { DriverServicesServiceDTO } from './dto/driver-services-service.dto';
       ],
     }),
   ],
-  providers: [DriverResolver, DriverService, SharedDriverService],
+  providers: [DriverResolver, DriverService, SharedDriverService, DriverQueryService],
 })
 export class DriverModule {}
