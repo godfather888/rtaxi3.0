@@ -15,6 +15,7 @@ sealed class LoginState with _$LoginState {
     String? mobileNumber,
     @Default([]) List<Fragment$VehicleModel> vehicleModels,
     @Default([]) List<Fragment$VehicleColor> vehicleColors,
+    @Default([]) List<Fragment$DriverDocument> requiredDocuments,
     Fragment$ProfileFull? profileFullEntity,
   }) = _LoginState;
 

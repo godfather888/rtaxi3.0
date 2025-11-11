@@ -115,7 +115,7 @@ extension NavItemX on NavItem {
     }
   }
 
-  onPressed(BuildContext context) async {
+  Future<void> onPressed(BuildContext context) async {
     //Navigator.pop(context);
     switch (this) {
       case NavItem.signIn:

@@ -16,7 +16,7 @@ class PayoutMethodsBloc extends Cubit<PayoutMethodsState> {
     fetchAvailablePayoutMethods();
   }
 
-  fetchAvailablePayoutMethods() async {
+  Future<void> fetchAvailablePayoutMethods() async {
     emit(state.copyWith(supportedPayoutMethodsState: ApiResponse.loading()));
 
     final availablePayoutMethodsResponse = await _repository.getAvailablePayoutMethods();

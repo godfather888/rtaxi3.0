@@ -29,4 +29,6 @@ export class MediaDTO {
   address!: string;
   @Field(() => String, { nullable: true })
   base64?: string;
+  @Field(() => ID, { nullable: true })
+  driverDocumentId?: number;
 }

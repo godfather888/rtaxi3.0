@@ -5,6 +5,7 @@ import 'package:driver_flutter/core/enums/gender.prod.dart';
 import 'package:driver_flutter/core/graphql/fragments/login.fragment.graphql.dart';
 import 'package:driver_flutter/core/graphql/fragments/media.fragment.graphql.dart';
 import 'package:driver_flutter/core/graphql/fragments/profile.fragment.graphql.dart';
+import 'package:driver_flutter/core/graphql/fragments/driver_document.fragment.graphql.dart';
 import 'package:driver_flutter/core/graphql/fragments/vehicle_color.fragment.graphql.dart';
 import 'package:driver_flutter/core/graphql/fragments/vehicle_model.fragment.graphql.dart';
 import 'package:driver_flutter/core/graphql/schema.gql.dart';
@@ -254,6 +255,7 @@ class LoginBloc extends HydratedCubit<LoginState> {
               isLoading: false,
               vehicleModels: data.carModels,
               vehicleColors: data.carColors,
+              requiredDocuments: data.driverRequiredDocuments,
               profileFullEntity: data.driver,
               errorMessage: null,
               jwtToken: response.jwtToken,
@@ -444,7 +446,7 @@ class LoginBloc extends HydratedCubit<LoginState> {
     switch (registerResponse) {
       case ApiResponseLoaded(:final data):
         // Используем setDocumentsOnDriver, так как он выполняется последним и содержит актуальные данные
-        final updatedProfile = data.setDocumentsOnDriver ?? data.updateOneDriver;
+        final updatedProfile = data.setDocumentsOnDriver;
         emit(
           state.copyWith(
             loginPage: LoginPage.success(

@@ -1,5 +1,6 @@
 import 'package:api_response/api_response.dart';
 import 'package:driver_flutter/core/graphql/documents/login.graphql.dart';
+import 'package:driver_flutter/core/graphql/fragments/driver_document.fragment.graphql.dart';
 import 'package:driver_flutter/core/graphql/fragments/login.mock.dart';
 import 'package:driver_flutter/core/graphql/fragments/profile.fragment.graphql.dart';
 import 'package:driver_flutter/core/graphql/fragments/profile.mock.dart';
@@ -90,6 +91,18 @@ class AuthRepositoryMock implements AuthRepository {
         carColors: [
           mockVehicleColor1,
           mockVehicleColor2,
+        ],
+        driverRequiredDocuments: [
+          Fragment$DriverDocument(
+            id: '1',
+            title: 'Водительское удостоверение',
+            isRequired: true,
+          ),
+          Fragment$DriverDocument(
+            id: '2',
+            title: 'Техпаспорт автомобиля',
+            isRequired: true,
+          ),
         ],
       ),
     );

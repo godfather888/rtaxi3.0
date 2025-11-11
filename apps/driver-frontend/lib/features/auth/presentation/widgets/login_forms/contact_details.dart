@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_common/core/enums/gender.dart';
 import 'package:flutter_common/core/presentation/buttons/app_primary_button.dart';
 import 'package:flutter_common/core/presentation/rounded_checkbox.dart';
-import 'package:flutter_common/core/presentation/snackbar/snackbar.dart';
 
 class ContactDetails extends StatelessWidget {
   final formKey = GlobalKey<FormState>();

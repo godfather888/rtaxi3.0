@@ -26,6 +26,9 @@ query RegistrationData {
   carColors {
     ...VehicleColor
   }
+  driverRequiredDocuments {
+    ...DriverDocument
+  }
 }
 
 mutation SetName($firstName: String!, $lastName: String!) {

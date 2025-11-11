@@ -1,12 +1,10 @@
 import 'package:driver_flutter/config/locator/locator.dart';
 import 'package:driver_flutter/core/datasources/upload_datasource.dart';
-import 'package:collection/collection.dart';
 import 'package:driver_flutter/core/extensions/extensions.dart';
 import 'package:driver_flutter/core/graphql/fragments/media.fragment.graphql.dart';
 import 'package:driver_flutter/features/auth/presentation/blocs/login.bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_common/core/presentation/buttons/app_primary_button.dart';
-import 'package:flutter_common/core/presentation/snackbar/snackbar.dart';
 import 'package:flutter_common/core/presentation/upload_image_field.dart';
 
 class DocumentsForm extends StatelessWidget {
@@ -64,63 +62,82 @@ class DocumentsForm extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: FormField<List<Fragment$Media>>(
-                      initialValue: state.profileFullEntity?.documents!.toList() ?? [],
-                      validator: (value) {
-                        // Требуем минимум 2 документа (водительское удостоверение + техпаспорт)
-                        if (value == null || value.length < 2) {
-                          return context.translate.pleaseUploadAllDocuments;
-                        }
-                        return null;
-                      },
-                      onSaved: (newValue) => locator<LoginBloc>().setDocuments(newValue ?? []),
-                      builder: (fieldState) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Wrap(
-                            spacing: 16,
-                            runSpacing: 16,
+                    child: Builder(
+                      builder: (context) {
+                        final requiredDocuments = state.requiredDocuments.where((doc) => doc.isRequired).toList();
+                        final initialDocuments = <String, Fragment$Media>{
+                          for (final media in state.profileFullEntity?.documents ?? <Fragment$Media>[])
+                            if (media.driverDocumentId != null) media.driverDocumentId!: media,
+                        };
+                        return FormField<Map<String, Fragment$Media>>(
+                          initialValue: Map<String, Fragment$Media>.from(initialDocuments),
+                          validator: (value) {
+                            if (requiredDocuments.isEmpty) {
+                              return null;
+                            }
+                            final docs = value ?? <String, Fragment$Media>{};
+                            final missing = requiredDocuments.where(
+                              (doc) => !docs.containsKey(doc.id),
+                            );
+                            if (missing.isNotEmpty) {
+                              return context.translate.pleaseUploadAllDocuments;
+                            }
+                            return null;
+                          },
+                          onSaved: (newValue) => locator<LoginBloc>().setDocuments(
+                            newValue?.values.toList(growable: false) ?? const <Fragment$Media>[],
+                          ),
+                          builder: (fieldState) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ...fieldState.value?.mapIndexed(
-                                    (index, e) => UploadImageField(
-                                      initialValue: e,
-                                      shape: BoxShape.rectangle,
-                                      displayValue: (media) => media.address,
-                                      borderRadius: 12,
-                                      onChanged: (newValue) {
-                                        if (newValue != null) {
-                                          fieldState.value![index] = newValue;
-                                          fieldState.didChange(fieldState.value);
-                                        }
-                                      },
-                                      uploadButtonText: context.translate.uploadImage,
-                                      fileUploader: locator<UploadDatasource>().uploadDocument,
+                              ...requiredDocuments.map(
+                                (driverDocument) {
+                                  final currentValue = fieldState.value?[driverDocument.id];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          driverDocument.title,
+                                          style: context.titleMedium,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        UploadImageField(
+                                          key: ValueKey('document_${driverDocument.id}'),
+                                          initialValue: currentValue,
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: 12,
+                                          displayValue: (media) => media.address,
+                                          uploadButtonText: context.translate.uploadImage,
+                                          fileUploader: (file) => locator<UploadDatasource>().uploadDocument(
+                                            file,
+                                            documentId: driverDocument.id,
+                                          ),
+                                          onChanged: (newValue) {
+                                            if (newValue != null) {
+                                              final updated = Map<String, Fragment$Media>.from(fieldState.value ?? {});
+                                              updated[driverDocument.id] = newValue;
+                                              fieldState.didChange(updated);
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ) ??
-                                  [],
-                              UploadImageField(
-                                displayValue: (p0) => p0.address,
-                                onChanged: (newValue) {
-                                  if (newValue != null) {
-                                    fieldState.didChange(fieldState.value?.followedBy([newValue]).toList());
-                                  }
+                                  );
                                 },
-                                uploadButtonText: context.translate.uploadImage,
-                                shape: BoxShape.rectangle,
-                                borderRadius: 16,
-                                fileUploader: locator<UploadDatasource>().uploadDocument,
-                              )
+                              ),
+                              if (fieldState.hasError) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  fieldState.errorText!,
+                                  style: context.bodyMedium?.copyWith(color: context.theme.colorScheme.error),
+                                ),
+                              ],
                             ],
                           ),
-                          if (fieldState.hasError) ...[
-                            const SizedBox(height: 8),
-                            Text(
-                              fieldState.errorText!,
-                              style: context.bodyMedium?.copyWith(color: context.theme.colorScheme.error),
-                            ),
-                          ],
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(

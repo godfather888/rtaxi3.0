@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:driver_flutter/core/datasources/upload_datasource.dart';
 import 'package:driver_flutter/core/graphql/fragments/media.fragment.graphql.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +14,14 @@ class UploadDatasourceMock implements UploadDatasource {
   }
 
   @override
-  Future<Fragment$Media> uploadDocument(XFile file) async {
-    return Fragment$Media(id: "1", address: "https://i.ibb.co/vXkk90M/person.png");
+  Future<Fragment$Media> uploadDocument(
+    XFile file, {
+    required String documentId,
+  }) async {
+    return Fragment$Media(
+      id: "1",
+      address: "https://i.ibb.co/vXkk90M/person.png",
+      driverDocumentId: documentId,
+    );
   }
 }

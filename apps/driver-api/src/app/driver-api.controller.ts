@@ -193,7 +193,13 @@ export class DriverAPIController {
 
     const mediaEntity = await this.mediaRepository.save({
       address: file.filename,
-      driverDocumentId: driverId,
+      driverDocumentId: requestedDocumentId,
+      uploadedByDriverId: driverId,
+    });
+
+    await this.driverDocumentRepository.delete({
+      driverId,
+      driverDocumentId: requestedDocumentId,
     });
 
     const doc = this.driverDocumentRepository.create({
@@ -209,6 +215,7 @@ export class DriverAPIController {
     res.send({
       id: mediaEntity.id.toString(),
       address: urlJoin(cdnUrl, file.filename),
+      driverDocumentId: requestedDocumentId,
     });
   }
 

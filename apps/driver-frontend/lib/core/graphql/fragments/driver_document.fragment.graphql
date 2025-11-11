@@ -1,0 +1,6 @@
+fragment DriverDocument on DriverDocument {
+  id
+  title
+  isRequired
+}
+

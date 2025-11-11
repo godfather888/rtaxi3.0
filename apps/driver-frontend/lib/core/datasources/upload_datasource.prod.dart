@@ -30,11 +30,19 @@ class UploadDatasourceImpl implements UploadDatasource {
     return _uploadFile(serverUrl, token, file);
   }
 
-  Future<Fragment$Media> _uploadFile(String serverUrl, String authorizationToken, XFile file) async {
+  Future<Fragment$Media> _uploadFile(
+    String serverUrl,
+    String authorizationToken,
+    XFile file, {
+    Map<String, String>? fields,
+  }) async {
     try {
       var postUri = Uri.parse(serverUrl);
       var request = MultipartRequest("POST", postUri);
       request.headers['Authorization'] = 'Bearer $authorizationToken';
+      if (fields != null) {
+        request.fields.addAll(fields);
+      }
       
       // Читаем байты из XFile (работает и на Web, и на мобильных)
       final bytes = await file.readAsBytes();
@@ -114,12 +122,22 @@ class UploadDatasourceImpl implements UploadDatasource {
   }
 
   @override
-  Future<Fragment$Media> uploadDocument(XFile file) {
+  Future<Fragment$Media> uploadDocument(
+    XFile file, {
+    required String documentId,
+  }) {
     String? token = locator<AuthBloc>().state.jwtToken;
     if (token == null) {
       throw Exception('Token is null');
     }
     final serverUrl = path.join(Env.serverUrl, 'upload_document');
-    return _uploadFile(serverUrl, token, file);
+    return _uploadFile(
+      serverUrl,
+      token,
+      file,
+      fields: {
+        'requestedDocumentId': documentId,
+      },
+    );
   }
 }

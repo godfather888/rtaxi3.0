@@ -137,6 +137,7 @@ type Media {
   id: ID!
   address: String!
   base64: String
+  driverDocumentId: ID
 }
 
 type RiderWallet {
